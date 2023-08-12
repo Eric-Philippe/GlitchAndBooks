@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 
+import "./Login.css";
+import { isConnected } from "../middlewares/auth";
+
 const Login: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -11,15 +14,18 @@ const Login: React.FC = () => {
     const data = { username, password };
 
     try {
-      fetch("http://localhost:3000/api/v1/login", {
+      fetch("http://localhost:3005/api/v1/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
-      }).then((res) => {
-        if (res.status === 200) {
-          setMessage("Login successful!");
-        } else {
+      }).then(async (res) => {
+        if (res.status !== 200) {
           setMessage("Login failed.");
+        } else {
+          const { token } = await res.json();
+          localStorage.setItem("token", token); // Store the token in localStorage
+          window.location.href = "/";
+          setMessage("");
         }
       });
     } catch (err) {}
@@ -27,6 +33,11 @@ const Login: React.FC = () => {
 
   return (
     <div>
+      {message && (
+        <div id="error-msg">
+          <p>{message}</p>
+        </div>
+      )}
       <h2>Login</h2>
       <form onSubmit={handleLogin} noValidate>
         <div>
@@ -49,7 +60,6 @@ const Login: React.FC = () => {
         </div>
         <button type="submit">Login</button>
       </form>
-      <p>{message}</p>
     </div>
   );
 };

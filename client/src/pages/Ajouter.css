@@ -1,0 +1,11 @@
+#add-book-form {
+  padding-left: 10em;
+  padding-right: 10em;
+}
+
+@media (max-width: 768px) {
+  #add-book-form {
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+}

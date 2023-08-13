@@ -1,65 +1,84 @@
 import React, { useState } from "react";
-
-import "./Login.css";
-import { isConnected } from "../middlewares/auth";
+import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent default form submission behavior
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault(); // Empêche le comportement de soumission du formulaire par défaut
 
     const data = { username, password };
 
     try {
-      fetch("http://localhost:3005/api/v1/login", {
+      const res = await fetch("http://localhost:3005/api/v1/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
-      }).then(async (res) => {
-        if (res.status !== 200) {
-          setMessage("Login failed.");
-        } else {
-          const { token } = await res.json();
-          localStorage.setItem("token", token); // Store the token in localStorage
-          window.location.href = "/";
-          setMessage("");
-        }
       });
-    } catch (err) {}
+
+      if (res.status !== 200) {
+        setMessage("Échec de la connexion.");
+      } else {
+        const response = await res.json();
+        const token = response.token;
+        const loginInformations = response.data[0];
+
+        localStorage.setItem("token", token);
+        localStorage.setItem("username", loginInformations.username);
+        localStorage.setItem("userid", loginInformations.userid);
+
+        window.location.href = "/";
+      }
+    } catch (err) {
+      console.error("Erreur lors de la connexion :", err);
+    }
   };
 
   return (
-    <div>
-      {message && (
-        <div id="error-msg">
-          <p>{message}</p>
+    <div className="login-container d-flex justify-content-center align-items-center vh-100 ">
+      <div className="login-form col-md-4">
+        <div
+          id="error-msg"
+          className={
+            message ? "alert alert-danger" : "alert alert-danger d-none"
+          }
+        >
+          {message && <p>{message}</p>}
         </div>
-      )}
-      <h2>Login</h2>
-      <form onSubmit={handleLogin} noValidate>
-        <div>
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
+        <h2 className="mb-4">Login</h2>
+
+        <form onSubmit={handleLogin} noValidate>
+          <div className="mb-3">
+            <label htmlFor="inputUsername" className="form-label">
+              Username
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="inputUsername"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            ></input>
+          </div>
+          <div className="mb-3">
+            <label htmlFor="exampleInputPassword1" className="form-label">
+              Password
+            </label>
+            <input
+              type="password"
+              className="form-control"
+              id="inputPassword"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            ></input>
+          </div>
+          <button type="submit" className="btn btn-primary">
+            Submit
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

@@ -2,6 +2,7 @@ import { Component } from "react";
 import Header from "../components/Header";
 import Login from "./Login";
 import { isConnected } from "../middlewares/auth";
+import Loading from "../components/Loading";
 
 interface HomeState {
   isUserConnected: boolean | null;
@@ -28,7 +29,7 @@ class Home extends Component<{}, HomeState> {
     return (
       <>
         {this.state.isUserConnected === null ? (
-          <p>Loading...</p>
+          <Loading />
         ) : this.state.isUserConnected ? (
           <div>
             <Header />

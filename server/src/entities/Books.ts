@@ -37,7 +37,7 @@ export class Books {
   read: boolean;
 
   @Column("date", { name: "publication_date", nullable: true })
-  publicationDate: string | null;
+  publicationDate: Date | null;
 
   @Column("boolean", { name: "want_to_read" })
   wantToRead: boolean;

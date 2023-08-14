@@ -63,4 +63,3 @@ jobs:
             cd ..
             cd server
             npm install --production
-            npm install -g serve

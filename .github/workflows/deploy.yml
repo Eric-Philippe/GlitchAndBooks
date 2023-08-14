@@ -1,4 +1,4 @@
-name: Deploy Glitch & Books<
+name: Deploy Glitch & Books
 
 on:
   push:
@@ -40,7 +40,7 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_PRIVATE_KEY }}
           source: glitchandbooks-deployment.zip
-          target: GlitchAndBooks
+          target: GlitchAndBooksProd
 
       - name: Deploy Bot on VPS
         uses: appleboy/ssh-action@master
@@ -49,6 +49,6 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_PRIVATE_KEY }}
           script: |
-            cd GlitchAndBooks
-            unzip deploy.zip
-            rm deploy.zip
+            cd GlitchAndBooksProd
+            unzip glitchandbooks-deployment.zip
+            rm glitchandbooks-deployment.zip

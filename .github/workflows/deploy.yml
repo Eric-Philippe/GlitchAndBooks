@@ -58,8 +58,9 @@ jobs:
             mv .env.server.prod ../server/.env
             mv .env.client.prod ../client/.env
             cd ..
-            cd server
-            npm install --production
-            cd ..
             cd client
             npm install --production
+            cd ..
+            cd server
+            npm install --production
+            npm install -g serve

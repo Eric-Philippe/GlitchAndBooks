@@ -29,5 +29,3 @@ jobs:
             git pull
             docker-compose up -d --build
             docker-compose restart
-            
-```         

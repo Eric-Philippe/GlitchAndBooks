@@ -9,7 +9,6 @@ import { isConnected } from "../middlewares/auth";
 import Loading from "../components/Loading";
 import { Book } from "../models/Book";
 import { Toast } from "bootstrap";
-import { APP_API_URL } from "../env";
 
 interface HomeState {
   isUserConnected: boolean | null;
@@ -248,7 +247,7 @@ class Ajouter extends Component<{}, HomeState> {
     const bodyData = { book: book, userid: localStorage.getItem("userid") };
     const token = localStorage.getItem("token");
 
-    const res = await fetch(APP_API_URL + "/v1/books/add", {
+    const res = await fetch(process.env.REACT_API_URL + "/v1/books/add", {
       method: "POST",
       body: JSON.stringify(bodyData),
       headers: {

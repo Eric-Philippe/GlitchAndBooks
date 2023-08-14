@@ -1,11 +1,9 @@
-import { APP_API_URL } from "../env";
-
 export const isConnected = async () => {
   return new Promise(async (resolve, reject) => {
     const token = localStorage.getItem("token");
     if (!token) resolve(false);
 
-    const res = await fetch(APP_API_URL + "/v1/session", {
+    const res = await fetch(process.env.REACT_API_URL + "/v1/session", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

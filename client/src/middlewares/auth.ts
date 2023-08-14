@@ -1,7 +1,7 @@
 export const isConnected = async () => {
   return new Promise(async (resolve, reject) => {
     const token = localStorage.getItem("token");
-    const res = await fetch("http://localhost:3005/api/v1/session", {
+    const res = await fetch(process.env.APP_API_URL + "/v1/session", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

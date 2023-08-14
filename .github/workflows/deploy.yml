@@ -1,0 +1,54 @@
+name: Deploy Glitch & Books
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20"
+
+      - name: Install dependencies React
+        run: cd client && npm install
+
+      - name: Build React
+        run: cd client && npm run build
+
+      - name: Install dependencies Express
+        run: cd server && npm install
+
+      - name: Build Express
+        run: cd server && npm run build
+
+      - name: Zip files
+        run: zip -r deploy.zip client/build server/build
+
+      - name: Copy deployment package to VPS
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_PRIVATE_KEY }}
+          source: glitchandbooks-deployment.zip
+          target: GlitchAndBooks
+
+      - name: Deploy Bot on VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_PRIVATE_KEY }}
+          script: |
+            cd GlitchAndBooks
+            unzip deploy.zip
+            rm deploy.zip

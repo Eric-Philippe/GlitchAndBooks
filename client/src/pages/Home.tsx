@@ -42,7 +42,11 @@ class Home extends Component<{}, HomeState> {
               <div className="row justify-content-md-center">
                 <div className="col col-lg-4">
                   <div className="card">
-                    <img src="bookshelf.jpg" className="card-img-top"></img>
+                    <img
+                      src="bookshelf.jpg"
+                      className="card-img-top"
+                      alt="Bookshelf"
+                    ></img>
                     <div className="card-body">
                       <h5 className="card-title">Consulter mes livres</h5>
                       <p className="card-text">
@@ -58,7 +62,11 @@ class Home extends Component<{}, HomeState> {
 
                 <div className="col col-lg-4">
                   <div className="card">
-                    <img src="bookshop.jpg" className="card-img-top"></img>
+                    <img
+                      src="bookshop.jpg"
+                      className="card-img-top"
+                      alt="Bookshop"
+                    ></img>
                     <div className="card-body">
                       <h5 className="card-title">Ajouter des livres</h5>
                       <p className="card-text">

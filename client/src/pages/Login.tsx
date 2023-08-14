@@ -12,6 +12,8 @@ const Login: React.FC = () => {
     const data = { username, password };
 
     try {
+      console.log(process.env.REACT_APP_API_URL);
+
       const res = await fetch(process.env.REACT_APP_API_URL + "/v1/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

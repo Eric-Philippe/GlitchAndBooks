@@ -17,7 +17,7 @@ const Header: React.FC = () => {
         setWichMenu("Ajouter");
         break;
     }
-  });
+  }, []);
 
   const handeLogout = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,7 +28,7 @@ const Header: React.FC = () => {
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
-        <a className="navbar-brand" href="#">
+        <a className="navbar-brand" href="/">
           Glitch & Books
         </a>
         <button
@@ -49,7 +49,7 @@ const Header: React.FC = () => {
                 aria-current="page"
                 href="/"
                 className={
-                  wichMenu == "Accueil" ? "nav-link active" : "nav-link"
+                  wichMenu === "Accueil" ? "nav-link active" : "nav-link"
                 }
               >
                 Accueil
@@ -59,7 +59,7 @@ const Header: React.FC = () => {
               <a
                 href="/consulter"
                 className={
-                  wichMenu == "Consulter" ? "nav-link active" : "nav-link"
+                  wichMenu === "Consulter" ? "nav-link active" : "nav-link"
                 }
               >
                 Consulter
@@ -69,14 +69,14 @@ const Header: React.FC = () => {
               <a
                 href="/ajouter"
                 className={
-                  wichMenu == "Ajouter" ? "nav-link active" : "nav-link"
+                  wichMenu === "Ajouter" ? "nav-link active" : "nav-link"
                 }
               >
                 Ajouter
               </a>
             </li>
           </ul>
-          <form className="d-flex" role="logout" onSubmit={handeLogout}>
+          <form className="d-flex" onSubmit={handeLogout}>
             <button className="btn btn-outline-danger" type="submit">
               Logout
             </button>

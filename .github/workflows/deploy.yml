@@ -18,10 +18,16 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Deploy Bot on VPS
+      - name: Deploy Bot on VPS With Docker
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_PRIVATE_KEY }}
           script: |
+            cd GlitchAndBooks
+            git pull
+            docker-compose up -d --build
+            docker-compose restart
+            
+```         

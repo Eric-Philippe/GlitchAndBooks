@@ -55,8 +55,8 @@ jobs:
             unzip glitchandbooks-deployment.zip
             rm glitchandbooks-deployment.zip
             cd env
-            mv .env.server.prod ../server/.env
-            mv .env.client.prod ../client/.env
+            cp .env.client.prod ../client/.env
+            cp .env.server.prod ../server/.env
             cd ..
             cd client
             npm install --production

@@ -19,6 +19,8 @@ export const login = async (req: Request, res: Response) => {
       password: password,
     });
 
+    console.log("Login:", login);
+
     if (login.length > 0) {
       const ONE_MONTH = 1000 * 60 * 60 * 24 * 30;
       const token = sign({ username: username }, JWT_SECRET, {

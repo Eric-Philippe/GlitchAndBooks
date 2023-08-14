@@ -31,7 +31,7 @@ jobs:
         run: cd server && npm run build
 
       - name: Zip files
-        run: zip -r deploy.zip client/build server/dist
+        run: zip -r glitchandbooks-deployment.zip client/build server/dist
 
       - name: Copy deployment package to VPS
         uses: appleboy/scp-action@v0.1.4

@@ -27,4 +27,7 @@ app.use("/api", routes);
 const port = PORT || 3000;
 app.listen(port, () => {
   console.log("App running on port ", port);
+  if (AppDataSource.isInitialized) {
+    console.log("Database connected");
+  }
 });

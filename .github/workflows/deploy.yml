@@ -1,4 +1,4 @@
-name: Deploy Glitch & Books Website
+name: Deploy Glitch & Books
 
 on:
   push:

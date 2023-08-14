@@ -1,4 +1,4 @@
-name: Deploy Glitch & Books
+name: Deploy Glitch & Books on VPS
 
 on:
   push:

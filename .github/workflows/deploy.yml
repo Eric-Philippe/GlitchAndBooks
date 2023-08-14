@@ -31,7 +31,7 @@ jobs:
         run: cd server && npm run build
 
       - name: Zip files
-        run: zip -r glitchandbooks-deployment.zip client/build server/dist
+        run: zip -r glitchandbooks-deployment.zip client/build server/dist client/package.json server/package.json
 
       - name: Copy deployment package to VPS
         uses: appleboy/scp-action@v0.1.4
@@ -50,5 +50,16 @@ jobs:
           key: ${{ secrets.VPS_PRIVATE_KEY }}
           script: |
             cd GlitchAndBooksProd
+            rm -rf client
+            rm -rf server
             unzip glitchandbooks-deployment.zip
             rm glitchandbooks-deployment.zip
+            cd env
+            mv .env.server.prod ../server/.env
+            mv .env.client.prod ../client/.env
+            cd ..
+            cd server
+            npm install --production
+            cd ..
+            cd client
+            npm install --production

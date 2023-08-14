@@ -1,6 +1,8 @@
 export const isConnected = async () => {
   return new Promise(async (resolve, reject) => {
     const token = localStorage.getItem("token");
+    if (!token) resolve(false);
+
     const res = await fetch(process.env.APP_API_URL + "/v1/session", {
       method: "GET",
       headers: {

@@ -18,30 +18,6 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install dependencies React
-        run: cd client && npm install
-
-      - name: Build React
-        run: cd client && npm run build
-
-      - name: Install dependencies Express
-        run: cd server && npm install
-
-      - name: Build Express
-        run: cd server && npm run build
-
-      - name: Zip files
-        run: zip -r glitchandbooks-deployment.zip client/build server/dist client/package.json server/package.json
-
-      - name: Copy deployment package to VPS
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_PRIVATE_KEY }}
-          source: glitchandbooks-deployment.zip
-          target: GlitchAndBooksProd
-
       - name: Deploy Bot on VPS
         uses: appleboy/ssh-action@master
         with:
@@ -49,17 +25,3 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_PRIVATE_KEY }}
           script: |
-            cd GlitchAndBooksProd
-            rm -rf client
-            rm -rf server
-            unzip glitchandbooks-deployment.zip
-            rm glitchandbooks-deployment.zip
-            cd env
-            cp .env.client.prod ../client/.env
-            cp .env.server.prod ../server/.env
-            cd ..
-            cd client
-            npm install --production
-            cd ..
-            cd server
-            npm install --production

@@ -3,17 +3,13 @@ services:
   client:
     build:
       context: .
-      dockerfile: Dockerfile.client
+      dockerfile: client/Dockerfile
     ports:
       - "80:80"
-    env_file:
-      - client/.env
 
   server:
     build:
       context: .
-      dockerfile: Dockerfile.server
+      dockerfile: server/Dockerfile
     ports:
       - "3005:3005"
-    env_file:
-      - server/.env

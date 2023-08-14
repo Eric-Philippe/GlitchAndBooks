@@ -64,7 +64,7 @@ export default async function addBook(req: Request, res: Response) {
 
     res.status(200).json({ message: "ok" });
   } catch (err) {
-    console.log(err);
+    console.log("Error");
     res.status(500).json({ message: "error" });
   }
 }

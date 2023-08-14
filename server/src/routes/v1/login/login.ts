@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { AppDataSource } from "../../../data-source";
 import { Users } from "../../../entities/Users";
 import { sign } from "jsonwebtoken";
-import { DB_HOST, JWT_SECRET } from "../../../env";
+import { JWT_SECRET } from "../../../env";
 
 export const login = async (req: Request, res: Response) => {
   // Get the username and password from the request body
@@ -10,9 +10,6 @@ export const login = async (req: Request, res: Response) => {
 
   if (!username) username = "";
   if (!password) password = "";
-  console.log("Username:", username);
-  console.log("Password:", password);
-  console.log(DB_HOST);
 
   try {
     // Validate the username and password against your data source (for example, a database)
@@ -21,8 +18,6 @@ export const login = async (req: Request, res: Response) => {
       username: username,
       password: password,
     });
-
-    console.log("Login:", login);
 
     if (login.length > 0) {
       const ONE_MONTH = 1000 * 60 * 60 * 24 * 30;

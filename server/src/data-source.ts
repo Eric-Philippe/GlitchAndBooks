@@ -38,6 +38,6 @@ export const AppDataSource = new DataSource({
 /** Initialize the ORM DataSource */
 AppDataSource.initialize()
   .then(() => {
-    console.log("Database connection established");
+    console.log("Database connection established successfully.");
   })
   .catch((error) => console.log(error));

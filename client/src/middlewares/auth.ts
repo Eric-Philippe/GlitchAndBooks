@@ -3,7 +3,7 @@ export const isConnected = async () => {
     const token = localStorage.getItem("token");
     if (!token) resolve(false);
 
-    const res = await fetch(process.env.REACT_API_URL + "/v1/session", {
+    const res = await fetch(process.env.REACT_APP_API_URL + "/v1/session", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

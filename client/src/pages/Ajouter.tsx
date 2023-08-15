@@ -186,8 +186,8 @@ class Ajouter extends Component<{}, HomeState> {
         "lastname_" + i
       ) as HTMLInputElement;
 
-      let firstnameValue = firstname ? firstname.value : "";
-      let lastnameValue = lastname ? lastname.value : "";
+      let firstnameValue = firstname ? firstname.value.trim() : "";
+      let lastnameValue = lastname ? lastname.value.trim() : "";
 
       authors.firstname.push(firstnameValue);
       authors.lastname.push(lastnameValue);
@@ -234,18 +234,21 @@ class Ajouter extends Component<{}, HomeState> {
     const genre = Ajouter.buildGenres();
 
     const book: Book = {
-      title: title.value,
+      title: title.value.trim(),
       firstname: firstname,
       lastname: lastname,
       lang: lang.value,
       pages: pages ? parseInt(pages.value) : null,
       width: width ? parseInt(width.value) : null,
       height: height ? parseInt(height.value) : null,
-      publicationYear: publicationYear ? parseInt(publicationYear.value) : null,
+      publicationYear:
+        publicationYear && publicationYear.value != ""
+          ? parseInt(publicationYear.value)
+          : null,
       originCountry: originCountry.value,
       type: type.value,
       genres: genre,
-      notes: notes ? notes.value : null,
+      notes: notes && notes.value != "" ? notes.value.trim() : null,
       physical: physical.checked,
       read: read.checked,
       wantRead: wantRead.checked,

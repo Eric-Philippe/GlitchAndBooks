@@ -7,6 +7,7 @@ import { genresRouter } from "./genres/genresRouter";
 import { typesRouter } from "./types/typesRouter";
 import { languagesRouter } from "./languages/languagesRouter";
 import { countryRouter } from "./country_origin/countryRouter";
+import getBooks from "./books/getBook";
 
 export const v1Routes = express.Router();
 
@@ -19,6 +20,7 @@ v1Routes.use("/languages", languagesRouter);
 v1Routes.use("/countries", countryRouter);
 v1Routes.use("/genres", genresRouter);
 v1Routes.use("/types", typesRouter);
+v1Routes.get("/:userid", getBooks);
 
 /** Restricted API Access Routers */
 v1Routes.use("/books", jwtTokenVerification, booksRouter);

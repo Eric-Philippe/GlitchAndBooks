@@ -75,6 +75,26 @@ const Header: React.FC = () => {
                 Ajouter
               </a>
             </li>
+            <li className="nav-item">
+              <a
+                href="/stats"
+                className={
+                  wichMenu === "Statistiques" ? "nav-link active" : "nav-link"
+                }
+              >
+                Statistiques
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                href="/wishlist"
+                className={
+                  wichMenu === "Wishlist" ? "nav-link active" : "nav-link"
+                }
+              >
+                Wishlist
+              </a>
+            </li>
           </ul>
           <form className="d-flex" onSubmit={handeLogout}>
             <button className="btn btn-outline-danger" type="submit">

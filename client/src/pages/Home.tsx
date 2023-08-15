@@ -4,8 +4,11 @@ import Login from "./Login";
 import { isConnected } from "../middlewares/auth";
 import Loading from "../components/Loading";
 
+import Ressources from "../middlewares/Resources";
+
 interface HomeState {
   isUserConnected: boolean | null;
+  areRessourcesLoaded: boolean | null;
 }
 
 class Home extends Component<{}, HomeState> {
@@ -13,13 +16,18 @@ class Home extends Component<{}, HomeState> {
     super(props);
     this.state = {
       isUserConnected: null,
+      areRessourcesLoaded: null,
     };
   }
 
   async componentDidMount() {
     try {
       const connected = (await isConnected()) as boolean;
+      const areRessourcesLoaded = await (
+        await Ressources.getInstance()
+      ).isReady();
       this.setState({ isUserConnected: connected });
+      this.setState({ areRessourcesLoaded: areRessourcesLoaded });
     } catch (error) {
       console.error("Error checking connection status:", error);
     }

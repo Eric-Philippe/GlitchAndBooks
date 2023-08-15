@@ -10,8 +10,11 @@ import Loading from "../components/Loading";
 import { Book } from "../models/Book";
 import { Toast } from "bootstrap";
 
+import Resources from "../middlewares/Resources";
+
 interface HomeState {
   isUserConnected: boolean | null;
+  areResourcesLoaded: boolean | null;
 }
 
 const validate = () => {
@@ -47,11 +50,13 @@ const validate = () => {
 
 class Ajouter extends Component<{}, HomeState> {
   public authorCount: number = 1;
+  private ressources: Resources = Resources.getInstance();
 
   constructor(props: {}) {
     super(props);
     this.state = {
       isUserConnected: null,
+      areResourcesLoaded: null,
     };
   }
 
@@ -154,7 +159,10 @@ class Ajouter extends Component<{}, HomeState> {
   async componentDidMount() {
     try {
       const connected = (await isConnected()) as boolean;
+      if (!this.ressources.isReady()) await this.ressources.fill();
+
       this.setState({ isUserConnected: connected });
+      this.setState({ areResourcesLoaded: true });
       validate();
     } catch (error) {
       console.error("Error checking connection status:", error);
@@ -270,9 +278,12 @@ class Ajouter extends Component<{}, HomeState> {
   }
 
   render() {
+    console.log(this.ressources.getCountries());
+
     return (
       <>
-        {this.state.isUserConnected === null ? (
+        {this.state.isUserConnected === null ||
+        this.state.areResourcesLoaded === null ? (
           <Loading />
         ) : this.state.isUserConnected ? (
           <div>
@@ -353,12 +364,11 @@ class Ajouter extends Component<{}, HomeState> {
                       <option selected disabled value="">
                         Select a language
                       </option>
-                      <option value="Français">Français</option>
-                      <option value="Anglais">Anglais</option>
-                      <option value="Japonais">Japonais</option>
-                      <option value="Allemand">Allemand</option>
-                      <option value="Espagnol">Espagnol</option>
-                      <option value="Autre">Autre</option>
+                      {this.ressources.getLanguages().map((lang) => (
+                        <option value={lang} key={lang}>
+                          {lang}
+                        </option>
+                      ))}
                     </select>
                     <div className="invalid-feedback">
                       Please provide a language.
@@ -436,14 +446,11 @@ class Ajouter extends Component<{}, HomeState> {
                       <option selected disabled value="">
                         Country of origin
                       </option>
-                      <option value="France">France</option>
-                      <option value="Angleterre">Angleterre</option>
-                      <option value="Russie">Russie</option>
-                      <option value="États-Unis">États-Unis</option>
-                      <option value="Chine">Chine</option>
-                      <option value="Islande">Islande</option>
-                      <option value="Italie">Italie</option>
-                      <option value="Autre">Autre</option>
+                      {this.ressources.getCountries().map((country) => (
+                        <option value={country} key={country}>
+                          {country}
+                        </option>
+                      ))}
                     </select>
                     <div className="invalid-feedback">
                       Please provide a country.
@@ -465,14 +472,11 @@ class Ajouter extends Component<{}, HomeState> {
                       <option selected disabled value="">
                         Book type
                       </option>
-                      <option value="Fiction">Fiction</option>
-                      <option value="Non-Fiction">Non-Fiction</option>
-                      <option value="Poésie">Poésie</option>
-                      <option value="Théâtre">Théâtre</option>
-                      <option value="Beau Livre">Beau Livre</option>
-                      <option value="Comics">Comics</option>
-                      <option value="Manga">Manga</option>
-                      <option value="Essai">Essai</option>
+                      {this.ressources.getTypes().map((type) => (
+                        <option value={type} key={type}>
+                          {type}
+                        </option>
+                      ))}
                     </select>
                     <div className="invalid-feedback">
                       Please provide a type.
@@ -494,16 +498,11 @@ class Ajouter extends Component<{}, HomeState> {
                       <option selected disabled value="">
                         Book genre
                       </option>
-                      <option value="Science-Fiction">Science-Fiction</option>
-                      <option value="Fantasy">Fantasy</option>
-                      <option value="Young-Adult">Young-Adult</option>
-                      <option value="Historique">Historique</option>
-                      <option value="Biographie">Biographie</option>
-                      <option value="Romance">Romance</option>
-                      <option value="Contemporain">Contemporain</option>
-                      <option value="Policier">Policier</option>
-                      <option value="Recettes">Recettes</option>
-                      <option value="Autre">Autre</option>
+                      {this.ressources.getGenres().map((genre) => (
+                        <option value={genre} key={genre}>
+                          {genre}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>

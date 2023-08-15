@@ -393,10 +393,10 @@ class Ajouter extends Component<{}, HomeState> {
                   </div>
                 </div>
 
-                <div className="col-md-3">
+                <div className="col-md-4">
                   <div className="input-group mb-1">
                     <span className="input-group-text" id="basic-addon1">
-                      📆 Publication Year
+                      Publication Year
                     </span>
                     <input
                       type="number"
@@ -410,13 +410,13 @@ class Ajouter extends Component<{}, HomeState> {
                 <div className="col">
                   <div className="input-group mb-1">
                     <span className="input-group-text" id="basic-addon1">
-                      Width (cm)
+                      Width
                     </span>
                     <input
                       type="number"
                       className="form-control"
                       id="width"
-                      placeholder="Width"
+                      placeholder="(cm)"
                     ></input>
                   </div>
                 </div>
@@ -424,13 +424,13 @@ class Ajouter extends Component<{}, HomeState> {
                 <div className="col">
                   <div className="input-group mb-1">
                     <span className="input-group-text" id="basic-addon1">
-                      Height (cm)
+                      Height
                     </span>
                     <input
                       type="number"
                       className="form-control"
                       id="height"
-                      placeholder="Height"
+                      placeholder="(cm)"
                     ></input>
                   </div>
                 </div>

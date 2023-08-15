@@ -382,7 +382,7 @@ class Ajouter extends Component<{}, HomeState> {
                 <div className="col">
                   <div className="input-group mb-1">
                     <span className="input-group-text" id="basic-addon1">
-                      Page Number
+                      Pages
                     </span>
                     <input
                       type="number"

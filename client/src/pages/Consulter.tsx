@@ -110,16 +110,20 @@ class Consulter extends Component<{}, ConsulterState> {
         ) : this.state.isUserConnected ? (
           <div>
             <Header />
-            <div className="container text-center mt-5 mb-4">
-              <h6 className="display-6">Consulter vos livres ✨</h6>
-            </div>
-            <div className="d-flex justify-content-center align-items-center mb-4">
-              <DynamicTable
-                allColumns={Columns}
-                data={this.userBooks}
-                initColumns={defaultColumns}
-                fieldToValue={this.bookFieldToText}
-              />
+            <div id="center-consulter">
+              <div className="container text-center mt-5 mb-4">
+                <h6 className="display-6">Consulter vos livres ✨</h6>
+              </div>
+              <div className="center-consulter">
+                <div className="d-flex justify-content-center align-items-center mb-4">
+                  <DynamicTable
+                    allColumns={Columns}
+                    data={this.userBooks}
+                    initColumns={defaultColumns}
+                    fieldToValue={this.bookFieldToText}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         ) : (

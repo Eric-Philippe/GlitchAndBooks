@@ -242,13 +242,13 @@ class Ajouter extends Component<{}, HomeState> {
       width: width ? parseInt(width.value) : null,
       height: height ? parseInt(height.value) : null,
       publicationYear:
-        publicationYear && publicationYear.value != ""
+        publicationYear && publicationYear.value !== ""
           ? parseInt(publicationYear.value)
           : null,
       originCountry: originCountry.value,
       type: type.value,
       genres: genre,
-      notes: notes && notes.value != "" ? notes.value.trim() : null,
+      notes: notes && notes.value !== "" ? notes.value.trim() : null,
       physical: physical.checked,
       read: read.checked,
       wantRead: wantRead.checked,
@@ -281,8 +281,6 @@ class Ajouter extends Component<{}, HomeState> {
   }
 
   render() {
-    console.log(this.ressources.getCountries());
-
     return (
       <>
         {this.state.isUserConnected === null ||
@@ -297,7 +295,7 @@ class Ajouter extends Component<{}, HomeState> {
 
             <div
               className="container mt-4 d-flex justify-content-center align-items-center"
-              id="add-book-form"
+              id="center-container"
             >
               <form
                 className="row g-3 needs-validation"

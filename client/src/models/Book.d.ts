@@ -14,4 +14,5 @@ export interface Book {
   physical: boolean;
   read: boolean;
   wantRead: boolean;
+  [key: string]: string | string[] | number | boolean | null | undefined;
 }

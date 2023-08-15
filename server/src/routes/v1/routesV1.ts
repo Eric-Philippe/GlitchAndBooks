@@ -7,7 +7,6 @@ import { genresRouter } from "./genres/genresRouter";
 import { typesRouter } from "./types/typesRouter";
 import { languagesRouter } from "./languages/languagesRouter";
 import { countryRouter } from "./country_origin/countryRouter";
-import getBooks from "./books/getBook";
 
 export const v1Routes = express.Router();
 

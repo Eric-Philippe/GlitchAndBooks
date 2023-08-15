@@ -5,4 +5,4 @@ import getBooks from "./getBook";
 export const booksRouter = express.Router();
 
 booksRouter.post("/add", addBook);
-booksRouter.get(":userid", getBooks);
+booksRouter.get("/get", getBooks);

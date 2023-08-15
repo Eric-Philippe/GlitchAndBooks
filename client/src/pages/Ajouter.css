@@ -1,10 +1,15 @@
-#add-book-form {
+#center-container {
   padding-left: 10em;
   padding-right: 10em;
 }
 
+.centered-cell {
+  text-align: center;
+  vertical-align: middle;
+}
+
 @media (max-width: 768px) {
-  #add-book-form {
+  #center-container {
     padding-left: 1em;
     padding-right: 1em;
   }

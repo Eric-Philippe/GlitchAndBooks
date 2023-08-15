@@ -108,8 +108,6 @@ export default class Resources {
 
     if (res.status === 200) {
       const data = await res.json();
-      console.log(process.env.REACT_APP_API_URL + "/v1/languages");
-
       this.languages = data.languages;
     }
   }

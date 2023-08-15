@@ -11,7 +11,6 @@ export const getCountry = async (req: Request, res: Response) => {
       return 0;
     });
     const countries: string[] = countryObj.map((genre) => genre.country);
-    console.log(countries);
 
     res.status(200).json({ countries });
   } catch (error) {

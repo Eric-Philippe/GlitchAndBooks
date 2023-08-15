@@ -20,7 +20,6 @@ v1Routes.use("/languages", languagesRouter);
 v1Routes.use("/countries", countryRouter);
 v1Routes.use("/genres", genresRouter);
 v1Routes.use("/types", typesRouter);
-v1Routes.get("/:userid", getBooks);
 
 /** Restricted API Access Routers */
 v1Routes.use("/books", jwtTokenVerification, booksRouter);

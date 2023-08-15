@@ -82,7 +82,6 @@ export default async function getBooks(req: Request, res: Response) {
     });
   }
 
-  console.log(result);
-
-  res.send("get books");
+  //json
+  res.status(200).json(result);
 }

@@ -541,8 +541,8 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
           </button>
         </div>
         <table className="table table-striped table-hover caption-top">
-          <caption>{`${50 * (currentPage - 1)}-${
-            50 * (currentPage - 1) + viewedData.length
+          <caption>{`${MAX_ROWS * (currentPage - 1)}-${
+            MAX_ROWS * (currentPage - 1) + viewedData.length
           } / ${wholeViewedData.length}`}</caption>
           <thead>
             <tr>

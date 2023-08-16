@@ -1,36 +1,37 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 
 /** Import all the components to make the dynamic table works */
-import Pagination from "../Pagination";
-import ItemPages from "./DynamicTableAccordion/ItemPages";
-import ItemYears from "./DynamicTableAccordion/ItemYears";
-import ItemRead from "./DynamicTableAccordion/ItemRead";
-import ItemWantToRead from "./DynamicTableAccordion/ItemWantToRead";
-import ItemPhysical from "./DynamicTableAccordion/ItemPhysical";
-import ItemLanguages from "./DynamicTableAccordion/ItemLanguages";
-import ItemTypes from "./DynamicTableAccordion/ItemTypes";
-import ItemGenres from "./DynamicTableAccordion/ItemGenres";
-import ItemCountries from "./DynamicTableAccordion/ItemCountries";
+import Pagination from "../../Pagination";
+import ItemPages from "../ItemFiltersAccordion/ItemPages";
+import ItemYears from "../ItemFiltersAccordion/ItemYears";
+import ItemRead from "../ItemFiltersAccordion/ItemRead";
+import ItemWantToRead from "../ItemFiltersAccordion/ItemWantToRead";
+import ItemPhysical from "../ItemFiltersAccordion/ItemPhysical";
+import ItemLanguages from "../ItemFiltersAccordion/ItemLanguages";
+import ItemTypes from "../ItemFiltersAccordion/ItemTypes";
+import ItemGenres from "../ItemFiltersAccordion/ItemGenres";
+import ItemCountries from "../ItemFiltersAccordion/ItemCountries";
 
 /** Import all the worker classes */
-import Filters, { _IntOperation } from "./Filters";
-import Resources from "../../middlewares/Resources";
-import SortBooks, { SortState } from "../../utils/SortBooks";
+import Filters, { _IntOperation } from "../Filters";
+import Resources from "../../../middlewares/Resources";
+import SortBooks, { SortState } from "../../../utils/SortBooks";
 
 /** Import the interfaces */
-import { Column } from "../../utils/DefaultColumns";
-import { _BoolOperation } from "./Filters";
-import { Book } from "../../models/Book";
+import { Column } from "../utils/DefaultColumns";
+import { _BoolOperation } from "../Filters";
+import { Book } from "../../../models/Book";
 import { Toast } from "bootstrap";
+import DynamicCard from "./DynamicCard";
 
 /** @Filters main receiver for the user filters input */
 const filters = new Filters();
 
 /**
- * @default 50
+ * @default 20
  * @description Défini le nombre de lignes maximum par page
  */
-const MAX_ROWS = 50;
+const MAX_ROWS = 20;
 
 /**
  * @interface DynamicTableProps
@@ -50,7 +51,7 @@ interface DynamicTableProps {
 }
 
 /**
- * @function DynamicTable - Composant qui permet d'afficher un tableau dynamique avec des colonnes modifiables, des filtres et une pagination
+ * @function DynamicCards - Composant qui permet d'afficher un tableau dynamique avec des colonnes modifiables, des filtres et une pagination
  * @param param0 Propriétés du composant. Reférer à l'interface DynamicTableProps
  * @param allColumns Toutes les colonnes possibles rangées par ordre de priorité pour être placée de gauche à droite
  * @param inputData Données à afficher
@@ -59,7 +60,7 @@ interface DynamicTableProps {
  *
  * @returns JSX.Element
  */
-const DynamicTable: React.FC<DynamicTableProps> = ({
+const DynamicCards: React.FC<DynamicTableProps> = ({
   allColumns,
   data,
   initColumns,
@@ -84,6 +85,8 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
   const [currentPage, setCurrentPage] = useState<number>(1);
   /** Stateful React @Filters here to reload the filters when the user call a reset */
   const [resetKey, setResetKey] = useState(0); // Step 1: Key state variable
+  const [columnChanged, setColumnChanged] = useState(0); // Step 1: Key state variable
+
   /** Stateful React @Filters count the amount of filters activated */
   const [filtersCount, setFiltersCount] = useState(0); // Step 1: Key state variable
   /** Stateful React @Sort */
@@ -138,6 +141,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
   const removeColumn = (columnField: string) => {
     const newColumns = columns.filter((column) => column.field !== columnField);
     setColumns(newColumns);
+    setColumnChanged((prevKey) => prevKey + 1);
 
     // Désactiver la case à cocher
     setColumnCheckboxes((prevCheckboxes) => ({
@@ -153,6 +157,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
    */
   const addColumn = (columnField: string) => {
     const newColumn = allColumns.find((column) => column.field === columnField);
+    setColumnChanged((prevKey) => prevKey + 1);
 
     if (newColumn) {
       // Tri des colonnes en fonction de leur position dans allColumns
@@ -285,7 +290,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
   };
 
   return (
-    <div className="center-container">
+    <div className="center-container" id="phone-consulter">
       {/** @FILTERS_MODAL */}
       <div
         className="modal fade"
@@ -402,7 +407,6 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
           </div>
         </div>
       </div>
-
       {/** @COLUMNS_MODAL */}
       <div
         className="modal fade"
@@ -454,7 +458,6 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
           </div>
         </div>
       </div>
-
       {/** @MAIN_PAGE */}
       <div className="d-flex justify-content-center align-items-center mb-4">
         <div
@@ -525,7 +528,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
           </button>
         </div>
       </div>
-      <div className="input-group">
+      <div className="input-group mb-3">
         <input
           type="text"
           className="form-control"
@@ -539,42 +542,15 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
           🔍
         </button>
       </div>
-      <table className="table table-striped table-hover caption-top">
-        <caption>{`${50 * (currentPage - 1)}-${
-          50 * (currentPage - 1) + viewedData.length
-        } / ${wholeViewedData.length}`}</caption>
-        <thead>
-          <tr>
-            {columns.map((column) => (
-              <th key={column.field}>
-                <button
-                  className="btn"
-                  onClick={() => {
-                    sort(column);
-                  }}
-                >
-                  {column.title}
-                </button>
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="table-group-divider">
-          {viewedData.map((book, rowIndex) => (
-            <tr key={rowIndex}>
-              {columns.map((column, columnIndex) => (
-                <td
-                  key={column.field + columnIndex}
-                  className={column.center ? "centered-cell" : ""}
-                >
-                  {fieldToValue(book, column.field)}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
+      <div className="list-group mb-3" key={columnChanged}>
+        {viewedData.map((book) => (
+          <DynamicCard
+            book={book}
+            allColumns={allColumns}
+            currentColumns={columns}
+          />
+        ))}
+      </div>
       {/** @PAGINATION */}
       <Pagination
         currentPage={currentPage}
@@ -582,7 +558,6 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
         perPage={MAX_ROWS}
         total={data.length}
       />
-
       <div className="toast-container position-fixed bottom-0 end-0 p-3">
         <div
           id="liveToast"
@@ -612,7 +587,6 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
           </div>
         </div>
       </div>
-
       <div className="toast-container position-fixed bottom-0 end-0 p-3">
         <div
           id="filtersToast"
@@ -646,4 +620,4 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
   );
 };
 
-export default DynamicTable;
+export default DynamicCards;

@@ -1,15 +1,20 @@
 import { Component } from "react";
 
-import DynamicTable from "../components/DynamicTable/DynamicTable";
+import DynamicTable from "../components/DynamicConsulter/DynamicTable/DynamicTable";
 import Loading from "../components/Loading";
 import Header from "../components/Header";
 import Login from "./Login";
 
-import { Columns, defaultColumns } from "../utils/DefaultColumns";
+import {
+  Columns,
+  defaultColumns,
+} from "../components/DynamicConsulter/utils/DefaultColumns";
 import { isConnected } from "../middlewares/auth";
 import Resources from "../middlewares/Resources";
 
 import { Book } from "../models/Book";
+import DynamicCards from "../components/DynamicConsulter/DynamicCards/DynamicCards";
+import { bookFieldToText } from "../components/DynamicConsulter/utils/utils";
 
 interface ConsulterState {
   isUserConnected: boolean | null;
@@ -57,43 +62,6 @@ class Consulter extends Component<{}, ConsulterState> {
     }
   }
 
-  bookFieldToText = (book: Book, field: string) => {
-    if (field === "authors") {
-      const firstnames = book["firstname"] as string[];
-      const lastnames = book["lastname"] as string[];
-      const authors = firstnames.map((firstname, index) => {
-        let first = firstname != null ? firstname : "";
-        return first + " " + lastnames[index];
-      });
-
-      return authors.join(", ");
-    }
-
-    const value = book[field];
-
-    switch (typeof value) {
-      case "string":
-        return value;
-      case "number":
-        return value.toString();
-      case "boolean":
-        return value ? "✅" : "❌";
-      case "undefined":
-        return "non défini";
-      case "object":
-        if (value === null) {
-          return "N/A";
-        }
-        break;
-    }
-
-    if (Array.isArray(value)) {
-      return value.join(", ");
-    }
-
-    return "";
-  };
-
   async componentDidMount() {
     try {
       const connected = (await isConnected()) as boolean;
@@ -109,6 +77,8 @@ class Consulter extends Component<{}, ConsulterState> {
   }
 
   render() {
+    let userOnSmallerScreen = window.innerWidth < 1024;
+
     return (
       <>
         {this.state.isUserConnected === null ? (
@@ -123,16 +93,28 @@ class Consulter extends Component<{}, ConsulterState> {
               <div className="container text-center mt-5 mb-4">
                 <h6 className="display-6">Consulter vos livres ✨</h6>
               </div>
-              <div className="center-consulter">
-                <div className="d-flex justify-content-center align-items-center mb-4">
-                  <DynamicTable
-                    allColumns={Columns}
-                    data={this.userBooks}
-                    initColumns={defaultColumns}
-                    fieldToValue={this.bookFieldToText}
-                    ressources={this.ressources}
-                  />
-                </div>
+              <div className="">
+                {userOnSmallerScreen ? (
+                  <div>
+                    <DynamicCards
+                      allColumns={Columns}
+                      data={this.userBooks}
+                      initColumns={defaultColumns}
+                      fieldToValue={bookFieldToText}
+                      ressources={this.ressources}
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <DynamicTable
+                      allColumns={Columns}
+                      data={this.userBooks}
+                      initColumns={defaultColumns}
+                      fieldToValue={bookFieldToText}
+                      ressources={this.ressources}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>

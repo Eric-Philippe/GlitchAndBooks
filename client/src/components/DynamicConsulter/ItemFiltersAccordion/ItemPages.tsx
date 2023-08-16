@@ -14,8 +14,6 @@ const ItemPages: React.FC<ItemIntOpProps> = ({
 
   const [innerOperation, setInnerOperation] = useState<_IntOperation>();
 
-  console.log("ItemRead Rendered");
-
   const changeFilter = () => {
     const inputElements = document.querySelectorAll('input[type="text"]');
     inputElements.forEach((inputElement) => {

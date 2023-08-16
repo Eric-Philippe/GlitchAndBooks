@@ -18,7 +18,9 @@
     padding-left: 1em;
     padding-right: 1em;
   }
+}
 
+@media (max-width: 1024px) {
   #center-consulter {
     padding-left: 1em;
     padding-right: 1em;

@@ -6,6 +6,14 @@ type ColumnType =
   | "date"
   | "boolean";
 
+type PhoneCardPlacement =
+  | "title"
+  | "paragraph"
+  | "small-top-right"
+  | "checkbox-bottom"
+  | "small-paragraph"
+  | "small-bottom";
+
 /**
  * @interface Column
  * @description Définit les composantes de base d'une colonne
@@ -18,6 +26,7 @@ export interface Column {
   field: string;
   type: ColumnType;
   center?: boolean;
+  phoneCardPlacement?: PhoneCardPlacement;
 }
 
 const Columns: Column[] = [
@@ -25,77 +34,94 @@ const Columns: Column[] = [
     title: "Titre",
     field: "title",
     type: "string",
+    phoneCardPlacement: "title",
   },
   {
     title: "Auteur",
     field: "authors",
     type: "string[][]",
+    phoneCardPlacement: "paragraph",
   },
   {
     title: "Language",
     field: "lang",
     type: "string",
     center: true,
+    phoneCardPlacement: "small-paragraph",
   },
   {
     title: "Pages",
     field: "pages",
     type: "number",
     center: true,
+    phoneCardPlacement: "small-top-right",
   },
   {
     title: "Type",
     field: "type",
     type: "string",
+    phoneCardPlacement: "small-paragraph",
   },
   {
     title: "Genre(s)",
     field: "genres",
     type: "string[]",
+    phoneCardPlacement: "small-paragraph",
   },
   {
     title: "Publication",
     field: "publicationYear",
     type: "number",
     center: true,
+    phoneCardPlacement: "small-top-right",
   },
   {
     title: "Country",
     field: "originCountry",
     type: "string",
     center: true,
+    phoneCardPlacement: "small-paragraph",
   },
   {
     title: "Physical",
     field: "physical",
     type: "boolean",
     center: true,
+    phoneCardPlacement: "checkbox-bottom",
   },
   {
     title: "Read",
     field: "read",
     type: "boolean",
     center: true,
+    phoneCardPlacement: "checkbox-bottom",
   },
   {
     title: "Want to Read",
     field: "wantRead",
     type: "boolean",
     center: true,
+    phoneCardPlacement: "checkbox-bottom",
   },
   {
     title: "Height (cm)",
     field: "height",
     type: "number",
     center: true,
+    phoneCardPlacement: "small-bottom",
   },
   {
     title: "Width (cm)",
     field: "width",
     type: "number",
     center: true,
+    phoneCardPlacement: "small-bottom",
   },
 ];
+
+export const columnsHasField = (columns: Column[], field: string): boolean => {
+  return columns.some((column) => column.field === field);
+};
 
 const defaultColumns: Column[] = [
   Columns[0],

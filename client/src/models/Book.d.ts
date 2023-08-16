@@ -1,7 +1,7 @@
 export interface Book {
   bookId?: number;
   title: string;
-  firstname: string[] | null;
+  firstname: string[];
   lastname: string[];
   lang: string;
   pages: number | null;

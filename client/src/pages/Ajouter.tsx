@@ -7,10 +7,12 @@ import "./Ajouter.css";
 import Login from "./Login";
 import { isConnected } from "../middlewares/auth";
 import Loading from "../components/Loading";
-import { Book } from "../models/Book";
 import { Toast } from "bootstrap";
 
 import Resources from "../middlewares/Resources";
+import { createBook } from "../utils/BooksUtils";
+
+const NUMBER_EMOTES = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
 
 interface HomeState {
   isUserConnected: boolean | null;
@@ -63,6 +65,8 @@ class Ajouter extends Component<{}, HomeState> {
   public addAuthor = (e: React.FormEvent | MouseEvent) => {
     e.preventDefault();
 
+    if (this.authorCount >= NUMBER_EMOTES.length) return;
+
     const authorsDiv = document.getElementById("authors") as HTMLDivElement;
 
     const authorForm = document.createElement("div");
@@ -73,7 +77,8 @@ class Ajouter extends Component<{}, HomeState> {
 
     const inputGroupText = document.createElement("span");
     inputGroupText.className = "input-group-text";
-    inputGroupText.textContent = "🖊️ Author " + this.authorCount;
+    inputGroupText.textContent =
+      NUMBER_EMOTES[this.authorCount - 1] + "​​​​​​ ​​ ​Author ";
 
     const firstNameInput = document.createElement("input");
     firstNameInput.type = "text";
@@ -93,7 +98,7 @@ class Ajouter extends Component<{}, HomeState> {
     const removeButton = document.createElement("button");
     removeButton.className = "btn btn-outline-danger";
     removeButton.type = "button";
-    removeButton.textContent = "Remove";
+    removeButton.textContent = "🗑️";
     removeButton.addEventListener("click", () => {
       this.authorCount--;
       authorForm.remove();
@@ -103,7 +108,7 @@ class Ajouter extends Component<{}, HomeState> {
     const addButton = document.createElement("button");
     addButton.className = "btn btn-outline-primary";
     addButton.type = "button";
-    addButton.textContent = "Add author";
+    addButton.textContent = "➕";
     addButton.addEventListener("click", this.addAuthor);
     addButton.disabled = true;
 
@@ -210,49 +215,10 @@ class Ajouter extends Component<{}, HomeState> {
     return genres;
   }
 
-  async createBook(e: React.FormEvent) {
+  async loadBook(e: React.FormEvent) {
     e.preventDefault();
-    const title = document.getElementById("title") as HTMLInputElement;
-    const lang = document.getElementById("lang-select") as HTMLInputElement;
-    const pages = document.getElementById("pages") as HTMLInputElement;
-    const width = document.getElementById("width") as HTMLInputElement;
-    const height = document.getElementById("height") as HTMLInputElement;
-    const publicationYear = document.getElementById(
-      "publication-year"
-    ) as HTMLInputElement;
-    const originCountry = document.getElementById(
-      "origin-country"
-    ) as HTMLInputElement;
-    const type = document.getElementById("type-select") as HTMLInputElement;
-    const notes = document.getElementById("notes") as HTMLInputElement;
-    const physical = document.getElementById("physical") as HTMLInputElement;
-    const read = document.getElementById("read") as HTMLInputElement;
-    const wantRead = document.getElementById("want-read") as HTMLInputElement;
 
-    const authorsCount = document.querySelectorAll(".author-form").length;
-    const { firstname, lastname } = Ajouter.buildAuthors(authorsCount);
-    const genre = Ajouter.buildGenres();
-
-    const book: Book = {
-      title: title.value.trim(),
-      firstname: firstname,
-      lastname: lastname,
-      lang: lang.value,
-      pages: pages ? parseInt(pages.value) : null,
-      width: width ? parseInt(width.value) : null,
-      height: height ? parseInt(height.value) : null,
-      publicationYear:
-        publicationYear && publicationYear.value !== ""
-          ? parseInt(publicationYear.value)
-          : null,
-      originCountry: originCountry.value,
-      type: type.value,
-      genres: genre,
-      notes: notes && notes.value !== "" ? notes.value.trim() : null,
-      physical: physical.checked,
-      read: read.checked,
-      wantRead: wantRead.checked,
-    };
+    const book = createBook();
 
     if (book.title === "" || book.title == null) return;
     const bodyData = { book: book, userid: localStorage.getItem("userid") };
@@ -300,7 +266,7 @@ class Ajouter extends Component<{}, HomeState> {
               <form
                 className="row g-3 needs-validation"
                 noValidate
-                onSubmit={this.createBook}
+                onSubmit={this.loadBook}
               >
                 <div className="col-md-12">
                   <div className="input-group">
@@ -346,7 +312,7 @@ class Ajouter extends Component<{}, HomeState> {
                         id="button-addon2"
                         onClick={this.addAuthor}
                       >
-                        Add author
+                        ➕
                       </button>
 
                       <div className="invalid-feedback">

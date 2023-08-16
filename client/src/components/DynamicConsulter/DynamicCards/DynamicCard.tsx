@@ -1,56 +1,39 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import "bootstrap";
 import { Book } from "../../../models/Book";
 import { Column, columnsHasField } from "../utils/DefaultColumns";
+import { bookFieldToText } from "../utils/utils";
 
 interface DynamicCardProps {
   book: Book;
   currentColumns: Column[];
+  whenLongPress: (bookId: number | undefined) => void;
 }
 
-const bookFieldToText = (book: Book, field: string) => {
-  if (field === "authors") {
-    const firstnames = book["firstname"] as string[];
-    const lastnames = book["lastname"] as string[];
-    const authors = firstnames.map((firstname, index) => {
-      let first = firstname != null ? firstname : "";
-      return first + " " + lastnames[index];
-    });
+const DynamicCard: React.FC<DynamicCardProps> = ({
+  book,
+  currentColumns,
+  whenLongPress,
+}) => {
+  const timerRef = useRef<NodeJS.Timeout>();
+  const isLongPress = useRef<boolean>();
 
-    return authors.join(", ");
+  function startPressTimer() {
+    isLongPress.current = false;
+    timerRef.current = setTimeout(() => {
+      isLongPress.current = true;
+      whenLongPress(book.bookId);
+    }, 500);
   }
 
-  const value = book[field];
-
-  switch (typeof value) {
-    case "string":
-      return value;
-    case "number":
-      return value.toString();
-    case "boolean":
-      return value ? "✅" : "❌";
-    case "undefined":
-      return "non défini";
-    case "object":
-      if (value === null) {
-        return "N/A";
-      }
-      break;
-  }
-
-  if (Array.isArray(value)) {
-    return value.join(", ");
-  }
-
-  return "";
-};
-
-const DynamicCard: React.FC<DynamicCardProps> = ({ book, currentColumns }) => {
   return (
     <button
       className="list-group-item list-group-item-action"
       aria-current="true"
+      onTouchStart={() => startPressTimer()}
+      onTouchEnd={() => clearTimeout(timerRef.current)}
+      key={book.bookId}
     >
       <div className="d-flex w-100 justify-content-between">
         {columnsHasField(currentColumns, "title") ? (

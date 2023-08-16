@@ -110,24 +110,13 @@ export default class SortBooks {
     sortType: string
   ) {
     return books.sort((a, b) => {
-      const aFirstnames = a["firstname"] as string[];
       const aLastnames = a["lastname"] as string[];
-      const aAuthors = aFirstnames.map((aFirstnames, index) => {
-        let first = aFirstnames != null ? aFirstnames : "";
-        return first + " " + aLastnames[index];
-      });
+      const aAuthors = aLastnames.join(", ");
 
-      const bFirstnames = b["firstname"] as string[];
       const bLastnames = b["lastname"] as string[];
-      const bAuthors = bFirstnames.map((bFirstnames, index) => {
-        let first = bFirstnames != null ? bFirstnames : "";
-        return first + " " + bLastnames[index];
-      });
+      const bAuthors = bLastnames.join(", ");
 
-      const aJoinedText = aAuthors.join(", ");
-      const bJoinedText = bAuthors.join(", ");
-
-      const comparison = aJoinedText.localeCompare(bJoinedText);
+      const comparison = aAuthors.localeCompare(bAuthors);
 
       if (sortType === "ASC") {
         return comparison;

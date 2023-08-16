@@ -6,6 +6,18 @@
 
 ## Table of Contents
 
+- [What is Glitch & Books ?](#what-is-glitch--books-)
+
+- [Want to try it ?](#want-to-try-it-)
+
+- [Primary Features](#primary-features)
+
+- [Secondary Features](#secondary-features)
+
+- [Technologies](#technologies)
+
+- [The technologies / Me](#the-technologies--me)
+
 ## What is Glitch & Books ?
 
 Glitch & Books is a free online library, where you store your books data and consult them from anywhere !

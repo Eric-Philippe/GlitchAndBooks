@@ -53,7 +53,7 @@ const EditBook: React.FC<EditBookProps> = ({ book, ressources }) => {
           false
         );
       });
-    }, 500);
+    }, 1500);
   };
 
   const createEditedBook = (event: React.FormEvent<HTMLFormElement>) => {

@@ -7,7 +7,6 @@ import { Column, columnsHasField } from "../utils/DefaultColumns";
 interface DynamicCardProps {
   book: Book;
   currentColumns: Column[];
-  allColumns: Column[];
 }
 
 const bookFieldToText = (book: Book, field: string) => {
@@ -47,11 +46,7 @@ const bookFieldToText = (book: Book, field: string) => {
   return "";
 };
 
-const DynamicCard: React.FC<DynamicCardProps> = ({
-  book,
-  currentColumns,
-  allColumns,
-}) => {
+const DynamicCard: React.FC<DynamicCardProps> = ({ book, currentColumns }) => {
   return (
     <a
       href="#"

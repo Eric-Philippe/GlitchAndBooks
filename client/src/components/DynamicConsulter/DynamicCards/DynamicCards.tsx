@@ -249,24 +249,16 @@ const DynamicCards: React.FC<DynamicTableProps> = ({
    * @description Trie les données en fonction de la colonne et de l'ordre de tri
    * @param column Colonne à trier
    */
-  const sort = (column: Column) => {
-    let newSortState: SortState = "ASC";
+  const sort = (field_sort: string) => {
+    if (field_sort === "none") return;
 
-    if (sortState.key === column.field) {
-      if (sortState.value === "ASC") {
-        newSortState = "DESC";
-      } else if (sortState.value === "DESC") {
-        newSortState = "NONE";
-      } else {
-        newSortState = "ASC";
-      }
-    }
+    const newSortState: SortState = field_sort.split("_")[1] as SortState;
+    const field = field_sort.split("_")[0];
 
-    setSortState({ key: column.field, value: newSortState });
-
-    const dataType = column.type;
+    const dataType = columns.find((column) => column.field === field)
+      ?.type as string;
     setWholeViewedData(
-      SortBooks.sortBooks(wholeViewedData, column.field, dataType, newSortState)
+      SortBooks.sortBooks(wholeViewedData, field, dataType, newSortState)
     );
     setViewedData(
       wholeViewedData.slice(
@@ -429,35 +421,51 @@ const DynamicCards: React.FC<DynamicTableProps> = ({
               ></button>
             </div>
             <div className="modal-body">
-              {allColumns.map((column) => (
-                <div className="form-check" key={column.field}>
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    value={column.field}
-                    id={column.field}
-                    checked={columnCheckboxes[column.field] || false} // Default to false if not defined
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        addColumn(column.field);
-                      } else {
-                        removeColumn(column.field);
-                      }
-                      setColumnCheckboxes((prevCheckboxes) => ({
-                        ...prevCheckboxes,
-                        [column.field]: e.target.checked,
-                      }));
-                    }}
-                  />
-                  <label className="form-check-label" htmlFor={column.field}>
-                    {column.title}
-                  </label>
-                </div>
-              ))}
+              <div className="mb-3">
+                {allColumns.map((column) => (
+                  <div className="form-check" key={column.field}>
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      value={column.field}
+                      id={column.field}
+                      checked={columnCheckboxes[column.field] || false} // Default to false if not defined
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          addColumn(column.field);
+                        } else {
+                          removeColumn(column.field);
+                        }
+                        setColumnCheckboxes((prevCheckboxes) => ({
+                          ...prevCheckboxes,
+                          [column.field]: e.target.checked,
+                        }));
+                      }}
+                    />
+                    <label className="form-check-label" htmlFor={column.field}>
+                      {column.title}
+                    </label>
+                  </div>
+                ))}
+              </div>
+              <select
+                className="form-select form-select-sm"
+                aria-label="Default select example"
+                onChange={(e) => {
+                  sort(e.target.value);
+                }}
+              >
+                <option defaultValue={"none"}>Sort by</option>
+                <option value="title_ASC">Title A-Z (ASC)</option>
+                <option value="title_DESC">Title Z-A (DESC)</option>
+                <option value="authors_ASC">Authors A-Z (ASC)</option>
+                <option value="authors_DESC">Authors Z-A (DESC)</option>{" "}
+              </select>
             </div>
           </div>
         </div>
       </div>
+
       {/** @MAIN_PAGE */}
       <div className="d-flex justify-content-center align-items-center mb-4">
         <div
@@ -542,13 +550,13 @@ const DynamicCards: React.FC<DynamicTableProps> = ({
           🔍
         </button>
       </div>
+
       <div className="list-group mb-3" key={columnChanged}>
+        <small>{`${MAX_ROWS * (currentPage - 1)}-${
+          MAX_ROWS * (currentPage - 1) + viewedData.length
+        } / ${wholeViewedData.length}`}</small>
         {viewedData.map((book) => (
-          <DynamicCard
-            book={book}
-            allColumns={allColumns}
-            currentColumns={columns}
-          />
+          <DynamicCard book={book} currentColumns={columns} key={book.title} />
         ))}
       </div>
       {/** @PAGINATION */}

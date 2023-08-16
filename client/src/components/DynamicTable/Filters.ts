@@ -37,13 +37,11 @@ export default class Filters {
   public _pages: IntOperationAdvanced = { operation: "none" };
   public _year: IntOperationAdvanced = { operation: "none" };
 
-  private fun: React.Dispatch<React.SetStateAction<number>>;
-
-  constructor(fun: React.Dispatch<React.SetStateAction<number>>) {
-    this.fun = fun;
-  }
+  constructor() {}
 
   countFilters() {
+    console.log(this._pages);
+
     let count = 0;
     if (this._languages.length > 0) count++;
     if (this._countries.length > 0) count++;
@@ -54,8 +52,7 @@ export default class Filters {
     if (this._wantToRead !== "BOTH") count++;
     if (this._pages.operation !== "none") count++;
     if (this._year.operation !== "none") count++;
-
-    this.fun(count);
+    return count;
   }
 
   reset() {

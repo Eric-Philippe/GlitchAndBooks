@@ -23,6 +23,9 @@ import { _BoolOperation } from "./Filters";
 import { Book } from "../../models/Book";
 import { Toast } from "bootstrap";
 
+/** @Filters main receiver for the user filters input */
+const filters = new Filters();
+
 /**
  * @default 50
  * @description Défini le nombre de lignes maximum par page
@@ -89,9 +92,6 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
     value: SortState;
     [key: string]: string | string[] | number | boolean | null | undefined;
   }>({ key: "", value: "NONE" });
-
-  /** @Filters main receiver for the user filters input */
-  const filters = new Filters(setFiltersCount);
 
   // Code à exécuter après chaque rendu ou mise à jour du composant
   useEffect(() => {
@@ -281,7 +281,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
     const filteredData = filters.filterBooks(initialData);
     setWholeViewedData(filteredData);
     setViewedData(filteredData.slice(0, MAX_ROWS));
-    filters.countFilters();
+    setFiltersCount(filters.countFilters());
   };
 
   return (
@@ -503,7 +503,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
             >
               <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z"></path>
             </svg>
-            ​ ​ ​Button
+            ​ ​ Columns
           </button>
           <button
             type="button"
@@ -638,7 +638,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
             ></button>
           </div>
           <div className="toast-body">
-            <strong>{filtersCount}</strong> filtres appliqués avec succès !
+            <strong>{filtersCount}</strong> filtre(s) appliqués avec succès !
           </div>
         </div>
       </div>

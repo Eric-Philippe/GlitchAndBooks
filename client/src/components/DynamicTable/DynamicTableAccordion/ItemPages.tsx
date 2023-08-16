@@ -9,10 +9,12 @@ const ItemPages: React.FC<ItemIntOpProps> = ({
   setValue,
   setOperation,
 }) => {
-  const [hasSetupFilter, setHasSetupFilter] = useState<boolean>(false);
-  const [hasEnteredValues, setHasEnteredValues] = useState<boolean>(false);
+  const [hasSetupFilter, setHasSetupFilter] = useState<boolean>();
+  const [hasEnteredValues, setHasEnteredValues] = useState<boolean>();
 
-  const [innerOperation, setInnerOperation] = useState<_IntOperation>("none");
+  const [innerOperation, setInnerOperation] = useState<_IntOperation>();
+
+  console.log("ItemRead Rendered");
 
   const changeFilter = () => {
     const inputElements = document.querySelectorAll('input[type="text"]');

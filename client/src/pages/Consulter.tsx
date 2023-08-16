@@ -1,24 +1,31 @@
 import { Component } from "react";
+
+import DynamicTable from "../components/DynamicTable/DynamicTable";
+import Loading from "../components/Loading";
 import Header from "../components/Header";
 import Login from "./Login";
-import { isConnected } from "../middlewares/auth";
-import DynamicTable from "../components/DynamicTable";
-import { Book } from "../models/Book";
-import Loading from "../components/Loading";
+
 import { Columns, defaultColumns } from "../utils/DefaultColumns";
+import { isConnected } from "../middlewares/auth";
+import Resources from "../middlewares/Resources";
+
+import { Book } from "../models/Book";
 
 interface ConsulterState {
   isUserConnected: boolean | null;
+  areResourcesLoaded: boolean | null;
   isUserDataFetched: boolean | null;
 }
 
 class Consulter extends Component<{}, ConsulterState> {
+  private ressources: Resources = Resources.getInstance();
   private userBooks: Book[] = [];
 
   constructor(props: {}) {
     super(props);
     this.state = {
       isUserConnected: null,
+      areResourcesLoaded: null,
       isUserDataFetched: false,
     };
   }
@@ -90,9 +97,11 @@ class Consulter extends Component<{}, ConsulterState> {
   async componentDidMount() {
     try {
       const connected = (await isConnected()) as boolean;
+      if (!this.ressources.isReady()) await this.ressources.fill();
       this.userBooks = await this.fetchUserData();
 
       this.setState({ isUserDataFetched: true });
+      this.setState({ areResourcesLoaded: true });
       this.setState({ isUserConnected: connected });
     } catch (error) {
       console.error("Error checking connection status:", error);
@@ -121,6 +130,7 @@ class Consulter extends Component<{}, ConsulterState> {
                     data={this.userBooks}
                     initColumns={defaultColumns}
                     fieldToValue={this.bookFieldToText}
+                    ressources={this.ressources}
                   />
                 </div>
               </div>

@@ -1,9 +1,10 @@
 import { Component } from "react";
-import Header from "../components/Header";
+
 import Login from "./Login";
-import { isConnected } from "../middlewares/auth";
+import Header from "../components/Header";
 import Loading from "../components/Loading";
 
+import { isConnected } from "../middlewares/auth";
 import Ressources from "../middlewares/Resources";
 
 interface HomeState {
@@ -42,11 +43,15 @@ class Home extends Component<{}, HomeState> {
           <div>
             <Header />
             <div className="container text-center mt-5">
-              <h6 className="display-4">
-                Welcome {localStorage.getItem("username")} ✨
+              <h6 className="display-5">
+                ✨ Welcome {localStorage.getItem("username")} !{" "}
+              </h6>
+              <h6 className="display-6">
+                Enjoy your books in ​
+                <img src="logos/G&B_dark.png" alt="logo" width="150px"></img>
               </h6>
             </div>
-            <div className="container text-center mt-4">
+            <div className="container text-center mt-4 mb-5">
               <div className="row justify-content-md-center">
                 <div className="col col-lg-4">
                   <div className="card">
@@ -61,7 +66,7 @@ class Home extends Component<{}, HomeState> {
                         Consultez votre biliothèque avec tous vos livres,
                         filtrez là, retirez des livres !
                       </p>
-                      <a href="/consulter" className="btn btn-info btn-lg ">
+                      <a href="/consulter" className="btn btn-info btn-l ">
                         Consulter ma biliothèque
                       </a>
                     </div>
@@ -81,8 +86,8 @@ class Home extends Component<{}, HomeState> {
                         Ajouter des livres à votre biliothèque avec toutes les
                         informations que vous souhaitez
                       </p>
-                      <a href="/ajouter" className="btn btn-info btn-lg">
-                        Ajouter des livres à ma biliothèque
+                      <a href="/ajouter" className="btn btn-info btn-l">
+                        Remplir ma biliothèque
                       </a>
                     </div>
                   </div>

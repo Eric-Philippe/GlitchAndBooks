@@ -29,7 +29,7 @@ const Header: React.FC = () => {
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
         <a className="navbar-brand" href="/">
-          Glitch & Books
+          <img src="./logos/G&B_dark-transp-circle.png" alt="logo" width="55" />
         </a>
         <button
           className="navbar-toggler"

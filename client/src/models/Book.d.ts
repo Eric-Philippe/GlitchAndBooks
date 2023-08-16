@@ -1,4 +1,5 @@
 export interface Book {
+  bookId?: number;
   title: string;
   firstname: string[] | null;
   lastname: string[];

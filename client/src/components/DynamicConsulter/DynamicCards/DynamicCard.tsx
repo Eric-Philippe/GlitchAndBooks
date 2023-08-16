@@ -48,8 +48,7 @@ const bookFieldToText = (book: Book, field: string) => {
 
 const DynamicCard: React.FC<DynamicCardProps> = ({ book, currentColumns }) => {
   return (
-    <a
-      href="#"
+    <button
       className="list-group-item list-group-item-action"
       aria-current="true"
     >
@@ -141,7 +140,7 @@ const DynamicCard: React.FC<DynamicCardProps> = ({ book, currentColumns }) => {
           : {book.wantRead ? "✅" : "❌"}
         </small>
       ) : null}
-    </a>
+    </button>
   );
 };
 

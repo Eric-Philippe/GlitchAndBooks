@@ -38,6 +38,7 @@ export default async function getBooks(req: Request, res: Response) {
       : null;
 
     return {
+      bookId: book.bookid,
       height: book.height,
       width: book.width,
       title: book.title,

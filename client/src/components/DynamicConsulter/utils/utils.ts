@@ -24,9 +24,8 @@ export const bookFieldToText = (book: Book, field: string) => {
     case "undefined":
       return "non défini";
     case "object":
-      if (value === null) {
-        return "N/A";
-      }
+      if (value === null) return "N/A";
+      if (Array.isArray(value)) return value.join(", ");
       break;
   }
 

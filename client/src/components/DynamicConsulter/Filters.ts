@@ -40,8 +40,6 @@ export default class Filters {
   constructor() {}
 
   countFilters() {
-    console.log(this._pages);
-
     let count = 0;
     if (this._languages.length > 0) count++;
     if (this._countries.length > 0) count++;

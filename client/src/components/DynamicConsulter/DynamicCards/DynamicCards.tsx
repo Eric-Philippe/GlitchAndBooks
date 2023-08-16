@@ -85,16 +85,8 @@ const DynamicCards: React.FC<DynamicTableProps> = ({
   const [currentPage, setCurrentPage] = useState<number>(1);
   /** Stateful React @Filters here to reload the filters when the user call a reset */
   const [resetKey, setResetKey] = useState(0); // Step 1: Key state variable
-  const [columnChanged, setColumnChanged] = useState(0); // Step 1: Key state variable
-
   /** Stateful React @Filters count the amount of filters activated */
   const [filtersCount, setFiltersCount] = useState(0); // Step 1: Key state variable
-  /** Stateful React @Sort */
-  const [sortState, setSortState] = useState<{
-    key: string;
-    value: SortState;
-    [key: string]: string | string[] | number | boolean | null | undefined;
-  }>({ key: "", value: "NONE" });
 
   // Code à exécuter après chaque rendu ou mise à jour du composant
   useEffect(() => {
@@ -141,7 +133,6 @@ const DynamicCards: React.FC<DynamicTableProps> = ({
   const removeColumn = (columnField: string) => {
     const newColumns = columns.filter((column) => column.field !== columnField);
     setColumns(newColumns);
-    setColumnChanged((prevKey) => prevKey + 1);
 
     // Désactiver la case à cocher
     setColumnCheckboxes((prevCheckboxes) => ({
@@ -157,7 +148,6 @@ const DynamicCards: React.FC<DynamicTableProps> = ({
    */
   const addColumn = (columnField: string) => {
     const newColumn = allColumns.find((column) => column.field === columnField);
-    setColumnChanged((prevKey) => prevKey + 1);
 
     if (newColumn) {
       // Tri des colonnes en fonction de leur position dans allColumns
@@ -551,14 +541,15 @@ const DynamicCards: React.FC<DynamicTableProps> = ({
         </button>
       </div>
 
-      <div className="list-group mb-3" key={columnChanged}>
-        <small>{`${MAX_ROWS * (currentPage - 1)}-${
-          MAX_ROWS * (currentPage - 1) + viewedData.length
-        } / ${wholeViewedData.length}`}</small>
+      <small>{`${MAX_ROWS * (currentPage - 1)}-${
+        MAX_ROWS * (currentPage - 1) + viewedData.length
+      } / ${wholeViewedData.length}`}</small>
+      <div className="list-group mb-3">
         {viewedData.map((book) => (
           <DynamicCard book={book} currentColumns={columns} key={book.title} />
         ))}
       </div>
+
       {/** @PAGINATION */}
       <Pagination
         currentPage={currentPage}
@@ -566,6 +557,7 @@ const DynamicCards: React.FC<DynamicTableProps> = ({
         perPage={MAX_ROWS}
         total={data.length}
       />
+
       <div className="toast-container position-fixed bottom-0 end-0 p-3">
         <div
           id="liveToast"

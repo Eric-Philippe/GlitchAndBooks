@@ -24,7 +24,7 @@ const DynamicCard: React.FC<DynamicCardProps> = ({
     timerRef.current = setTimeout(() => {
       isLongPress.current = true;
       whenLongPress(book.bookId);
-    }, 500);
+    }, 1500);
   }
 
   return (

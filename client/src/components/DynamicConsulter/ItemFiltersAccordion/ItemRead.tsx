@@ -41,7 +41,7 @@ const ItemRead: React.FC<ItemBoolProps> = ({ setBool }) => {
               className="form-check-input"
               type="radio"
               name="read-filter"
-              id="read-filter-both"
+              id="read-filter-both-f1"
               defaultChecked
               onClick={() => {
                 setHasSetupFilter(false);
@@ -63,7 +63,7 @@ const ItemRead: React.FC<ItemBoolProps> = ({ setBool }) => {
               className="form-check-input"
               type="radio"
               name="read-filter"
-              id="read-filter-both"
+              id="read-filter-both-f2"
               onClick={() => {
                 setHasSetupFilter(true);
                 setBool("YES");
@@ -84,7 +84,7 @@ const ItemRead: React.FC<ItemBoolProps> = ({ setBool }) => {
               className="form-check-input"
               type="radio"
               name="read-filter"
-              id="read-filter-both"
+              id="read-filter-both-f3"
               onClick={() => {
                 setHasSetupFilter(true);
                 setBool("NO");

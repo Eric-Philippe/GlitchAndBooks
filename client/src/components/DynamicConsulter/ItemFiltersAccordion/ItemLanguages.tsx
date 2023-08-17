@@ -42,7 +42,7 @@ const ItemLanguages: React.FC<ItemStrArrayProps> = ({ data, setStrArray }) => {
               className="form-check-input"
               type="radio"
               name="languages-filter"
-              id="languages-filter-both"
+              id="languages-filter-both-f1"
               defaultChecked
               onClick={() => {
                 setHasSetupFilter(false);
@@ -63,7 +63,7 @@ const ItemLanguages: React.FC<ItemStrArrayProps> = ({ data, setStrArray }) => {
               className="form-check-input"
               type="radio"
               name="languages-filter"
-              id="languages-filter-both"
+              id="languages-filter-both-f2"
               onChange={() => {
                 setHasSetupFilter(true);
               }}

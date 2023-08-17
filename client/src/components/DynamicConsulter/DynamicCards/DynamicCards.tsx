@@ -23,7 +23,7 @@ import { _BoolOperation } from "../Filters";
 import { Book } from "../../../models/Book";
 import { Toast } from "bootstrap";
 import DynamicCard from "./DynamicCard";
-import EditBook from "../../EditBook";
+import EditBookSmall from "./EditBookSmall";
 
 /** @Filters main receiver for the user filters input */
 const filters = new Filters();
@@ -234,6 +234,8 @@ const DynamicCards: React.FC<DynamicTableProps> = ({
 
     setViewedData(filteredData.slice(startIndex, endIndex));
     setCurrentPage(page);
+
+    window.scrollTo(0, 0);
   };
 
   /**
@@ -290,7 +292,6 @@ const DynamicCards: React.FC<DynamicTableProps> = ({
 
   return (
     <div className="center-container" id="phone-consulter">
-      <EditBook book={bookToEdit} ressources={ressources} />
       {/** @FILTERS_MODAL */}
       <div
         className="modal fade"
@@ -438,6 +439,7 @@ const DynamicCards: React.FC<DynamicTableProps> = ({
                       value={column.field}
                       id={column.field}
                       checked={columnCheckboxes[column.field] || false} // Default to false if not defined
+                      disabled={column.field === "notes"}
                       onChange={(e) => {
                         if (e.target.checked) {
                           addColumn(column.field);
@@ -452,6 +454,12 @@ const DynamicCards: React.FC<DynamicTableProps> = ({
                     />
                     <label className="form-check-label" htmlFor={column.field}>
                       {column.title}
+                      {column.field === "notes" ? (
+                        <small className="text-muted">
+                          {" "}
+                          (Access it by double tapping on a book)
+                        </small>
+                      ) : null}
                     </label>
                   </div>
                 ))}
@@ -544,7 +552,7 @@ const DynamicCards: React.FC<DynamicTableProps> = ({
           </button>
         </div>
       </div>
-      <div className="input-group mb-3">
+      <div className="input-group">
         <input
           type="text"
           className="form-control"
@@ -558,6 +566,11 @@ const DynamicCards: React.FC<DynamicTableProps> = ({
           🔍
         </button>
       </div>
+      <div className="input-group mb-3">
+        <small className="text-muted">
+          <i>​ ​ Long Press a book to access edit</i>
+        </small>
+      </div>
 
       <small>{`${MAX_ROWS * (currentPage - 1)}-${
         MAX_ROWS * (currentPage - 1) + viewedData.length
@@ -568,6 +581,7 @@ const DynamicCards: React.FC<DynamicTableProps> = ({
             book={book}
             currentColumns={columns}
             key={book.title}
+            resources={ressources}
             whenLongPress={setBookToEditHandler}
           />
         ))}

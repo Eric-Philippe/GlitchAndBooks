@@ -325,7 +325,7 @@ class Ajouter extends Component<{}, HomeState> {
                 <div className="col-md-12">
                   <div className="input-group mb-1">
                     <span className="input-group-text" id="basic-addon1">
-                      🗺️ Langue
+                      🌐 Langue
                     </span>
                     <select className="form-select" id="lang-select" required>
                       <option selected disabled value="">
@@ -475,10 +475,7 @@ class Ajouter extends Component<{}, HomeState> {
                 </div>
 
                 <div className="col-md-12">
-                  <label
-                    htmlFor="exampleFormControlTextarea1"
-                    className="form-label"
-                  >
+                  <label htmlFor="notes" className="form-label">
                     Notes
                   </label>
                   <textarea

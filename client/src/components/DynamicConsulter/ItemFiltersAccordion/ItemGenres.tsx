@@ -42,7 +42,7 @@ const ItemGenres: React.FC<ItemStrArrayProps> = ({ setStrArray, data }) => {
               className="form-check-input"
               type="radio"
               name="genres-filter"
-              id="genres-filter-both"
+              id="genres-filter-both-f1"
               defaultChecked
               onClick={() => {
                 setHasSetupFilter(false);
@@ -63,7 +63,7 @@ const ItemGenres: React.FC<ItemStrArrayProps> = ({ setStrArray, data }) => {
               className="form-check-input"
               type="radio"
               name="genres-filter"
-              id="genres-filter-both"
+              id="genres-filter-both-f2"
               onClick={() => {
                 setHasSetupFilter(true);
               }}

@@ -1,6 +1,6 @@
 import { Book } from "../../../models/Book";
 
-export const bookFieldToText = (book: Book, field: string) => {
+export const bookFieldToText = (book: Book, field: string): string => {
   if (field === "authors") {
     const firstnames = book["firstname"] as string[];
     const lastnames = book["lastname"] as string[];

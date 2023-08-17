@@ -22,6 +22,7 @@ import { Column } from "../utils/DefaultColumns";
 import { _BoolOperation } from "../Filters";
 import { Book } from "../../../models/Book";
 import { Toast } from "bootstrap";
+import FormEdit from "../FormEdit";
 
 /** @Filters main receiver for the user filters input */
 const filters = new Filters();
@@ -92,6 +93,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
     value: SortState;
     [key: string]: string | string[] | number | boolean | null | undefined;
   }>({ key: "", value: "NONE" });
+  const [bookToEdit, setBookToEdit] = useState<Book>(initialData[0]);
 
   // Code à exécuter après chaque rendu ou mise à jour du composant
   useEffect(() => {
@@ -237,6 +239,8 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
 
     setViewedData(filteredData.slice(startIndex, endIndex));
     setCurrentPage(page);
+
+    window.scrollTo(0, 0);
   };
 
   /**
@@ -456,6 +460,46 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
           </div>
         </div>
 
+        {/** @EDIT_MODAL */}
+        <div
+          className="modal fade"
+          id="exampleModal"
+          tabIndex={-1}
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h1 className="modal-title fs-5" id="exampleModalLabel">
+                  Edit: {bookToEdit?.title}
+                </h1>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div className="modal-body">
+                <FormEdit book={bookToEdit} ressources={ressources} />
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" className="btn btn-primary">
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/** @MAIN_PAGE */}
         <div className="d-flex justify-content-center align-items-center mb-4">
           <div
@@ -546,6 +590,9 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
           } / ${wholeViewedData.length}`}</caption>
           <thead>
             <tr>
+              <th className="text-center">
+                <button className="btn">Edit</button>
+              </th>{" "}
               {columns.map((column) => (
                 <th key={column.field}>
                   <button
@@ -563,6 +610,19 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
           <tbody className="table-group-divider">
             {viewedData.map((book, rowIndex) => (
               <tr key={rowIndex}>
+                <td className="text-center">
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                    onClick={() => {
+                      setBookToEdit(book);
+                    }}
+                  >
+                    🖋️
+                  </button>
+                </td>
                 {columns.map((column, columnIndex) => (
                   <td
                     key={column.field + columnIndex}

@@ -70,7 +70,7 @@ const ItemYears: React.FC<ItemIntOpProps> = ({
               className="form-check-input"
               type="radio"
               name="years-filter"
-              id="years-filter-none"
+              id="years-filter-none-value"
               defaultChecked
               onClick={() => {
                 setHasSetupFilter(false);
@@ -83,6 +83,7 @@ const ItemYears: React.FC<ItemIntOpProps> = ({
               type="text"
               className="form-control form-control-sm"
               placeholder="None"
+              id="years-filter-none"
               readOnly
               disabled
             ></input>
@@ -107,6 +108,7 @@ const ItemYears: React.FC<ItemIntOpProps> = ({
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="Max"
+                id="years-filter-between-max"
                 aria-label="Max"
                 onChange={(e) => {
                   setHasEnteredValues(e.target.value !== "");
@@ -118,6 +120,7 @@ const ItemYears: React.FC<ItemIntOpProps> = ({
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="Year"
+                id="years-filter-between-year"
                 aria-label="Year"
                 readOnly
                 disabled
@@ -127,6 +130,7 @@ const ItemYears: React.FC<ItemIntOpProps> = ({
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="Min"
+                id="years-filter-between-min"
                 aria-label="Min"
                 onChange={(e) => {
                   setHasEnteredValues(e.target.value !== "");
@@ -155,6 +159,7 @@ const ItemYears: React.FC<ItemIntOpProps> = ({
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="Max"
+                id="years-filter-fewer-max"
                 aria-label="Max"
                 onChange={(e) => {
                   setHasEnteredValues(e.target.value !== "");
@@ -166,6 +171,7 @@ const ItemYears: React.FC<ItemIntOpProps> = ({
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="Year"
+                id="years-filter-fewer-year"
                 aria-label="Year"
                 readOnly
                 disabled
@@ -179,7 +185,7 @@ const ItemYears: React.FC<ItemIntOpProps> = ({
               className="form-check-input "
               type="radio"
               name="years-filter"
-              id="years-filter-greater"
+              id="years-filter-greater-value"
               onClick={() => {
                 setHasSetupFilter(true);
                 setInnerOperation("greater");
@@ -192,6 +198,7 @@ const ItemYears: React.FC<ItemIntOpProps> = ({
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="Min"
+                id="years-filter-greater-min"
                 aria-label="Min"
                 onChange={(e) => {
                   setHasEnteredValues(e.target.value !== "");
@@ -203,6 +210,7 @@ const ItemYears: React.FC<ItemIntOpProps> = ({
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="Year"
+                id="years-filter-greater-year"
                 aria-label="Year"
                 readOnly
                 disabled
@@ -229,6 +237,7 @@ const ItemYears: React.FC<ItemIntOpProps> = ({
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="Year"
+                id="years-filter-greater-year-target"
                 aria-label="Year"
                 onChange={(e) => {
                   setHasEnteredValues(e.target.value !== "");
@@ -240,6 +249,7 @@ const ItemYears: React.FC<ItemIntOpProps> = ({
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="Year"
+                id="years-filter-greater-yea-inputr"
                 aria-label="Year"
                 readOnly
                 disabled

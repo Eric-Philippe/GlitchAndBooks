@@ -4,7 +4,8 @@ type ColumnType =
   | "string[][]"
   | "number"
   | "date"
-  | "boolean";
+  | "boolean"
+  | "button";
 
 type PhoneCardPlacement =
   | "title"
@@ -116,6 +117,11 @@ const Columns: Column[] = [
     type: "number",
     center: true,
     phoneCardPlacement: "small-bottom",
+  },
+  {
+    title: "Notes",
+    field: "notes",
+    type: "string",
   },
 ];
 

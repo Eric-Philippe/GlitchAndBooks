@@ -83,6 +83,7 @@ const ItemPages: React.FC<ItemIntOpProps> = ({
               type="text"
               className="form-control form-control-sm"
               placeholder="None"
+              id="pages-filter-none-pages"
               readOnly
               disabled
             ></input>
@@ -107,6 +108,7 @@ const ItemPages: React.FC<ItemIntOpProps> = ({
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="Max"
+                id="pages-filter-between-max"
                 aria-label="Max"
                 onChange={(e) => {
                   setHasEnteredValues(e.target.value !== "");
@@ -118,6 +120,7 @@ const ItemPages: React.FC<ItemIntOpProps> = ({
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="Pages"
+                id="pages-filter-between-pages"
                 aria-label="Pages"
                 readOnly
                 disabled
@@ -127,6 +130,7 @@ const ItemPages: React.FC<ItemIntOpProps> = ({
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="Min"
+                id="pages-filter-between-min"
                 aria-label="Min"
                 onChange={(e) => {
                   setHasEnteredValues(e.target.value !== "");
@@ -155,6 +159,7 @@ const ItemPages: React.FC<ItemIntOpProps> = ({
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="Max"
+                id="pages-filter-fewer-max"
                 aria-label="Max"
                 onChange={(e) => {
                   setHasEnteredValues(e.target.value !== "");
@@ -166,6 +171,7 @@ const ItemPages: React.FC<ItemIntOpProps> = ({
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="Pages"
+                id="pages-filter-fewer-pages"
                 aria-label="Pages"
                 readOnly
                 disabled
@@ -192,6 +198,7 @@ const ItemPages: React.FC<ItemIntOpProps> = ({
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="Min"
+                id="pages-filter-greater-min"
                 aria-label="Min"
                 onChange={(e) => {
                   setHasEnteredValues(e.target.value !== "");
@@ -203,6 +210,7 @@ const ItemPages: React.FC<ItemIntOpProps> = ({
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="Pages"
+                id="pages-filter-greater-pages"
                 aria-label="Pages"
                 readOnly
                 disabled
@@ -216,7 +224,7 @@ const ItemPages: React.FC<ItemIntOpProps> = ({
               className="form-check-input "
               type="radio"
               name="pages-filter"
-              id="pages-filter-greater"
+              id="pages-filter-equal"
               onClick={() => {
                 setHasSetupFilter(true);
                 setInnerOperation("equal");
@@ -229,6 +237,7 @@ const ItemPages: React.FC<ItemIntOpProps> = ({
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="Pages"
+                id="pages-filter-equals-pages"
                 aria-label="Pages"
                 onChange={(e) => {
                   setHasEnteredValues(e.target.value !== "");
@@ -240,6 +249,7 @@ const ItemPages: React.FC<ItemIntOpProps> = ({
                 type="text"
                 className="form-control form-control-sm"
                 placeholder="Pages"
+                id="pages-filter-equal-pages"
                 aria-label="Pages"
                 readOnly
                 disabled

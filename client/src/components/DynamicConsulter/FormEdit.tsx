@@ -24,6 +24,7 @@ const FormEdit: React.FC<EditBookProps> = ({ book, ressources, setShow }) => {
         <input
           type="text"
           className="form-control"
+          id="title"
           placeholder="Title"
           aria-label="Title"
           aria-describedby="basic-addon1"
@@ -46,6 +47,7 @@ const FormEdit: React.FC<EditBookProps> = ({ book, ressources, setShow }) => {
                 <input
                   type="text"
                   className="form-control"
+                  id={"lastname-" + index}
                   placeholder="Lastname"
                   aria-label="Lastname"
                   aria-describedby="basic-addon1"
@@ -63,6 +65,7 @@ const FormEdit: React.FC<EditBookProps> = ({ book, ressources, setShow }) => {
                 <input
                   type="text"
                   className="form-control"
+                  id={"firstname-" + index}
                   placeholder="Firstname"
                   aria-label="Firstname"
                   aria-describedby="basic-addon1"
@@ -114,6 +117,7 @@ const FormEdit: React.FC<EditBookProps> = ({ book, ressources, setShow }) => {
         <input
           type="number"
           className="form-control"
+          id="pages"
           placeholder="Pages"
           aria-label="Pages"
           aria-describedby="basic-addon1"
@@ -135,6 +139,7 @@ const FormEdit: React.FC<EditBookProps> = ({ book, ressources, setShow }) => {
         <input
           type="number"
           className="form-control"
+          id="publicationYear"
           placeholder="Publication Year"
           aria-label="Publication Year"
           aria-describedby="basic-addon1"
@@ -156,6 +161,7 @@ const FormEdit: React.FC<EditBookProps> = ({ book, ressources, setShow }) => {
         <input
           type="number"
           className="form-control"
+          id="height"
           placeholder="Height"
           aria-label="Height"
           aria-describedby="basic-addon1"
@@ -177,6 +183,7 @@ const FormEdit: React.FC<EditBookProps> = ({ book, ressources, setShow }) => {
         <input
           type="number"
           className="form-control"
+          id="width"
           placeholder="Width"
           aria-label="Width"
           aria-describedby="basic-addon1"
@@ -198,18 +205,16 @@ const FormEdit: React.FC<EditBookProps> = ({ book, ressources, setShow }) => {
         <select
           className="form-select"
           aria-label="Country of Origin"
+          id="countryOfOrigin"
           required
+          defaultValue={editedBook.originCountry}
           onChange={(e) => {
             setEditedBook({ ...editedBook, originCountry: e.target.value });
           }}
         >
           {ressources.getCountries().map((country) => {
             return (
-              <option
-                key={country}
-                value={country}
-                selected={country === editedBook.originCountry}
-              >
+              <option key={country} value={country}>
                 {country}
               </option>
             );
@@ -225,18 +230,16 @@ const FormEdit: React.FC<EditBookProps> = ({ book, ressources, setShow }) => {
         <select
           className="form-select"
           aria-label="Country of Origin"
+          id="type"
           required
+          defaultValue={editedBook.type}
           onChange={(e) => {
             setEditedBook({ ...editedBook, type: e.target.value });
           }}
         >
           {ressources.getTypes().map((type) => {
             return (
-              <option
-                key={type}
-                value={type}
-                selected={type === editedBook.type}
-              >
+              <option key={type} value={type}>
                 {type}
               </option>
             );
@@ -254,6 +257,7 @@ const FormEdit: React.FC<EditBookProps> = ({ book, ressources, setShow }) => {
           aria-label="Country of Origin"
           required
           multiple
+          defaultValue={editedBook.genres || []}
           onChange={(e) => {
             const genres = Array.from(
               e.target.selectedOptions,

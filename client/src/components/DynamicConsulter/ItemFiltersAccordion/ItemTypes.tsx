@@ -51,6 +51,7 @@ const ItemTypes: React.FC<ItemStrArrayProps> = ({ data, setStrArray }) => {
             <input
               type="text"
               className="form-control form-control-sm"
+              id="types-filter-both-f1-ro"
               placeholder="None"
               readOnly
               disabled

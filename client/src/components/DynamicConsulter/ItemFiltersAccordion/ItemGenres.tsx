@@ -51,6 +51,7 @@ const ItemGenres: React.FC<ItemStrArrayProps> = ({ setStrArray, data }) => {
             <input
               type="text"
               className="form-control form-control-sm"
+              id="genres-filter-both-f1-ro"
               placeholder="None"
               readOnly
               disabled

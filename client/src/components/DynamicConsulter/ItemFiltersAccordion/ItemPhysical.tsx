@@ -51,6 +51,7 @@ const ItemPhysical: React.FC<ItemBoolProps> = ({ setBool }) => {
             <input
               type="text"
               className="form-control form-control-sm"
+              id="physical-filter-both-f1-ro"
               placeholder="Both"
               readOnly
               disabled
@@ -72,6 +73,7 @@ const ItemPhysical: React.FC<ItemBoolProps> = ({ setBool }) => {
             <input
               type="text"
               className="form-control form-control-sm"
+              id="physical-filter-both-f2-ro"
               placeholder="Yes"
               readOnly
               disabled
@@ -93,6 +95,7 @@ const ItemPhysical: React.FC<ItemBoolProps> = ({ setBool }) => {
             <input
               type="text"
               className="form-control form-control-sm"
+              id="physical-filter-both-f3-ro"
               placeholder="No"
               readOnly
               disabled

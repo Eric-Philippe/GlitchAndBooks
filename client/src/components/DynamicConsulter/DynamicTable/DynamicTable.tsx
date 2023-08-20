@@ -566,6 +566,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
           <input
             type="text"
             className="form-control"
+            id="search-bar"
             placeholder="Search..."
             value={searchValue}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {

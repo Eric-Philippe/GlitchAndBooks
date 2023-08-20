@@ -465,6 +465,7 @@ const DynamicCards: React.FC<DynamicTableProps> = ({
               </div>
               <select
                 className="form-select form-select-sm"
+                id="columnsModalSelect"
                 aria-label="Default select example"
                 onChange={(e) => {
                   sort(e.target.value);
@@ -555,6 +556,7 @@ const DynamicCards: React.FC<DynamicTableProps> = ({
         <input
           type="text"
           className="form-control"
+          id="search-bar"
           placeholder="Search..."
           value={searchValue}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {

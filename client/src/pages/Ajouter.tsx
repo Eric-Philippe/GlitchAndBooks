@@ -2,7 +2,7 @@ import { Component } from "react";
 import Header from "../components/Header";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css";
-import "./Ajouter.css";
+import "./styles.css";
 
 import Login from "./Login";
 import { isConnected } from "../middlewares/auth";

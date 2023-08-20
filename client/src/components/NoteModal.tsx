@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap";
 import { Book } from "../models/Book";
-import Resources from "../middlewares/Resources";
-import { bookEquals, createBook } from "../utils/BooksUtils";
-
-const NUMBER_EMOTES = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
 
 interface EditBookProps {
   book: Book;
@@ -13,7 +9,6 @@ interface EditBookProps {
 
 const NoteModal: React.FC<EditBookProps> = ({ book, setShow }) => {
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
-  const [editedBook, setEditedBook] = useState<Book>(book);
 
   useEffect(() => {
     setIsFullScreen(true);
@@ -39,7 +34,7 @@ const NoteModal: React.FC<EditBookProps> = ({ book, setShow }) => {
         <div className="modal-content">
           <div className="modal-header">
             <h1 className="modal-title fs-4" id="modalNotes">
-              Notes: {editedBook.title}
+              Notes: {book.title}
             </h1>
             <button
               type="button"

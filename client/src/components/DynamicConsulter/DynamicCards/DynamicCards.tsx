@@ -87,7 +87,6 @@ const DynamicCards: React.FC<DynamicTableProps> = ({
   const [resetKey, setResetKey] = useState(0); // Step 1: Key state variable
   /** Stateful React @Filters count the amount of filters activated */
   const [filtersCount, setFiltersCount] = useState(0); // Step 1: Key state variable
-  const [bookToEdit, setBookToEdit] = useState<Book>();
 
   // Code à exécuter après chaque rendu ou mise à jour du composant
   useEffect(() => {
@@ -272,21 +271,6 @@ const DynamicCards: React.FC<DynamicTableProps> = ({
     setWholeViewedData(filteredData);
     setViewedData(filteredData.slice(0, MAX_ROWS));
     setFiltersCount(filters.countFilters());
-  };
-
-  const setBookToEditHandler = (bookId: number | undefined) => {
-    const tempBook = initialData.find((book) => book.bookId === bookId);
-    if (!tempBook) return;
-
-    setBookToEdit(tempBook);
-    // Ouvrir le modal programmation ici
-    const modalElement = document.getElementById(
-      "exampleModalFullscreen"
-    ) as HTMLElement;
-    if (modalElement) {
-      const modal = new window.bootstrap.Modal(modalElement);
-      modal.show();
-    }
   };
 
   return (
@@ -583,7 +567,6 @@ const DynamicCards: React.FC<DynamicTableProps> = ({
             currentColumns={columns}
             key={book.title}
             resources={ressources}
-            whenLongPress={setBookToEditHandler}
           />
         ))}
       </div>

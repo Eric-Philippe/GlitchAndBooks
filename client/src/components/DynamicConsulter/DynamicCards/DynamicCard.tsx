@@ -12,14 +12,12 @@ interface DynamicCardProps {
   book: Book;
   currentColumns: Column[];
   resources: Resources;
-  whenLongPress: (bookId: number | undefined) => void;
 }
 
 const DynamicCard: React.FC<DynamicCardProps> = ({
   book,
   currentColumns,
   resources,
-  whenLongPress,
 }) => {
   const [showEdit, setShowEdit] = React.useState<boolean>(false);
   const [showNotes, setShowNotes] = React.useState<boolean>(false);

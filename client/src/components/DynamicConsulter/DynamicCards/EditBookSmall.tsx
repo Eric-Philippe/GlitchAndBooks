@@ -54,24 +54,8 @@ const EditBookSmall: React.FC<EditBookProps> = ({
             ></button>
           </div>
 
-          <div
-            className="modal-body"
-            style={{ maxHeight: "calc(100vh - 200px)", overflowY: "auto" }}
-          >
-            <FormEdit book={book} ressources={ressources} />
-          </div>
-
-          <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              data-bs-dismiss="modal"
-              onClick={() => {
-                setShow(false);
-              }}
-            >
-              Close
-            </button>
+          <div className="modal-body">
+            <FormEdit book={book} ressources={ressources} setShow={setShow} />
           </div>
         </div>
       </div>

@@ -27,19 +27,22 @@ const DynamicCard: React.FC<DynamicCardProps> = ({
   const timerRefLongPress = useRef<NodeJS.Timeout>();
   const timerRefDoubleClick = useRef<NodeJS.Timeout>();
 
-  const isLongPress = useRef<boolean>();
+  const isLongPress = useRef<boolean>(false);
   const isEarlySingleClick = useRef<boolean>(false);
 
   function touchPressMade() {
     isLongPress.current = false;
     timerRefLongPress.current = setTimeout(() => {
       isLongPress.current = true;
+      console.log("Long press detected");
+
       setShowEdit(true);
     }, 1000);
   }
 
   function handleDoubleTap() {
     if (isEarlySingleClick.current) {
+      console.log("Double tap detected");
       setShowNotes(true);
       isEarlySingleClick.current = false;
     } else {
@@ -58,7 +61,7 @@ const DynamicCard: React.FC<DynamicCardProps> = ({
           book={book}
           setShow={setShowEdit}
           ressources={resources}
-        ></EditBookSmall>
+        />
       )}
       <button
         className="list-group-item list-group-item-action"

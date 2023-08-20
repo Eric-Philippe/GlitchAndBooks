@@ -23,7 +23,6 @@ import { _BoolOperation } from "../Filters";
 import { Book } from "../../../models/Book";
 import { Toast } from "bootstrap";
 import DynamicCard from "./DynamicCard";
-import EditBookSmall from "./EditBookSmall";
 
 /** @Filters main receiver for the user filters input */
 const filters = new Filters();

@@ -454,7 +454,7 @@ class Ajouter extends Component<{}, HomeState> {
                 <div className="col-md-12">
                   <div className="input-group">
                     <span className="input-group-text" id="basic-addon1">
-                      📖 Genre
+                      📖 Genre(s)
                     </span>
                     <select
                       className="form-select"

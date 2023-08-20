@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import "bootstrap";
 import { Book } from "../../models/Book";
 import Resources from "../../middlewares/Resources";
+import { bookEquals } from "../../utils/BooksUtils";
 
 const NUMBER_EMOTES = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
 
@@ -13,10 +14,25 @@ interface EditBookProps {
 }
 
 const FormEdit: React.FC<EditBookProps> = ({ book, ressources, setShow }) => {
+  const originBook = book;
   const [editedBook, setEditedBook] = useState<Book>(book);
 
+  const editBook = (e: React.FormEvent | MouseEvent) => {
+    e.preventDefault();
+    console.log("Original Book Name: " + originBook.title);
+
+    console.log(bookEquals(originBook, editedBook));
+    console.log(originBook.bookId);
+  };
+
   return (
-    <form className="row g-3 needs-validation" noValidate>
+    <form
+      className="row g-3 needs-validation"
+      noValidate
+      onSubmit={(e) => {
+        editBook(e);
+      }}
+    >
       <div className="input-group">
         <span className="input-group-text" id="basic-addon1">
           📗
@@ -121,7 +137,7 @@ const FormEdit: React.FC<EditBookProps> = ({ book, ressources, setShow }) => {
           placeholder="Pages"
           aria-label="Pages"
           aria-describedby="basic-addon1"
-          value={editedBook.pages || "N/A"}
+          value={editedBook.pages || ""}
           onChange={(e) => {
             setEditedBook({
               ...editedBook,
@@ -143,11 +159,11 @@ const FormEdit: React.FC<EditBookProps> = ({ book, ressources, setShow }) => {
           placeholder="Publication Year"
           aria-label="Publication Year"
           aria-describedby="basic-addon1"
-          value={editedBook.publicationYear || "N/A"}
+          value={editedBook.publicationYear || ""}
           onChange={(e) => {
             setEditedBook({
               ...editedBook,
-              pages: parseInt(e.target.value),
+              publicationYear: parseInt(e.target.value),
             });
           }}
         />
@@ -165,7 +181,7 @@ const FormEdit: React.FC<EditBookProps> = ({ book, ressources, setShow }) => {
           placeholder="Height"
           aria-label="Height"
           aria-describedby="basic-addon1"
-          value={editedBook.height || "N/A"}
+          value={editedBook.height || ""}
           onChange={(e) => {
             setEditedBook({
               ...editedBook,
@@ -187,7 +203,7 @@ const FormEdit: React.FC<EditBookProps> = ({ book, ressources, setShow }) => {
           placeholder="Width"
           aria-label="Width"
           aria-describedby="basic-addon1"
-          value={editedBook.width || "N/A"}
+          value={editedBook.width || ""}
           onChange={(e) => {
             setEditedBook({
               ...editedBook,
@@ -268,13 +284,7 @@ const FormEdit: React.FC<EditBookProps> = ({ book, ressources, setShow }) => {
         >
           {ressources.getGenres().map((genre) => {
             return (
-              <option
-                key={genre}
-                value={genre}
-                selected={
-                  editedBook.genres != null && editedBook.genres.includes(genre)
-                }
-              >
+              <option key={genre} value={genre}>
                 {genre}
               </option>
             );
@@ -362,11 +372,7 @@ const FormEdit: React.FC<EditBookProps> = ({ book, ressources, setShow }) => {
         >
           Close
         </button>
-        <button
-          type="button"
-          className="btn btn-danger"
-          data-bs-dismiss="modal"
-        >
+        <button type="button" className="btn btn-danger">
           Delete Book
         </button>
         <button type="submit" className="btn btn-primary">

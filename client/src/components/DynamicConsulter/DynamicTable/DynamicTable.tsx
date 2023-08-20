@@ -22,7 +22,7 @@ import { Column } from "../utils/DefaultColumns";
 import { _BoolOperation } from "../Filters";
 import { Book } from "../../../models/Book";
 import { Toast } from "bootstrap";
-import FormEdit from "../FormEdit";
+import EditBookLarge from "./EditBookLarge";
 
 /** @Filters main receiver for the user filters input */
 const filters = new Filters();
@@ -88,12 +88,13 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
   /** Stateful React @Filters count the amount of filters activated */
   const [filtersCount, setFiltersCount] = useState(0); // Step 1: Key state variable
   /** Stateful React @Sort */
+  const [showEdit, setShowEdit] = React.useState<boolean>(false);
   const [sortState, setSortState] = useState<{
     key: string;
     value: SortState;
     [key: string]: string | string[] | number | boolean | null | undefined;
   }>({ key: "", value: "NONE" });
-  const [bookToEdit, setBookToEdit] = useState<Book>(initialData[0]);
+  const [bookToEdit, setBookToEdit] = useState<Book>();
 
   // Code à exécuter après chaque rendu ou mise à jour du composant
   useEffect(() => {
@@ -461,36 +462,15 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
         </div>
 
         {/** @EDIT_MODAL */}
-        <div
-          className="modal fade"
-          id="exampleModal"
-          tabIndex={-1}
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h1 className="modal-title fs-5" id="exampleModalLabel">
-                  Edit: {bookToEdit?.title}
-                </h1>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div className="modal-body">
-                <FormEdit
-                  book={bookToEdit}
-                  ressources={ressources}
-                  setShow={() => {}}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        {showEdit ? (
+          <EditBookLarge
+            book={bookToEdit || initialData[3]}
+            setShow={setShowEdit}
+            ressources={ressources}
+          />
+        ) : (
+          ""
+        )}
 
         {/** @MAIN_PAGE */}
         <div className="d-flex justify-content-center align-items-center mb-4">
@@ -585,7 +565,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
             <tr>
               <th className="text-center">
                 <button className="btn">Edit</button>
-              </th>{" "}
+              </th>
               {columns.map((column) => (
                 <th key={column.field}>
                   <button
@@ -607,10 +587,9 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
                   <button
                     type="button"
                     className="btn btn-outline-secondary btn-sm"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
                     onClick={() => {
                       setBookToEdit(book);
+                      setShowEdit(true);
                     }}
                   >
                     🖋️

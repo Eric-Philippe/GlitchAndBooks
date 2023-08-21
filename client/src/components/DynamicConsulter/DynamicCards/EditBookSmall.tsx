@@ -3,63 +3,46 @@ import "bootstrap";
 import { Book } from "../../../models/Book";
 import Resources from "../../../middlewares/Resources";
 import FormEdit from "../FormEdit";
+import { Modal } from "react-bootstrap";
 
 interface EditBookProps {
   book: Book;
-  setShow: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowFromParent: React.Dispatch<React.SetStateAction<boolean>>;
   ressources: Resources;
 }
 
 const EditBookSmall: React.FC<EditBookProps> = ({
   book,
-  setShow,
   ressources,
+  setShowFromParent,
 }) => {
-  const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => {
+    setShow(false);
+    setShowFromParent(false);
+  };
+
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
-    setIsFullScreen(true);
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      setIsFullScreen(false);
-      document.body.style.overflow = "auto";
-    };
+    handleShow();
   }, []);
 
   return (
-    <div
-      className={`modal fade ${isFullScreen ? "show" : ""}`}
-      id="exampleModalFullscreen"
-      tabIndex={999}
-      aria-labelledby="exampleModalFullscreenLabel"
-      style={{ display: isFullScreen ? "block" : "none" }}
-      aria-modal="true"
-      role="dialog"
-    >
-      <div className="modal-dialog modal-fullscreen">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h1 className="modal-title fs-4" id="exampleModalFullscreenLabel">
-              Editing: {book.title}
-            </h1>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-              onClick={() => {
-                setShow(false);
-              }}
-            ></button>
-          </div>
+    <Modal show={show} fullscreen={true} onHide={() => setShow(false)}>
+      <Modal.Header closeButton>
+        <Modal.Title>Editing: {book.title}</Modal.Title>
+      </Modal.Header>
 
-          <div className="modal-body">
-            <FormEdit book={book} ressources={ressources} setShow={setShow} />
-          </div>
-        </div>
-      </div>
-    </div>
+      <Modal.Body>
+        <FormEdit
+          book={book}
+          ressources={ressources}
+          handeCloseParent={handleClose}
+        />
+      </Modal.Body>
+    </Modal>
   );
 };
 

@@ -21,8 +21,22 @@ import SortBooks, { SortState } from "../../../utils/SortBooks";
 import { Column } from "../utils/DefaultColumns";
 import { _BoolOperation } from "../Filters";
 import { Book } from "../../../models/Book";
-import { Toast } from "bootstrap";
+import { FunnelFill, Recycle, Table } from "react-bootstrap-icons";
 import EditBookLarge from "./EditBookLarge";
+import {
+  Button,
+  ButtonGroup,
+  Container,
+  Table as BootstrapTable,
+  FloatingLabel,
+  FormControl,
+  InputGroup,
+  ToastContainer,
+  Toast,
+  Modal,
+} from "react-bootstrap";
+import ResetToast from "../Toasts/ResetToast";
+import FilterAppliedToast from "../Toasts/FilterAppliedToast";
 
 /** @Filters main receiver for the user filters input */
 const filters = new Filters();
@@ -88,40 +102,20 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
   /** Stateful React @Filters count the amount of filters activated */
   const [filtersCount, setFiltersCount] = useState(0); // Step 1: Key state variable
   /** Stateful React @Sort */
-  const [showEdit, setShowEdit] = React.useState<boolean>(false);
   const [sortState, setSortState] = useState<{
     key: string;
     value: SortState;
     [key: string]: string | string[] | number | boolean | null | undefined;
   }>({ key: "", value: "NONE" });
   const [bookToEdit, setBookToEdit] = useState<Book>();
+  const [showToastReset, setShowToastReset] = useState(false);
+  const [showToastFilters, setShowToastFilters] = useState(false);
+  const [showModalEdit, setShowModalEdit] = useState<boolean>(false);
+  const [showModalFilters, setShowModalFilters] = useState<boolean>(false);
+  const [showModalColumns, setShowModalColumns] = useState<boolean>(false);
 
   // Code à exécuter après chaque rendu ou mise à jour du composant
   useEffect(() => {
-    const toastTrigger = document.getElementById("liveToastBtn");
-    const toastLiveReset = document.getElementById("liveToast") as HTMLElement;
-
-    if (toastTrigger) {
-      const toastBootstrap = Toast.getOrCreateInstance(toastLiveReset);
-      toastTrigger.addEventListener("click", () => {
-        toastBootstrap.show();
-      });
-    }
-
-    const toastFilterTrigger = document.getElementById(
-      "filtersModalSaveChanges"
-    );
-    const toastLiveFIlter = document.getElementById(
-      "filtersToast"
-    ) as HTMLElement;
-
-    if (toastFilterTrigger) {
-      const toastBootstrap = Toast.getOrCreateInstance(toastLiveFIlter);
-      toastFilterTrigger.addEventListener("click", () => {
-        toastBootstrap.show();
-      });
-    }
-
     // Initialiser les états des cases à cocher avec les valeurs initiales
     const initialColumnCheckboxes: { [key: string]: boolean } = {};
     allColumns.forEach((column) => {
@@ -220,6 +214,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
     setCurrentPage(1);
     setFiltersCount(0);
     setResetKey((prevKey) => prevKey + 1);
+    setShowToastReset(true);
   };
 
   /**
@@ -287,396 +282,270 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
     setWholeViewedData(filteredData);
     setViewedData(filteredData.slice(0, MAX_ROWS));
     setFiltersCount(filters.countFilters());
+    setShowToastFilters(true);
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center mb-4">
-      <div className="center-container">
-        {/** @FILTERS_MODAL */}
-        <div
-          className="modal fade"
-          id="filtersModal"
-          tabIndex={-1}
-          aria-labelledby="filtersModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h1 className="modal-title fs-5" id="filtersModalLabel">
-                  Filters
-                </h1>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div className="modal-body">
-                <div
-                  className="accordion accordion-flush"
-                  id="accordionFlushFilters"
-                  key={resetKey}
-                >
-                  <ItemPages
-                    setMax={(i: number | undefined) => {
-                      filters._pages.max = i;
-                    }}
-                    setMin={(i: number | undefined) => {
-                      filters._pages.min = i;
-                    }}
-                    setValue={(i: number | undefined) => {
-                      filters._pages.value = i;
-                    }}
-                    setOperation={(i: _IntOperation) => {
-                      filters._pages.operation = i;
-                    }}
-                  />
-                  <ItemYears
-                    setMax={(i: number | undefined) => {
-                      filters._year.max = i;
-                    }}
-                    setMin={(i: number | undefined) => {
-                      filters._year.min = i;
-                    }}
-                    setValue={(i: number | undefined) => {
-                      filters._year.value = i;
-                    }}
-                    setOperation={(i: _IntOperation) => {
-                      filters._year.operation = i;
-                    }}
-                  />
-                  <ItemRead
-                    setBool={(b: _BoolOperation) => {
-                      filters._read = b;
-                    }}
-                  />
-                  <ItemWantToRead
-                    setBool={(b: _BoolOperation) => {
-                      filters._wantToRead = b;
-                    }}
-                  />
-                  <ItemPhysical
-                    setBool={(b: _BoolOperation) => {
-                      filters._physical = b;
-                    }}
-                  />
-                  <ItemLanguages
-                    data={ressources.getLanguages()}
-                    setStrArray={(strArray: string[]) => {
-                      filters._languages = strArray;
-                    }}
-                  />
-                  <ItemTypes
-                    data={ressources.getTypes()}
-                    setStrArray={(strArray: string[]) => {
-                      filters._types = strArray;
-                    }}
-                  />
-                  <ItemGenres
-                    data={ressources.getGenres()}
-                    setStrArray={(strArray: string[]) => {
-                      filters._genres = strArray;
-                    }}
-                  />
-                  <ItemCountries
-                    data={ressources.getCountries()}
-                    setStrArray={(strArray: string[]) => {
-                      filters._countries = strArray;
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button
-                  type="button"
-                  id="filtersModalSaveChanges"
-                  className="btn btn-primary"
-                  onClick={() => loadFilters()}
-                >
-                  Save changes
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/** @COLUMNS_MODAL */}
-        <div
-          className="modal fade"
-          id="columnsModal"
-          tabIndex={-1}
-          aria-labelledby="columnsModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h1 className="modal-title fs-5" id="columnsModalLabel">
-                  Columns
-                </h1>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div className="modal-body">
-                {allColumns.map((column) => (
-                  <div className="form-check" key={column.field}>
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value={column.field}
-                      id={column.field}
-                      checked={columnCheckboxes[column.field] || false} // Default to false if not defined
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          addColumn(column.field);
-                        } else {
-                          removeColumn(column.field);
-                        }
-                        setColumnCheckboxes((prevCheckboxes) => ({
-                          ...prevCheckboxes,
-                          [column.field]: e.target.checked,
-                        }));
-                      }}
-                    />
-                    <label className="form-check-label" htmlFor={column.field}>
-                      {column.title}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/** @EDIT_MODAL */}
-        {showEdit ? (
-          <EditBookLarge
-            book={bookToEdit || initialData[3]}
-            setShow={setShowEdit}
-            ressources={ressources}
-          />
-        ) : (
-          ""
-        )}
-
-        {/** @MAIN_PAGE */}
-        <div className="d-flex justify-content-center align-items-center mb-4">
+    <Container>
+      {/** @FILTERS_MODAL */}
+      <Modal show={showModalFilters} onHide={() => setShowModalFilters(false)}>
+        <Modal.Header closeButton>
+          <h1 className="modal-title fs-5" id="filtersModalLabel">
+            Filters
+          </h1>
+        </Modal.Header>
+        <Modal.Body>
           <div
-            className="btn-group"
-            role="group"
-            aria-label="Basic outlined example"
+            className="accordion accordion-flush"
+            id="accordionFlushFilters"
+            key={resetKey}
           >
-            <button
-              type="button"
-              className="btn btn-outline-primary"
-              data-bs-toggle="modal"
-              data-bs-target="#filtersModal"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                className="bi bi-funnel-fill"
-                viewBox="0 0 16 16"
-              >
-                <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"></path>
-              </svg>
-              ​ ​ Filtres{" "}
-              {filtersCount !== 0 ? (
-                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                  {filtersCount}
-                </span>
-              ) : (
-                ""
-              )}
-            </button>
-            <button
-              type="button"
-              className="btn btn-outline-success"
-              data-bs-toggle="modal"
-              data-bs-target="#columnsModal"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                className="bi bi-table"
-                viewBox="0 0 16 16"
-              >
-                <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z"></path>
-              </svg>
-              ​ ​ Columns
-            </button>
-            <button
-              type="button"
-              className="btn btn-outline-danger"
-              id="liveToastBtn"
-              onClick={() => reset()}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                className="bi bi-recycle"
-                viewBox="0 0 16 16"
-              >
-                <path d="M9.302 1.256a1.5 1.5 0 0 0-2.604 0l-1.704 2.98a.5.5 0 0 0 .869.497l1.703-2.981a.5.5 0 0 1 .868 0l2.54 4.444-1.256-.337a.5.5 0 1 0-.26.966l2.415.647a.5.5 0 0 0 .613-.353l.647-2.415a.5.5 0 1 0-.966-.259l-.333 1.242-2.532-4.431zM2.973 7.773l-1.255.337a.5.5 0 1 1-.26-.966l2.416-.647a.5.5 0 0 1 .612.353l.647 2.415a.5.5 0 0 1-.966.259l-.333-1.242-2.545 4.454a.5.5 0 0 0 .434.748H5a.5.5 0 0 1 0 1H1.723A1.5 1.5 0 0 1 .421 12.24l2.552-4.467zm10.89 1.463a.5.5 0 1 0-.868.496l1.716 3.004a.5.5 0 0 1-.434.748h-5.57l.647-.646a.5.5 0 1 0-.708-.707l-1.5 1.5a.498.498 0 0 0 0 .707l1.5 1.5a.5.5 0 1 0 .708-.707l-.647-.647h5.57a1.5 1.5 0 0 0 1.302-2.244l-1.716-3.004z" />
-              </svg>
-              ​ ​ Reset
-            </button>
+            <ItemPages
+              setMax={(i: number | undefined) => {
+                filters._pages.max = i;
+              }}
+              setMin={(i: number | undefined) => {
+                filters._pages.min = i;
+              }}
+              setValue={(i: number | undefined) => {
+                filters._pages.value = i;
+              }}
+              setOperation={(i: _IntOperation) => {
+                filters._pages.operation = i;
+              }}
+            />
+            <ItemYears
+              setMax={(i: number | undefined) => {
+                filters._year.max = i;
+              }}
+              setMin={(i: number | undefined) => {
+                filters._year.min = i;
+              }}
+              setValue={(i: number | undefined) => {
+                filters._year.value = i;
+              }}
+              setOperation={(i: _IntOperation) => {
+                filters._year.operation = i;
+              }}
+            />
+            <ItemRead
+              setBool={(b: _BoolOperation) => {
+                filters._read = b;
+              }}
+            />
+            <ItemWantToRead
+              setBool={(b: _BoolOperation) => {
+                filters._wantToRead = b;
+              }}
+            />
+            <ItemPhysical
+              setBool={(b: _BoolOperation) => {
+                filters._physical = b;
+              }}
+            />
+            <ItemLanguages
+              data={ressources.getLanguages()}
+              setStrArray={(strArray: string[]) => {
+                filters._languages = strArray;
+              }}
+            />
+            <ItemTypes
+              data={ressources.getTypes()}
+              setStrArray={(strArray: string[]) => {
+                filters._types = strArray;
+              }}
+            />
+            <ItemGenres
+              data={ressources.getGenres()}
+              setStrArray={(strArray: string[]) => {
+                filters._genres = strArray;
+              }}
+            />
+            <ItemCountries
+              data={ressources.getCountries()}
+              setStrArray={(strArray: string[]) => {
+                filters._countries = strArray;
+              }}
+            />
           </div>
-        </div>
-        <div className="input-group">
-          <input
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => setShowModalFilters(false)}
+          >
+            Close
+          </Button>
+          <Button variant="primary" onClick={() => loadFilters()}>
+            Save changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/** @COLUMNS_MODAL */}
+      <Modal show={showModalColumns} onHide={() => setShowModalColumns(false)}>
+        <Modal.Header closeButton>
+          <h1 className="modal-title fs-5" id="columnsModalLabel">
+            Columns
+          </h1>
+        </Modal.Header>
+        <Modal.Body>
+          {allColumns.map((column) => (
+            <div className="form-check" key={column.field}>
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value={column.field}
+                id={column.field}
+                checked={columnCheckboxes[column.field] || false} // Default to false if not defined
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    addColumn(column.field);
+                  } else {
+                    removeColumn(column.field);
+                  }
+                  setColumnCheckboxes((prevCheckboxes) => ({
+                    ...prevCheckboxes,
+                    [column.field]: e.target.checked,
+                  }));
+                }}
+              />
+              <label className="form-check-label" htmlFor={column.field}>
+                {column.title}
+              </label>
+            </div>
+          ))}
+        </Modal.Body>
+      </Modal>
+
+      {/** @EDIT_MODAL */}
+      {showModalEdit ? (
+        <EditBookLarge
+          book={bookToEdit || initialData[5]}
+          setShowFromParent={setShowModalEdit}
+          ressources={ressources}
+        />
+      ) : (
+        ""
+      )}
+
+      {/** @MAIN_PAGE */}
+      <Container className="d-flex justify-content-center">
+        <ButtonGroup aria-label="usages-buttons" className="mb-3">
+          <Button
+            variant="outline-primary"
+            onClick={() => setShowModalFilters(true)}
+          >
+            <FunnelFill /> Filters
+            {filtersCount !== 0 ? (
+              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {filtersCount}
+              </span>
+            ) : (
+              ""
+            )}
+          </Button>
+          <Button
+            variant="outline-success"
+            onClick={() => setShowModalColumns(true)}
+          >
+            <Table />​ ​ Columns
+          </Button>
+          <Button
+            variant="outline-danger"
+            id="liveToastBtn"
+            onClick={() => reset()}
+          >
+            <Recycle />​ ​ Reset
+          </Button>
+        </ButtonGroup>
+      </Container>
+      <InputGroup>
+        <FloatingLabel controlId="floatingSearchLabel" label="Search ...">
+          <FormControl
             type="text"
-            className="form-control"
-            id="search-bar"
-            placeholder="Search..."
+            placeholder="Search ..."
             value={searchValue}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               quickSearch(e.target.value);
             }}
           />
-          <button className="btn btn-outline-secondary" disabled>
-            🔍
-          </button>
-        </div>
-        <table className="table table-striped table-hover caption-top">
-          <caption>{`${MAX_ROWS * (currentPage - 1)}-${
-            MAX_ROWS * (currentPage - 1) + viewedData.length
-          } / ${wholeViewedData.length}`}</caption>
-          <thead>
-            <tr>
-              <th className="text-center">
-                <button className="btn">Edit</button>
+        </FloatingLabel>
+        <Button variant="outline-secondary" disabled>
+          🔍
+        </Button>
+      </InputGroup>
+      <BootstrapTable className="table table-striped table-hover caption-top">
+        <caption>{`${MAX_ROWS * (currentPage - 1)}-${
+          MAX_ROWS * (currentPage - 1) + viewedData.length
+        } / ${wholeViewedData.length}`}</caption>
+        <thead>
+          <tr>
+            <th className="text-center">
+              <button className="btn">Edit</button>
+            </th>
+            {columns.map((column) => (
+              <th key={column.field}>
+                <button
+                  className="btn"
+                  onClick={() => {
+                    sort(column);
+                  }}
+                >
+                  {column.title}
+                </button>
               </th>
-              {columns.map((column) => (
-                <th key={column.field}>
-                  <button
-                    className="btn"
-                    onClick={() => {
-                      sort(column);
-                    }}
-                  >
-                    {column.title}
-                  </button>
-                </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="table-group-divider">
+          {viewedData.map((book, rowIndex) => (
+            <tr key={rowIndex}>
+              <td className="text-center">
+                <Button
+                  type="button"
+                  variant="outline-secondary btn-sm"
+                  onClick={() => {
+                    setBookToEdit(book);
+                    setShowModalEdit(true);
+                  }}
+                >
+                  🖋️
+                </Button>
+              </td>
+              {columns.map((column, columnIndex) => (
+                <td
+                  key={column.field + columnIndex}
+                  className={column.center ? "centered-cell" : ""}
+                >
+                  {fieldToValue(book, column.field)}
+                </td>
               ))}
             </tr>
-          </thead>
-          <tbody className="table-group-divider">
-            {viewedData.map((book, rowIndex) => (
-              <tr key={rowIndex}>
-                <td className="text-center">
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary btn-sm"
-                    onClick={() => {
-                      setBookToEdit(book);
-                      setShowEdit(true);
-                    }}
-                  >
-                    🖋️
-                  </button>
-                </td>
-                {columns.map((column, columnIndex) => (
-                  <td
-                    key={column.field + columnIndex}
-                    className={column.center ? "centered-cell" : ""}
-                  >
-                    {fieldToValue(book, column.field)}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          ))}
+        </tbody>
+      </BootstrapTable>
 
-        {/** @PAGINATION */}
-        <Pagination
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-          perPage={MAX_ROWS}
-          total={data.length}
-        />
+      {/** @PAGINATION */}
+      <Pagination
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+        perPage={MAX_ROWS}
+        total={data.length}
+      />
 
-        <div className="toast-container position-fixed bottom-0 end-0 p-3">
-          <div
-            id="liveToast"
-            className="toast"
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-          >
-            <div className="toast-header">
-              <img
-                src="./logos/G&B_dark-transp-circle.png"
-                className="rounded me-2"
-                style={{ width: "20px" }}
-                alt="..."
-              ></img>
-              <strong className="me-auto">Glitch & Books</strong>
-              <small>Just now</small>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="toast"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="toast-body">
-              <strong>Reset</strong> effectué avec succès !
-            </div>
-          </div>
-        </div>
+      <ResetToast
+        showToast={showToastReset}
+        setShowToastReset={setShowToastReset}
+      />
 
-        <div className="toast-container position-fixed bottom-0 end-0 p-3">
-          <div
-            id="filtersToast"
-            className="toast"
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-          >
-            <div className="toast-header">
-              <img
-                src="./logos/G&B_dark-transp-circle.png"
-                className="rounded me-2"
-                style={{ width: "20px" }}
-                alt="G&B Logo"
-              ></img>
-              <strong className="me-auto">Glitch & Books</strong>
-              <small>Just now</small>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="toast"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="toast-body">
-              <strong>{filtersCount}</strong> filtre(s) appliqués avec succès !
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      <FilterAppliedToast
+        showToast={showToastFilters}
+        setShowToastFilter={setShowToastFilters}
+        filtersCount={filtersCount}
+      />
+    </Container>
   );
 };
 

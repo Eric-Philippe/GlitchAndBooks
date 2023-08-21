@@ -1,11 +1,10 @@
 import React, { useRef } from "react";
 
-import "bootstrap";
+import Resources from "../../../middlewares/Resources";
 import { Book } from "../../../models/Book";
 import { Column, columnsHasField } from "../utils/DefaultColumns";
 import { bookFieldToText } from "../utils/utils";
 import EditBookSmall from "./EditBookSmall";
-import Resources from "../../../middlewares/Resources";
 import NoteModal from "../../NoteModal";
 
 interface DynamicCardProps {
@@ -35,12 +34,14 @@ const DynamicCard: React.FC<DynamicCardProps> = ({
       console.log("Long press detected");
 
       setShowEdit(true);
+      setShowNotes(false);
     }, 1000);
   }
 
   function handleDoubleTap() {
     if (isEarlySingleClick.current) {
       console.log("Double tap detected");
+      setShowEdit(false);
       setShowNotes(true);
       isEarlySingleClick.current = false;
     } else {
@@ -57,7 +58,7 @@ const DynamicCard: React.FC<DynamicCardProps> = ({
       {showEdit && !showNotes && (
         <EditBookSmall
           book={book}
-          setShow={setShowEdit}
+          setShowFromParent={setShowEdit}
           ressources={resources}
         />
       )}

@@ -4,7 +4,12 @@ services:
     image: ericphil/glitchandbooks-client:latest
     ports:
       - "80:80"
+    env_file:
+      - .env.client
+
   server:
     image: ericphil/glitchandbooks-server:latest
     ports:
-      - "3000:3000"
+      - "3005:3005"
+    env_file:
+      - .env.server

@@ -4,29 +4,25 @@ FROM node:14
 # Définissez le répertoire de travail dans le conteneur
 WORKDIR /app
 
-# Copiez le fichier package.json du client dans le conteneur
-COPY ./client/package.json ./client/package-lock.json ./client/
+# Copiez le fichier package.json du client dans le conteneur client/
+COPY client/package*.json client/
+
+# Copiez le fichier package.json du serveur dans le conteneur server/
+COPY server/package*.json server/
 
 # Installez les dépendances du client
-RUN cd ./client && npm install
-
-# Copiez le fichier package.json du serveur dans le conteneur
-COPY ./server/package.json ./server/package-lock.json ./server/
+RUN cd client && npm install
 
 # Installez les dépendances du serveur
-RUN cd ./server && npm install
+RUN cd server && npm install
 
-# Copiez le contenu du répertoire client/build dans le répertoire client/build du conteneur
-COPY ./client/build ./client/build
+# On se retrouve ici avec app/client/node_modules et app/server/node_modules
 
-# Copiez le contenu du répertoire server/dist dans le répertoire client/dist du conteneur
-COPY ./server/dist ./client/dist
+# build client
+RUN cd client && npm run build
 
-# Exécutez npm run build dans le répertoire client
-RUN cd ./client && npm run build
+# build server
+RUN cd server && npm run build
 
-# Exécutez npm run build dans le répertoire serveur
-RUN cd ./server && npm run build
-
-# Commande par défaut à exécuter lorsque le conteneur démarre
-CMD ["npm", "start"]
+CMD ["node", "server/dist/index.js"]
+```

@@ -11,6 +11,7 @@ import { Toast } from "bootstrap";
 
 import Resources from "../middlewares/Resources";
 import { createBook } from "../utils/BooksUtils";
+import { REACT_APP_API_URL } from "../env";
 
 const NUMBER_EMOTES = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
 
@@ -224,7 +225,7 @@ class Ajouter extends Component<{}, HomeState> {
     const bodyData = { book: book, userid: localStorage.getItem("userid") };
     const token = localStorage.getItem("token");
 
-    const res = await fetch(process.env.REACT_APP_API_URL + "/v1/books/add", {
+    const res = await fetch(REACT_APP_API_URL + "/v1/books/add", {
       method: "POST",
       body: JSON.stringify(bodyData),
       headers: {

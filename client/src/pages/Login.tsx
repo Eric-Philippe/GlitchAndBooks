@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+
+import { REACT_APP_API_URL } from "../env";
+
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 
 const Login: React.FC = () => {
@@ -12,7 +15,7 @@ const Login: React.FC = () => {
     const data = { username, password };
 
     try {
-      const res = await fetch(process.env.REACT_APP_API_URL + "/v1/login", {
+      const res = await fetch(REACT_APP_API_URL + "/v1/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

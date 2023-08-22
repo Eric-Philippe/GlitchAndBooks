@@ -20,3 +20,9 @@ jobs:
         run: |
           docker build -t ericphil/glitchandbooks-client:latest .
           docker push ericphil/glitchandbooks-client:latest
+
+      - name: Build and push Server Docker image
+        working-directory: ./server
+        run: |
+          docker build -t ericphil/glitchandbooks-server:latest .
+          docker push ericphil/glitchandbooks-server:latest

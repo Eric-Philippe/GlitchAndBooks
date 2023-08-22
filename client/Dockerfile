@@ -16,6 +16,9 @@ RUN npm install
 # Copy the entire client application to the container
 COPY . .
 
+# Display the contents of the current directory
+RUN ls -al
+
 # Expose the port on which your React app will run
 EXPOSE 80
 

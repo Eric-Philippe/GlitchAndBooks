@@ -16,6 +16,12 @@ RUN cd client && npm install
 # Installez les dépendances du serveur
 RUN cd server && npm install
 
+# Copiez le reste du client dans le conteneur client/
+COPY client/ client/
+
+# Copiez le reste du serveur dans le conteneur server/
+COPY server/ server/
+
 # On se retrouve ici avec app/client/node_modules et app/server/node_modules
 
 # build client

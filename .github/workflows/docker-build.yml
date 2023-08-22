@@ -15,16 +15,11 @@ jobs:
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push Client Docker image
-        working-directory: ./client
-        run: |
-          echo REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }} > .env
-          cat .env
-          docker build -t ericphil/glitchandbooks-client:latest .
-          docker push ericphil/glitchandbooks-client:latest
+      - name: Build Docker image
+        run: docker build -t glitchandbooks .
 
-      - name: Build and push Server Docker image
-        working-directory: ./server
-        run: |
-          docker build -t ericphil/glitchandbooks-server:latest .
-          docker push ericphil/glitchandbooks-server:latest
+      - name: Tag Docker image
+        run: docker tag glitchandbooks ${{ secrets.DOCKER_USERNAME }}/glitchandbooks-server
+
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/glitchandbooks-server

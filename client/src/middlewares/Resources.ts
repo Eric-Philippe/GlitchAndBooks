@@ -1,5 +1,3 @@
-import { REACT_APP_API_URL } from "../env";
-
 export default class Resources {
   private types: string[] = [];
   private genres: string[] = [];
@@ -59,7 +57,7 @@ export default class Resources {
   }
 
   private async fillTypes(): Promise<void> {
-    const res = await fetch(REACT_APP_API_URL + "/v1/types", {
+    const res = await fetch("/api/v1/types", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -73,7 +71,7 @@ export default class Resources {
   }
 
   private async fillGenres(): Promise<void> {
-    const res = await fetch(REACT_APP_API_URL + "/v1/genres", {
+    const res = await fetch("/api/v1/genres", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -87,7 +85,7 @@ export default class Resources {
   }
 
   private async fillCountries(): Promise<void> {
-    const res = await fetch(REACT_APP_API_URL + "/v1/countries", {
+    const res = await fetch("/api/v1/countries", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -101,7 +99,7 @@ export default class Resources {
   }
 
   private async fillLanguages(): Promise<void> {
-    const res = await fetch(REACT_APP_API_URL + "/v1/languages", {
+    const res = await fetch("/api/v1/languages", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

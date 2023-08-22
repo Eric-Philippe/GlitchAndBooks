@@ -5,6 +5,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import * as dotenv from "dotenv";
 import { PORT } from "./env";
+import path from "path";
 
 import { AppDataSource } from "./data-source";
 AppDataSource;
@@ -22,7 +23,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Handle POST requests that come in formatted as JSON
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "../../client/build")));
 app.use("/api", routes);
+
+console.log(__dirname);
+
+app.get("/*", function (req, res) {
+  res.sendFile(path.join(__dirname, "../../client/build", "index.html"));
+});
 
 const port = PORT || 3000;
 app.listen(port, () => {

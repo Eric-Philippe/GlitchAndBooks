@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as the base image
-FROM node:14
+FROM node:20.04
 
 # Set the working directory in the container
 WORKDIR /app
@@ -16,11 +16,11 @@ COPY . .
 # Expose the port on which your React app will run
 EXPOSE 80
 
+# Install global dependency 'serve'
+RUN npm install -g serve
+
 # Build the React app
 RUN npm run build
-
-# Install npm i -g serve
-RUN npm install -g serve
 
 # Launch the client
 CMD ["serve", "-s", "build", "-l", "80"]

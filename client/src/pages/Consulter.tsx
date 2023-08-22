@@ -15,6 +15,7 @@ import Resources from "../middlewares/Resources";
 import { Book } from "../models/Book";
 import DynamicCards from "../components/DynamicConsulter/DynamicCards/DynamicCards";
 import { bookFieldToText } from "../components/DynamicConsulter/utils/utils";
+import { REACT_APP_API_URL } from "../env";
 
 interface ConsulterState {
   isUserConnected: boolean | null;
@@ -39,7 +40,7 @@ class Consulter extends Component<{}, ConsulterState> {
     let books: Book[] = [];
     try {
       const res = await fetch(
-        process.env.REACT_APP_API_URL +
+        REACT_APP_API_URL +
           "/v1/books/get?userid=" +
           localStorage.getItem("userid"),
         {

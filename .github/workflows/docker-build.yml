@@ -17,7 +17,5 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ericphil/glitchandbooks-server:latest .
-          docker push ericphil/glitchandbooks-server:latest
           docker build -t ericphil/glitchandbooks-client:latest .
           docker push ericphil/glitchandbooks-client:latest

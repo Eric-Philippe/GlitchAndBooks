@@ -5,7 +5,10 @@ FROM node:20-alpine3.17
 WORKDIR /app
 
 # Copy the package.json and package-lock.json files to the container
-COPY package*.json ./
+COPY package*.json ./ 
+
+# Copy the .env file to the container
+COPY .env ./
 
 # Install project dependencies
 RUN npm install

@@ -1,15 +1,10 @@
 version: "3"
 services:
   client:
-    build:
-      context: .
-      dockerfile: client/Dockerfile
+    image: ericphil/glitchandbooks-client:latest
     ports:
       - "80:80"
-
   server:
-    build:
-      context: .
-      dockerfile: server/Dockerfile
+    image: ericphil/glitchandbooks-server:latest
     ports:
-      - "3005:3005"
+      - "3000:3000"

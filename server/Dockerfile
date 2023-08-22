@@ -15,6 +15,3 @@ COPY server/ .
 
 # Build the Express app
 RUN npm run build
-
-
-CMD ["npm", "start"]

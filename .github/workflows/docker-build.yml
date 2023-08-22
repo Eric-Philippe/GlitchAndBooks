@@ -18,7 +18,7 @@ jobs:
       - name: Build and push Client Docker image
         working-directory: ./client
         run: |
-          docker build -t ericphil/glitchandbooks-client:latest .
+          docker build -t ericphil/glitchandbooks-client:latest --build-arg REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }} .
           docker push ericphil/glitchandbooks-client:latest
 
       - name: Build and push Server Docker image

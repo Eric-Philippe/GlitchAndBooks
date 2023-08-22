@@ -25,4 +25,3 @@ RUN cd client && npm run build
 RUN cd server && npm run build
 
 CMD ["node", "server/dist/index.js"]
-```

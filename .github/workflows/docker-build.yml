@@ -57,3 +57,4 @@ jobs:
             cd GlitchAndBooksProd
             cp .env server/.env
             ./launch.sh &
+            exit

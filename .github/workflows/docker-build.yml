@@ -12,14 +12,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Login to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build the server
+        run: cd server && npm install && npm run build
 
-      - name: Build Docker image
-        run: docker build -t glitchandbooks .
+      - name: Build the client
+        run: cd client && npm install && npm run build
 
-      - name: Tag Docker image
-        run: docker tag glitchandbooks ${{ secrets.DOCKER_USERNAME }}/glitchandbooks-server
-
-      - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/glitchandbooks-server
+      - name: Connect to the vps
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_PRIVATE_KEY }}
+          script: |
+            ls -al

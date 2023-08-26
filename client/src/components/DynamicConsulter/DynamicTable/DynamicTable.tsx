@@ -31,10 +31,10 @@ import {
   FormControl,
   InputGroup,
   Modal,
+  ToastContainer,
 } from "react-bootstrap";
-import ResetToast from "../Toasts/ResetToast";
-import FilterAppliedToast from "../Toasts/FilterAppliedToast";
 import FormEdit from "../FormEdit";
+import Toaster from "../Toasts/Toaster";
 
 /** @Filters main receiver for the user filters input */
 const filters = new Filters();
@@ -80,7 +80,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
   ressources,
 }) => {
   /** Stateful React @Data_Rows Origin Point, for resets */
-  const initialData = data;
+  let initialData = data;
   /** Stateful React @Data_Rows half state filtered/sorted state for the data in the whole */
   const [wholeViewedData, setWholeViewedData] = useState<Book[]>(data);
   /** Stateful React @Data_Rows viewed Data @see MAX_ROWS */
@@ -106,8 +106,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
     [key: string]: string | string[] | number | boolean | null | undefined;
   }>({ key: "", value: "NONE" });
   const [bookToEdit, setBookToEdit] = useState<Book>();
-  const [showToastReset, setShowToastReset] = useState(false);
-  const [showToastFilters, setShowToastFilters] = useState(false);
+  const [newEventToToast, setNewEventToToast] = useState<string[]>([]);
   const [showModalEdit, setShowModalEdit] = useState<boolean>(false);
   const [showModalFilters, setShowModalFilters] = useState<boolean>(false);
   const [showModalColumns, setShowModalColumns] = useState<boolean>(false);
@@ -139,6 +138,15 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
       ...prevCheckboxes,
       [columnField]: false,
     }));
+  };
+
+  const removeBook = (bookId: number) => {
+    initialData = initialData.filter((book) => book.bookId !== bookId);
+    setWholeViewedData(initialData);
+    let newCurrentMinIndex = (currentPage - 1) * MAX_ROWS;
+    setViewedData(
+      initialData.slice(newCurrentMinIndex, wholeViewedData.length)
+    );
   };
 
   /**
@@ -212,7 +220,9 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
     setCurrentPage(1);
     setFiltersCount(0);
     setResetKey((prevKey) => prevKey + 1);
-    setShowToastReset(true);
+    const previousEventToToast = newEventToToast;
+    previousEventToToast.push("Reset done with success !");
+    setNewEventToToast(previousEventToToast);
   };
 
   /**
@@ -280,7 +290,9 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
     setWholeViewedData(filteredData);
     setViewedData(filteredData.slice(0, MAX_ROWS));
     setFiltersCount(filters.countFilters());
-    setShowToastFilters(true);
+    const previousEventToToast = newEventToToast;
+    previousEventToToast.push(`${filters.countFilters()} filters applied !`);
+    setNewEventToToast(previousEventToToast);
   };
 
   return (
@@ -425,6 +437,9 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
           ressources={ressources}
           showMainModalOuter={showModalEdit}
           setShowMainModalOuter={setShowModalEdit}
+          removeBookFromList={removeBook}
+          setNewEventToToast={setNewEventToToast}
+          currentToasts={newEventToToast}
         />
       ) : (
         ""
@@ -535,16 +550,21 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
         total={data.length}
       />
 
-      <ResetToast
-        showToast={showToastReset}
-        setShowToastReset={setShowToastReset}
-      />
-
-      <FilterAppliedToast
-        showToast={showToastFilters}
-        setShowToastFilter={setShowToastFilters}
-        filtersCount={filtersCount}
-      />
+      {/** @TOASTS */}
+      <ToastContainer className="p-3" position="bottom-end">
+        {newEventToToast?.length > 0
+          ? newEventToToast.map((event, index) => {
+              return (
+                <Toaster
+                  bodyToast={event}
+                  setToasts={setNewEventToToast}
+                  toasts={newEventToToast}
+                  key={index}
+                />
+              );
+            })
+          : ""}
+      </ToastContainer>
     </Container>
   );
 };

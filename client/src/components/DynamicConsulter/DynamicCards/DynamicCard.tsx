@@ -11,12 +11,18 @@ interface DynamicCardProps {
   book: Book;
   currentColumns: Column[];
   resources: Resources;
+  removeBook: (bookId: number) => void;
+  setNewEvent: React.Dispatch<React.SetStateAction<string[]>>;
+  newEvents: string[];
 }
 
 const DynamicCard: React.FC<DynamicCardProps> = ({
   book,
   currentColumns,
   resources,
+  removeBook,
+  setNewEvent,
+  newEvents,
 }) => {
   const [showEdit, setShowEdit] = React.useState<boolean>(false);
   const [showNotes, setShowNotes] = React.useState<boolean>(false);
@@ -31,7 +37,6 @@ const DynamicCard: React.FC<DynamicCardProps> = ({
     isLongPress.current = false;
     timerRefLongPress.current = setTimeout(() => {
       isLongPress.current = true;
-      console.log("Long press detected");
 
       setShowEdit(true);
       setShowNotes(false);
@@ -40,7 +45,6 @@ const DynamicCard: React.FC<DynamicCardProps> = ({
 
   function handleDoubleTap() {
     if (isEarlySingleClick.current) {
-      console.log("Double tap detected");
       setShowEdit(false);
       setShowNotes(true);
       isEarlySingleClick.current = false;
@@ -62,6 +66,9 @@ const DynamicCard: React.FC<DynamicCardProps> = ({
           ressources={resources}
           setShowMainModalOuter={setShowEdit}
           showMainModalOuter={showEdit}
+          removeBookFromList={removeBook}
+          setNewEventToToast={setNewEvent}
+          currentToasts={newEvents}
         />
       )}
       <button

@@ -31,10 +31,10 @@ import {
   FormSelect,
   InputGroup,
   Modal,
+  ToastContainer,
 } from "react-bootstrap";
 import { FunnelFill, Recycle, Table } from "react-bootstrap-icons";
-import ResetToast from "../Toasts/ResetToast";
-import FilterAppliedToast from "../Toasts/FilterAppliedToast";
+import Toaster from "../Toasts/Toaster";
 
 /** @Filters main receiver for the user filters input */
 const filters = new Filters();
@@ -80,7 +80,7 @@ const DynamicCards: React.FC<DynamicCardsProps> = ({
   ressources,
 }) => {
   /** Stateful React @Data_Rows Origin Point, for resets */
-  const initialData = data;
+  let initialData = data;
   /** Stateful React @Data_Rows half state filtered/sorted state for the data in the whole */
   const [wholeViewedData, setWholeViewedData] = useState<Book[]>(data);
   /** Stateful React @Data_Rows viewed Data @see MAX_ROWS */
@@ -99,10 +99,9 @@ const DynamicCards: React.FC<DynamicCardsProps> = ({
   const [resetKey, setResetKey] = useState(0); // Step 1: Key state variable
   /** Stateful React @Filters count the amount of filters activated */
   const [filtersCount, setFiltersCount] = useState(0); // Step 1: Key state variable
-  const [showToastReset, setShowToastReset] = useState(false);
-  const [showToastFilters, setShowToastFilters] = useState(false);
   const [showModalFilters, setShowModalFilters] = useState<boolean>(false);
   const [showModalColumns, setShowModalColumns] = useState<boolean>(false);
+  const [newEventToToast, setNewEventToToast] = useState<string[]>([]);
 
   // Code à exécuter après chaque rendu ou mise à jour du composant
   useEffect(() => {
@@ -151,6 +150,15 @@ const DynamicCards: React.FC<DynamicCardsProps> = ({
 
       setColumns(sortedColumns);
     }
+  };
+
+  const removeBook = (bookId: number) => {
+    initialData = initialData.filter((book) => book.bookId !== bookId);
+    setWholeViewedData(initialData);
+    let newCurrentMinIndex = (currentPage - 1) * MAX_ROWS;
+    setViewedData(
+      initialData.slice(newCurrentMinIndex, wholeViewedData.length)
+    );
   };
 
   /**
@@ -204,7 +212,9 @@ const DynamicCards: React.FC<DynamicCardsProps> = ({
     setCurrentPage(1);
     setFiltersCount(0);
     setResetKey((prevKey) => prevKey + 1);
-    setShowToastReset(true);
+    const previousEventToToast = newEventToToast;
+    previousEventToToast.push("Reset done with success !");
+    setNewEventToToast(previousEventToToast);
   };
 
   /**
@@ -264,7 +274,9 @@ const DynamicCards: React.FC<DynamicCardsProps> = ({
     setWholeViewedData(filteredData);
     setViewedData(filteredData.slice(0, MAX_ROWS));
     setFiltersCount(filters.countFilters());
-    setShowToastFilters(true);
+    const previousEventToToast = newEventToToast;
+    previousEventToToast.push(`${filters.countFilters()} filters applied !`);
+    setNewEventToToast(previousEventToToast);
   };
 
   return (
@@ -486,6 +498,9 @@ const DynamicCards: React.FC<DynamicCardsProps> = ({
             currentColumns={columns}
             key={book.title}
             resources={ressources}
+            removeBook={removeBook}
+            setNewEvent={setNewEventToToast}
+            newEvents={newEventToToast}
           />
         ))}
       </div>
@@ -498,16 +513,21 @@ const DynamicCards: React.FC<DynamicCardsProps> = ({
         total={data.length}
       />
 
-      <ResetToast
-        showToast={showToastReset}
-        setShowToastReset={setShowToastReset}
-      />
-
-      <FilterAppliedToast
-        showToast={showToastFilters}
-        setShowToastFilter={setShowToastFilters}
-        filtersCount={filtersCount}
-      />
+      {/** @TOASTS */}
+      <ToastContainer className="p-3" position="bottom-end">
+        {newEventToToast?.length > 0
+          ? newEventToToast.map((event, index) => {
+              return (
+                <Toaster
+                  bodyToast={event}
+                  setToasts={setNewEventToToast}
+                  toasts={newEventToToast}
+                  key={index}
+                />
+              );
+            })
+          : ""}
+      </ToastContainer>
     </Container>
   );
 };

@@ -23,6 +23,9 @@ interface EditBookProps {
   ressources: Resources;
   setShowMainModalOuter: React.Dispatch<React.SetStateAction<boolean>>;
   showMainModalOuter: boolean;
+  removeBookFromList: (bookId: number) => void;
+  setNewEventToToast: React.Dispatch<React.SetStateAction<string[]>>;
+  currentToasts: string[];
 }
 
 const FormEdit: React.FC<EditBookProps> = ({
@@ -31,6 +34,9 @@ const FormEdit: React.FC<EditBookProps> = ({
   ressources,
   showMainModalOuter,
   setShowMainModalOuter,
+  removeBookFromList,
+  setNewEventToToast,
+  currentToasts,
 }) => {
   const originBook = book;
   const [editedBook, setEditedBook] = useState<Book>(book);
@@ -46,6 +52,33 @@ const FormEdit: React.FC<EditBookProps> = ({
   const closeMainModal = () => {
     setShowMainModalInner(false);
     setShowMainModalOuter(false);
+  };
+
+  const deleteBook = () => {
+    const pastEvents = currentToasts;
+
+    fetch("/api/v1/books/?bookId=" + book.bookId, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    }).then(async (res) => {
+      if (res.status === 200) {
+        removeBookFromList(book.bookId as number);
+        pastEvents.push(`Book ${book.title} has been deleted successfully.`);
+        setNewEventToToast(pastEvents);
+      } else {
+        pastEvents.push(
+          `An error occured while deleting ${book.title}. Please try again later.`
+        );
+      }
+
+      await setShowMainModalInner(false);
+      await setShowDeleteConfirmation(false);
+      await setShowMainModalOuter(false);
+      await setNewEventToToast(pastEvents);
+    });
   };
 
   const editBook = (e: React.FormEvent<HTMLFormElement>) => {
@@ -452,7 +485,14 @@ const FormEdit: React.FC<EditBookProps> = ({
           >
             Close
           </Button>
-          <Button variant="danger">Delete</Button>
+          <Button
+            variant="danger"
+            onClick={() => {
+              deleteBook();
+            }}
+          >
+            Delete
+          </Button>
         </Modal.Footer>
       </Modal>
     </>

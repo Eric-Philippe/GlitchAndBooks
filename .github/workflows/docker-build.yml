@@ -47,7 +47,7 @@ jobs:
           source: client
           target: GlitchAndBooksProd
 
-      - name: Load the .env and launch the server
+      - name: Load the .env
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -56,4 +56,13 @@ jobs:
           script: |
             cd GlitchAndBooksProd
             cp .env server/.env
-            ./launch.sh &
+
+      - name: Execute launch.sh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_PRIVATE_KEY }}
+          script: |
+            cd GlitchAndBooksProd
+            ./launch.sh

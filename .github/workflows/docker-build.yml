@@ -67,4 +67,3 @@ jobs:
             cd GlitchAndBooksProd
             pkill -f "node dist/server.js" || true
             cd server && npm start &
-            cd ~

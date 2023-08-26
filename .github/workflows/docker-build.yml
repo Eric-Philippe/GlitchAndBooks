@@ -65,4 +65,6 @@ jobs:
           key: ${{ secrets.VPS_PRIVATE_KEY }}
           script: |
             cd GlitchAndBooksProd
-            ./launch.sh
+            pkill -f "node dist/server.js" || true
+            cd server && npm start &
+            cd ~

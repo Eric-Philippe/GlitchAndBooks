@@ -1,33 +1,26 @@
-# Utilisez une image de base Node.js
+# Use an official Node.js runtime as the base image
 FROM node:14
 
-# Définissez le répertoire de travail dans le conteneur
-WORKDIR /app
+# Set the working directory within the container
 
-# Copiez le fichier package.json du client dans le conteneur client/
-COPY client/package*.json client/
-
-# Copiez le fichier package.json du serveur dans le conteneur server/
-COPY server/package*.json server/
-
-# Installez les dépendances du client
+# Copy package.json and package-lock.json for client and install dependencies
+COPY client/package*.json ./client/
 RUN cd client && npm install
 
-# Installez les dépendances du serveur
+# Copy package.json and package-lock.json for server and install dependencies
+COPY server/package*.json ./server/
 RUN cd server && npm install
 
-# Copiez le reste du client dans le conteneur client/
-COPY client/ client/
+# Copy the rest of the client and server files
+COPY client/ ./client/
+COPY server/ ./server/
 
-# Copiez le reste du serveur dans le conteneur server/
-COPY server/ server/
-
-# On se retrouve ici avec app/client/node_modules et app/server/node_modules
-
-# build client
+# Build the client and server
 RUN cd client && npm run build
-
-# build server
 RUN cd server && npm run build
 
-CMD ["node", "server/dist/index.js"]
+# Expose the desired port
+EXPOSE 3000
+
+# Start the server
+CMD ["node", "server/dist/server.js"]

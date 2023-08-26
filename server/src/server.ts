@@ -35,7 +35,6 @@ app.get("/*", function (req, res) {
 const port = PORT || 3000;
 app.listen(port, () => {
   console.log("App running on port " + port);
-  console.log("visit http://localhost:" + port);
 
   if (AppDataSource.isInitialized) {
     console.log("Database connected");

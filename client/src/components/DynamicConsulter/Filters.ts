@@ -37,8 +37,6 @@ export default class Filters {
   public _pages: IntOperationAdvanced = { operation: "none" };
   public _year: IntOperationAdvanced = { operation: "none" };
 
-  constructor() {}
-
   countFilters() {
     let count = 0;
     if (this._languages.length > 0) count++;

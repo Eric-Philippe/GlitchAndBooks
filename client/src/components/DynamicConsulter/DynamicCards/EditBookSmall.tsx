@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "bootstrap";
+
 import { Book } from "../../../models/Book";
 import Resources from "../../../middlewares/Resources";
 import FormEdit from "../FormEdit";
@@ -17,6 +17,7 @@ const EditBookSmall: React.FC<EditBookProps> = ({
   setShowFromParent,
 }) => {
   const [show, setShow] = useState(false);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   const handleClose = () => {
     setShow(false);
@@ -29,21 +30,7 @@ const EditBookSmall: React.FC<EditBookProps> = ({
     handleShow();
   }, []);
 
-  return (
-    <Modal show={show} fullscreen={true} onHide={() => setShow(false)}>
-      <Modal.Header closeButton>
-        <Modal.Title>Editing: {book.title}</Modal.Title>
-      </Modal.Header>
-
-      <Modal.Body>
-        <FormEdit
-          book={book}
-          ressources={ressources}
-          handeCloseParent={handleClose}
-        />
-      </Modal.Body>
-    </Modal>
-  );
+  return <></>;
 };
 
 export default EditBookSmall;

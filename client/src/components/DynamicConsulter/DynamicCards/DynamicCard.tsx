@@ -4,8 +4,8 @@ import Resources from "../../../middlewares/Resources";
 import { Book } from "../../../models/Book";
 import { Column, columnsHasField } from "../utils/DefaultColumns";
 import { bookFieldToText } from "../utils/utils";
-import EditBookSmall from "./EditBookSmall";
 import NoteModal from "../../NoteModal";
+import FormEdit from "../FormEdit";
 
 interface DynamicCardProps {
   book: Book;
@@ -56,10 +56,12 @@ const DynamicCard: React.FC<DynamicCardProps> = ({
     <>
       {showNotes && <NoteModal book={book} setShow={setShowNotes}></NoteModal>}
       {showEdit && !showNotes && (
-        <EditBookSmall
+        <FormEdit
           book={book}
-          setShowFromParent={setShowEdit}
+          mainModalInBackground={true}
           ressources={resources}
+          setShowMainModalOuter={setShowEdit}
+          showMainModalOuter={showEdit}
         />
       )}
       <button

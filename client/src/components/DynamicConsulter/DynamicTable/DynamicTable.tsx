@@ -22,7 +22,6 @@ import { Column } from "../utils/DefaultColumns";
 import { _BoolOperation } from "../Filters";
 import { Book } from "../../../models/Book";
 import { FunnelFill, Recycle, Table } from "react-bootstrap-icons";
-import EditBookLarge from "./EditBookLarge";
 import {
   Button,
   ButtonGroup,
@@ -35,6 +34,7 @@ import {
 } from "react-bootstrap";
 import ResetToast from "../Toasts/ResetToast";
 import FilterAppliedToast from "../Toasts/FilterAppliedToast";
+import FormEdit from "../FormEdit";
 
 /** @Filters main receiver for the user filters input */
 const filters = new Filters();
@@ -419,10 +419,12 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
 
       {/** @EDIT_MODAL */}
       {showModalEdit ? (
-        <EditBookLarge
+        <FormEdit
           book={bookToEdit || initialData[5]}
-          setShowFromParent={setShowModalEdit}
+          mainModalInBackground={false}
           ressources={ressources}
+          showMainModalOuter={showModalEdit}
+          setShowMainModalOuter={setShowModalEdit}
         />
       ) : (
         ""

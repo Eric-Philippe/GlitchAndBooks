@@ -31,7 +31,9 @@ import {
   FormSelect,
   InputGroup,
   Modal,
+  OverlayTrigger,
   ToastContainer,
+  Tooltip,
 } from "react-bootstrap";
 import { FunnelFill, Recycle, Table } from "react-bootstrap-icons";
 import Toaster from "../Toasts/Toaster";
@@ -317,6 +319,13 @@ const DynamicCards: React.FC<DynamicCardsProps> = ({
     );
   };
 
+  const pickRandomBook = () => {
+    const randomBook =
+      wholeViewedData[Math.floor(Math.random() * wholeViewedData.length)];
+    setSearchValue(randomBook.title);
+    quickSearch(randomBook.title);
+  };
+
   return (
     <Container>
       {/** @FILTERS_MODAL */}
@@ -516,9 +525,24 @@ const DynamicCards: React.FC<DynamicCardsProps> = ({
             }}
           />
         </FloatingLabel>
-        <Button variant="outline-secondary" disabled>
-          🔍
-        </Button>
+        <OverlayTrigger
+          key={"top"}
+          placement={"top"}
+          overlay={
+            <Tooltip id={`tooltip-top`}>
+              Pick a random book among the viewed ones
+            </Tooltip>
+          }
+        >
+          <Button
+            variant="outline-info"
+            onClick={() => {
+              pickRandomBook();
+            }}
+          >
+            🎲
+          </Button>
+        </OverlayTrigger>
       </InputGroup>
       <InputGroup className="mb-3">
         <small className="text-muted">

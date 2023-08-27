@@ -32,6 +32,8 @@ import {
   InputGroup,
   Modal,
   ToastContainer,
+  OverlayTrigger,
+  Tooltip,
 } from "react-bootstrap";
 import FormEdit from "../FormEdit";
 import Toaster from "../Toasts/Toaster";
@@ -337,6 +339,13 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
     );
   };
 
+  const pickRandomBook = () => {
+    const randomBook =
+      wholeViewedData[Math.floor(Math.random() * wholeViewedData.length)];
+    setSearchValue(randomBook.title);
+    quickSearch(randomBook.title);
+  };
+
   return (
     <Container>
       {/** @FILTERS_MODAL */}
@@ -530,9 +539,24 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
             }}
           />
         </FloatingLabel>
-        <Button variant="outline-secondary" disabled>
-          🔍
-        </Button>
+        <OverlayTrigger
+          key={"top"}
+          placement={"top"}
+          overlay={
+            <Tooltip id={`tooltip-top`}>
+              Pick a random book among the viewed ones
+            </Tooltip>
+          }
+        >
+          <Button
+            variant="outline-info"
+            onClick={() => {
+              pickRandomBook();
+            }}
+          >
+            🎲 Pick Random
+          </Button>
+        </OverlayTrigger>
       </InputGroup>
       <BootstrapTable className="table table-striped table-hover caption-top">
         <caption>{`${MAX_ROWS * (currentPage - 1)}-${

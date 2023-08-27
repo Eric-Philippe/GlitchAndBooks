@@ -57,7 +57,8 @@ And here a limited demo account :
 - Add books to your wishlist 🕒
 - Consult your wishlist 🕒
 - Having a stats page with graphs / funny comparisons (ex: "You have read 3 times more books than the average user !" "If we put all the your books on a shelf, it would be 3 times higher than the Eiffel Tower !") 🕒
-- Having a "random book" button 🕒
+- Having a "random book" button ✅
+- Having a carrousel with suggestion like "You may also like" / "random book" 🕒
 - Having a "Here some book to read" section 🕒
 - Being able to export your library as a PDF / Excel / Json file 🕒
 - Being able to share your library with your friends 🕒

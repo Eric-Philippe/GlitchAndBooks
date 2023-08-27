@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap";
-import { Book } from "../models/Book";
+import { Book } from "../../../models/Book";
 
 interface EditBookProps {
   book: Book;

@@ -1,12 +1,24 @@
 import React, { useRef } from "react";
 
-import Resources from "../../../middlewares/Resources";
-import { Book } from "../../../models/Book";
 import { Column, columnsHasField } from "../utils/DefaultColumns";
 import { bookFieldToText } from "../utils/utils";
-import NoteModal from "../../NoteModal";
+import { Book } from "../../../models/Book";
+
+import Resources from "../../../middlewares/Resources";
+import NoteModal from "./NoteModal";
 import FormEdit from "../FormEdit";
 
+/**
+ * DynamicCard component props Interface
+ * @interface
+ * @property {Book} book - Book to display
+ * @property {Column[]} currentColumns - Properties to display
+ * @property {Resources} resources - Resources to display
+ * @property {Function} removeBook - Function to remove a book from the list
+ * @property {Function} editBook - Function to edit a book from the list
+ * @property {Function} setNewEvent - Function to set a new event to the toast
+ * @property {string[]} newEvents - List of events to display in the toast *
+ */
 interface DynamicCardProps {
   book: Book;
   currentColumns: Column[];
@@ -17,6 +29,12 @@ interface DynamicCardProps {
   newEvents: string[];
 }
 
+/**
+ * DynamicCard component for a single book
+ * @component
+ * @param {DynamicCardProps} props - Component props
+ * @returns
+ */
 const DynamicCard: React.FC<DynamicCardProps> = ({
   book,
   currentColumns,
@@ -26,16 +44,24 @@ const DynamicCard: React.FC<DynamicCardProps> = ({
   setNewEvent,
   newEvents,
 }) => {
+  /** @MODAL_SHOW_STATES */
   const [showEdit, setShowEdit] = React.useState<boolean>(false);
   const [showNotes, setShowNotes] = React.useState<boolean>(false);
 
+  /** @LONG_PRESS_DETECTOR */
   const timerRefLongPress = useRef<NodeJS.Timeout>();
-  const timerRefDoubleClick = useRef<NodeJS.Timeout>();
-
   const isLongPress = useRef<boolean>(false);
+
+  /** @DOUBLE_CLICK_DETECTOR */
+  const timerRefDoubleClick = useRef<NodeJS.Timeout>();
   const isEarlySingleClick = useRef<boolean>(false);
 
-  function touchPressMade() {
+  /**
+   * Function to handle long press
+   * @function
+   * @returns {void}
+   */
+  function handLongPress() {
     isLongPress.current = false;
     timerRefLongPress.current = setTimeout(() => {
       isLongPress.current = true;
@@ -45,6 +71,11 @@ const DynamicCard: React.FC<DynamicCardProps> = ({
     }, 1000);
   }
 
+  /**
+   * Function to handle double click
+   * @function
+   * @returns {void}
+   */
   function handleDoubleTap() {
     if (isEarlySingleClick.current) {
       setShowEdit(false);
@@ -78,7 +109,7 @@ const DynamicCard: React.FC<DynamicCardProps> = ({
         className="list-group-item list-group-item-action"
         aria-current="true"
         onTouchStart={() => {
-          touchPressMade();
+          handLongPress();
           handleDoubleTap();
         }}
         onTouchEnd={() => {

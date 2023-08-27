@@ -79,37 +79,54 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
   fieldToValue,
   ressources,
 }) => {
-  /** Stateful React @Data_Rows Origin Point, for resets */
+  /**  @Data_Rows Origin Point, for resets */
   let initialData = data;
+
+  /** =========================== */
+  /** @STATES_REACT_DECLARATIONS */
+  /** ========================= */
+
   /** Stateful React @Data_Rows half state filtered/sorted state for the data in the whole */
   const [wholeViewedData, setWholeViewedData] = useState<Book[]>(data);
   /** Stateful React @Data_Rows viewed Data @see MAX_ROWS */
   const [viewedData, setViewedData] = useState<Book[]>(data.slice(0, MAX_ROWS));
+
+  /** Stateful React @Filters here to reload the filters when the user call a reset */
+  const [resetKey, setResetKey] = useState(0);
+  /** Stateful React @Filters count the amount of filters activated */
+  const [filtersCount, setFiltersCount] = useState(0);
+  /** Stateful React @Filters in order to show to Filters Panel */
+  const [showModalFilters, setShowModalFilters] = useState<boolean>(false);
+
   /** Stateful React @Column Dynamic Column */
   const [columns, setColumns] = useState<Column[]>(initColumns);
   /** Stateful React @Column */
   const [columnCheckboxes, setColumnCheckboxes] = useState<{
     [key: string]: boolean;
   }>({});
+  /** Stateful React @Column in order to display the Columns Picker Panel */
+  const [showModalColumns, setShowModalColumns] = useState<boolean>(false);
+
   /** Stateful React @Search Quick Search */
   const [searchValue, setSearchValue] = useState<string>("");
+
   /** Stateful React @Pagination current page */
   const [currentPage, setCurrentPage] = useState<number>(1);
-  /** Stateful React @Filters here to reload the filters when the user call a reset */
-  const [resetKey, setResetKey] = useState(0); // Step 1: Key state variable
-  /** Stateful React @Filters count the amount of filters activated */
-  const [filtersCount, setFiltersCount] = useState(0); // Step 1: Key state variable
+
   /** Stateful React @Sort */
   const [sortState, setSortState] = useState<{
     key: string;
     value: SortState;
     [key: string]: string | string[] | number | boolean | null | undefined;
   }>({ key: "", value: "NONE" });
+
+  /** Stateful React @Edit User's book to edit */
   const [bookToEdit, setBookToEdit] = useState<Book>();
-  const [newEventToToast, setNewEventToToast] = useState<string[]>([]);
+  /** Stateful React @Edit to show the Edit Panel */
   const [showModalEdit, setShowModalEdit] = useState<boolean>(false);
-  const [showModalFilters, setShowModalFilters] = useState<boolean>(false);
-  const [showModalColumns, setShowModalColumns] = useState<boolean>(false);
+
+  /** Stateful React @Events_Toasts to list all the toast events to display */
+  const [newEventToToast, setNewEventToToast] = useState<string[]>([]);
 
   // Code à exécuter après chaque rendu ou mise à jour du composant
   useEffect(() => {
@@ -123,6 +140,38 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
 
     setColumnCheckboxes(initialColumnCheckboxes);
   }, [allColumns, initColumns]);
+
+  /**
+   * @Data_Rows
+   * @function removeBook - Supprime un livre du tableau
+   * @param bookId Id du livre à supprimer
+   */
+  const removeBook = (bookId: number) => {
+    initialData = initialData.filter((book) => book.bookId !== bookId);
+    setWholeViewedData(initialData);
+    let newCurrentMinIndex = (currentPage - 1) * MAX_ROWS;
+    setViewedData(
+      initialData.slice(newCurrentMinIndex, wholeViewedData.length)
+    );
+  };
+
+  /**
+   * @Data_Rows
+   * @function editBook - Edite un livre du tableau
+   * @param book Livre à éditer
+   */
+  const editBook = (book: Book) => {
+    const bookIndex = initialData.findIndex(
+      (bookToFind) => bookToFind.bookId === book.bookId
+    );
+    initialData[bookIndex] = book;
+    setWholeViewedData(initialData);
+    let newCurrentMinIndex = (currentPage - 1) * MAX_ROWS;
+    setViewedData(
+      initialData.slice(newCurrentMinIndex, wholeViewedData.length)
+    );
+    reset(false);
+  };
 
   /**
    * @Columns
@@ -140,26 +189,20 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
     }));
   };
 
-  const removeBook = (bookId: number) => {
-    initialData = initialData.filter((book) => book.bookId !== bookId);
-    setWholeViewedData(initialData);
-    let newCurrentMinIndex = (currentPage - 1) * MAX_ROWS;
-    setViewedData(
-      initialData.slice(newCurrentMinIndex, wholeViewedData.length)
-    );
-  };
-
-  const editBook = (book: Book) => {
-    const bookIndex = initialData.findIndex(
-      (bookToFind) => bookToFind.bookId === book.bookId
-    );
-    initialData[bookIndex] = book;
-    setWholeViewedData(initialData);
-    let newCurrentMinIndex = (currentPage - 1) * MAX_ROWS;
-    setViewedData(
-      initialData.slice(newCurrentMinIndex, wholeViewedData.length)
-    );
-    reset(false);
+  /**
+   * @Filters
+   * @description Filtre les données en fonction des filtres
+   * @param column Colonne à trier
+   * @returns void
+   */
+  const loadFilters = () => {
+    const filteredData = filters.filterBooks(initialData);
+    setWholeViewedData(filteredData);
+    setViewedData(filteredData.slice(0, MAX_ROWS));
+    setFiltersCount(filters.countFilters());
+    const previousEventToToast = newEventToToast;
+    previousEventToToast.push(`${filters.countFilters()} filters applied !`);
+    setNewEventToToast(previousEventToToast);
   };
 
   /**
@@ -241,7 +284,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
   };
 
   /**
-   * @Handler_Pagination
+   * @Pagination
    * @param page
    */
   const handlePageChange = (page: number) => {
@@ -292,22 +335,6 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
         currentPage * MAX_ROWS
       )
     );
-  };
-
-  /**
-   * @Filters
-   * @description Filtre les données en fonction des filtres
-   * @param column Colonne à trier
-   * @returns void
-   */
-  const loadFilters = () => {
-    const filteredData = filters.filterBooks(initialData);
-    setWholeViewedData(filteredData);
-    setViewedData(filteredData.slice(0, MAX_ROWS));
-    setFiltersCount(filters.countFilters());
-    const previousEventToToast = newEventToToast;
-    previousEventToToast.push(`${filters.countFilters()} filters applied !`);
-    setNewEventToToast(previousEventToToast);
   };
 
   return (

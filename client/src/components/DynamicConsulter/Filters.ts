@@ -1,8 +1,13 @@
 import { Book } from "../../models/Book";
 
+/** @EXPORT_TYPES_FILTER */
+/** Operation allowed for a BooleanType Filter  */
 export type _BoolOperation = "YES" | "NO" | "BOTH";
+/** Operation allowed for a IntType Filter  */
 export type _IntOperation = "none" | "between" | "fewer" | "greater" | "equal";
 
+/** @EXPORT_INTERFACE_TYPES_FILTER_PROPS */
+/** Interface for a IntOperationAdvances Filter Props  */
 export interface IntOperationAdvanced {
   operation: _IntOperation;
   value?: number;
@@ -10,11 +15,13 @@ export interface IntOperationAdvanced {
   min?: number;
 }
 
+/** Interface for a String Array Filter Props  */
 export interface ItemStrArrayProps {
   data: string[];
   setStrArray: (b: string[]) => void;
 }
 
+/** Interface for an Int Filter Props */
 export interface ItemIntOpProps {
   setMax: (n: number | undefined) => void;
   setMin: (n: number | undefined) => void;
@@ -22,10 +29,24 @@ export interface ItemIntOpProps {
   setOperation: (s: _IntOperation) => void;
 }
 
+/** Interface for a Boolean Filter Props */
 export interface ItemBoolProps {
   setBool: (strA: _BoolOperation) => void;
 }
 
+/**
+ * Regroup all the filters for the DynamicConsulter
+ * @class
+ * @property {string[]} _languages - Languages to filter
+ * @property {string[]} _countries - Countries to filter
+ * @property {string[]} _genres - Genres to filter
+ * @property {string[]} _types - Types to filter
+ * @property {_BoolOperation} _physical - Physical to filter
+ * @property {_BoolOperation} _read - Read to filter
+ * @property {_BoolOperation} _wantToRead - WantToRead to filter
+ * @property {IntOperationAdvanced} _pages - Pages to filter
+ * @property {IntOperationAdvanced} _year - Year to filter
+ */
 export default class Filters {
   public _languages: string[] = [];
   public _countries: string[] = [];
@@ -37,6 +58,10 @@ export default class Filters {
   public _pages: IntOperationAdvanced = { operation: "none" };
   public _year: IntOperationAdvanced = { operation: "none" };
 
+  /**
+   * Count the number of filters applied
+   * @returns {number} Number of filters applied
+   */
   countFilters() {
     let count = 0;
     if (this._languages.length > 0) count++;
@@ -51,6 +76,9 @@ export default class Filters {
     return count;
   }
 
+  /**
+   * Reset all the filters
+   */
   reset() {
     this._languages = [];
     this._countries = [];
@@ -63,6 +91,11 @@ export default class Filters {
     this._year = { operation: "none" };
   }
 
+  /**
+   * Filter the books with the filters applied
+   * @param books Books to filter
+   * @returns {Book[]} Books filtered
+   */
   filterBooks(books: Book[]) {
     let filteredBooks = books;
     filteredBooks = this.filterLanguages(filteredBooks);
@@ -77,6 +110,7 @@ export default class Filters {
     return filteredBooks;
   }
 
+  /** @INNER_FILTERS_METHODS */
   private filterLanguages(books: Book[]) {
     if (this._languages.length === 0) return books;
     return books.filter((b) => this._languages.includes(b.lang));

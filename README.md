@@ -28,7 +28,7 @@ The first goal of this project is to be able to sort, filter and search your boo
 
 ## Want to try it ?
 
-The project is still in development, but you can try it here : http://www.glitchandbooks.fr !
+The project is still in development, but you can try it here : https://glitchandbooks.fr !
 And here a limited demo account :
 
 | Username | Password           |
@@ -42,7 +42,11 @@ And here a limited demo account :
 - Add books to your library ✅
 - Consult your library ✅
 - Fully Dynamic Interface to consult your books, one for computer screen, one for mobile screen ✅
-- Edit your books 🕒
+- Edit your books ✅
+- Delete your books ✅
+- Sort your books by title, author, date, genre, ... ✅
+- Filter your books by title, author, date, genre, ... ✅
+- Secure on an HTTPS server ✅
 
 ## Secondary Features
 
@@ -80,3 +84,5 @@ For my own pride, I'm gonna list here all the things I've learned during this pr
 | DNS / Web Domain configuration |
 | Back Authenticated routes      |
 | GitHub Deploy                  |
+| React Router                   |
+| Nginx / HTTPS Certificat       |

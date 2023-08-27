@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 
-import "bootstrap";
-import { Book } from "../../models/Book";
 import Resources from "../../middlewares/Resources";
-import { bookEquals } from "../../utils/BooksUtils";
 import Modal from "react-bootstrap/esm/Modal";
+
+import { bookEquals } from "../../utils/BooksUtils";
+import { InfoCircle } from "react-bootstrap-icons";
+import { Book } from "../../models/Book";
 import {
   Alert,
   Button,
@@ -13,10 +14,21 @@ import {
   InputGroup,
   Row,
 } from "react-bootstrap";
-import { InfoCircle } from "react-bootstrap-icons";
 
 const NUMBER_EMOTES = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
 
+/**
+ * EditBookProps Interface
+ * @param book: Book - Book to edit
+ * @param mainModalInBackground: boolean - If the main modal is in background
+ * @param ressources: Resources - Resources
+ * @param setShowMainModalOuter: React.Dispatch<React.SetStateAction<boolean>> - Function to set the main modal
+ * @param showMainModalOuter: boolean - If the main modal is shown
+ * @param removeBookFromList: (bookId: number) => void - Function to remove a book from the list
+ * @param editBookInList: (book: Book) => void - Function to edit a book in the list
+ * @param setNewEventToToast: React.Dispatch<React.SetStateAction<string[]>> - Function to set the toasts
+ * @param currentToasts: string[] - Array of toasts content
+ */
 interface EditBookProps {
   book: Book;
   mainModalInBackground: boolean;
@@ -29,6 +41,11 @@ interface EditBookProps {
   currentToasts: string[];
 }
 
+/**
+ * FormEdit Component
+ * Allow to edit a book, delete it or close the modal
+ * @returns
+ */
 const FormEdit: React.FC<EditBookProps> = ({
   book,
   mainModalInBackground,
@@ -52,11 +69,17 @@ const FormEdit: React.FC<EditBookProps> = ({
     useState(showMainModalOuter);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
+  /**
+   * Close the main modal from the inner and outer parent
+   */
   const closeMainModal = () => {
     setShowMainModalInner(false);
     setShowMainModalOuter(false);
   };
 
+  /**
+   * Delete the book from the database
+   */
   const deleteBook = () => {
     const pastEvents = currentToasts;
 
@@ -86,6 +109,10 @@ const FormEdit: React.FC<EditBookProps> = ({
     });
   };
 
+  /**
+   * Edit the book in the database
+   * @param e - FormEvent
+   */
   const editBook = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;

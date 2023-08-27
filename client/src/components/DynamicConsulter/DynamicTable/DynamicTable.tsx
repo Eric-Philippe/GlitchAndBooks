@@ -236,6 +236,9 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
     let reduced = searchTerm.length < searchValue.length;
     let isSearchEmpty = searchTerm.length === 0;
 
+    console.log("Reduced", reduced);
+    console.log("isSearchEmpty", isSearchEmpty);
+
     setSearchValue(searchTerm);
 
     const dataToSearch =
@@ -340,10 +343,13 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
   };
 
   const pickRandomBook = () => {
-    const randomBook =
-      wholeViewedData[Math.floor(Math.random() * wholeViewedData.length)];
+    const data = filters.filterBooks(initialData);
+
+    const randomBook = data[Math.floor(Math.random() * data.length)];
+
+    setWholeViewedData([randomBook]);
+    setViewedData([randomBook]);
     setSearchValue(randomBook.title);
-    quickSearch(randomBook.title);
   };
 
   return (

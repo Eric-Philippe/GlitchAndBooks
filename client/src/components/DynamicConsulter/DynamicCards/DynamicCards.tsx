@@ -320,10 +320,13 @@ const DynamicCards: React.FC<DynamicCardsProps> = ({
   };
 
   const pickRandomBook = () => {
-    const randomBook =
-      wholeViewedData[Math.floor(Math.random() * wholeViewedData.length)];
+    const data = filters.filterBooks(initialData);
+
+    const randomBook = data[Math.floor(Math.random() * data.length)];
+
+    setWholeViewedData([randomBook]);
+    setViewedData([randomBook]);
     setSearchValue(randomBook.title);
-    quickSearch(randomBook.title);
   };
 
   return (

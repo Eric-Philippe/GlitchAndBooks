@@ -57,6 +57,9 @@ export default async function addBook(req: Request, res: Response) {
     newBook.countryorigin = country;
     newBook.types = type;
     newBook.languages = language;
+    if (book.bookId) {
+      newBook.bookid = book.bookId;
+    }
 
     const savedBook = await repoBook.save(newBook);
     linkAuthors(book.lastname, book.firstname, savedBook);

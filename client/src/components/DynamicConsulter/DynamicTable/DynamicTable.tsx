@@ -149,6 +149,19 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
     );
   };
 
+  const editBook = (book: Book) => {
+    const bookIndex = initialData.findIndex(
+      (bookToFind) => bookToFind.bookId === book.bookId
+    );
+    initialData[bookIndex] = book;
+    setWholeViewedData(initialData);
+    let newCurrentMinIndex = (currentPage - 1) * MAX_ROWS;
+    setViewedData(
+      initialData.slice(newCurrentMinIndex, wholeViewedData.length)
+    );
+    reset(false);
+  };
+
   /**
    * @Columns
    * @function addColumn - Ajoute une colonne au tableau en utilisant la priorité des colonnes
@@ -204,7 +217,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
    * @function reset - Réinitialise les filtres, la recherche, les colonnes et les données affichées
    * @description Réinitialise les filtres, la recherche, les colonnes et les données affichées en mettant tout par défaut
    */
-  const reset = () => {
+  const reset = (showToast: boolean = true) => {
     filters.reset();
     setSearchValue("");
     setColumns(initColumns);
@@ -220,9 +233,11 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
     setCurrentPage(1);
     setFiltersCount(0);
     setResetKey((prevKey) => prevKey + 1);
-    const previousEventToToast = newEventToToast;
-    previousEventToToast.push("Reset done with success !");
-    setNewEventToToast(previousEventToToast);
+    if (showToast) {
+      const previousEventToToast = newEventToToast;
+      previousEventToToast.push("Reset done with success !");
+      setNewEventToToast(previousEventToToast);
+    }
   };
 
   /**
@@ -438,6 +453,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
           showMainModalOuter={showModalEdit}
           setShowMainModalOuter={setShowModalEdit}
           removeBookFromList={removeBook}
+          editBookInList={editBook}
           setNewEventToToast={setNewEventToToast}
           currentToasts={newEventToToast}
         />

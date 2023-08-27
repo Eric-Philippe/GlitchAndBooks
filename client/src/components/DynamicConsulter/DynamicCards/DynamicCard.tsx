@@ -12,6 +12,7 @@ interface DynamicCardProps {
   currentColumns: Column[];
   resources: Resources;
   removeBook: (bookId: number) => void;
+  editBook: (book: Book) => void;
   setNewEvent: React.Dispatch<React.SetStateAction<string[]>>;
   newEvents: string[];
 }
@@ -21,6 +22,7 @@ const DynamicCard: React.FC<DynamicCardProps> = ({
   currentColumns,
   resources,
   removeBook,
+  editBook,
   setNewEvent,
   newEvents,
 }) => {
@@ -67,6 +69,7 @@ const DynamicCard: React.FC<DynamicCardProps> = ({
           setShowMainModalOuter={setShowEdit}
           showMainModalOuter={showEdit}
           removeBookFromList={removeBook}
+          editBookInList={editBook}
           setNewEventToToast={setNewEvent}
           currentToasts={newEvents}
         />

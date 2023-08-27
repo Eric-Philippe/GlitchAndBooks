@@ -24,6 +24,7 @@ interface EditBookProps {
   setShowMainModalOuter: React.Dispatch<React.SetStateAction<boolean>>;
   showMainModalOuter: boolean;
   removeBookFromList: (bookId: number) => void;
+  editBookInList: (book: Book) => void;
   setNewEventToToast: React.Dispatch<React.SetStateAction<string[]>>;
   currentToasts: string[];
 }
@@ -35,15 +36,17 @@ const FormEdit: React.FC<EditBookProps> = ({
   showMainModalOuter,
   setShowMainModalOuter,
   removeBookFromList,
+  editBookInList,
   setNewEventToToast,
   currentToasts,
 }) => {
-  const originBook = book;
-  const [editedBook, setEditedBook] = useState<Book>(book);
+  const [originBook, setOriginBook] = useState(book);
+  const [editedBook, setEditedBook] = useState<Book>(originBook);
 
   const [editFormValidated, setEditFormValidated] = useState(false);
 
   const [showSameBookAlert, setShowSameBookToast] = useState(false);
+  const [showBookEditedAlert, setShowBookEditedAlert] = useState(false);
 
   const [showMainModalInner, setShowMainModalInner] =
     useState(showMainModalOuter);
@@ -57,7 +60,7 @@ const FormEdit: React.FC<EditBookProps> = ({
   const deleteBook = () => {
     const pastEvents = currentToasts;
 
-    fetch("/api/v1/books/?bookId=" + book.bookId, {
+    fetch("/api/v1/books/?bookId=" + originBook.bookId, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -65,12 +68,14 @@ const FormEdit: React.FC<EditBookProps> = ({
       },
     }).then(async (res) => {
       if (res.status === 200) {
-        removeBookFromList(book.bookId as number);
-        pastEvents.push(`Book ${book.title} has been deleted successfully.`);
+        removeBookFromList(originBook.bookId as number);
+        pastEvents.push(
+          `Book ${originBook.title} has been deleted successfully.`
+        );
         setNewEventToToast(pastEvents);
       } else {
         pastEvents.push(
-          `An error occured while deleting ${book.title}. Please try again later.`
+          `An error occured while deleting ${originBook.title}. Please try again later.`
         );
       }
 
@@ -81,7 +86,7 @@ const FormEdit: React.FC<EditBookProps> = ({
     });
   };
 
-  const editBook = (e: React.FormEvent<HTMLFormElement>) => {
+  const editBook = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
 
@@ -91,12 +96,26 @@ const FormEdit: React.FC<EditBookProps> = ({
       e.preventDefault();
       e.stopPropagation();
     } else {
-      console.log("Original Book Name: " + originBook.title);
-
-      console.log(bookEquals(originBook, editedBook));
-      console.log(originBook.bookId);
-
       setEditFormValidated(true);
+
+      const bodyData = {
+        book: editedBook,
+        userid: localStorage.getItem("userid"),
+      };
+      const res = await fetch("/api/v1/books/add", {
+        method: "POST",
+        body: JSON.stringify(bodyData),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+
+      if (res.status === 200) {
+        editBookInList(editedBook);
+        setShowBookEditedAlert(true);
+        setOriginBook(editedBook);
+      }
     }
   };
 
@@ -110,7 +129,7 @@ const FormEdit: React.FC<EditBookProps> = ({
         fullscreen={mainModalInBackground ? true : ""}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Editing: {book.title}</Modal.Title>
+          <Modal.Title>Editing: {originBook.title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form
@@ -140,9 +159,11 @@ const FormEdit: React.FC<EditBookProps> = ({
               </Form.Group>
             </Row>
 
-            {book.lastname.map((lastname, index) => (
+            {originBook.lastname.map((lastname, index) => (
               <Row
-                className={index === book.lastname.length - 1 ? "mb-3" : "mb-2"}
+                className={
+                  index === originBook.lastname.length - 1 ? "mb-3" : "mb-2"
+                }
                 key={index}
               >
                 <Form.Group>
@@ -433,6 +454,19 @@ const FormEdit: React.FC<EditBookProps> = ({
               <br></br>
               <strong>{originBook.title}</strong>
             </Alert>
+            <Alert
+              show={showBookEditedAlert}
+              variant="success"
+              onClose={() => setShowBookEditedAlert(false)}
+              dismissible
+            >
+              <span>
+                <InfoCircle></InfoCircle>
+              </span>
+              {` Your changes have been saved on `}
+              <br></br>
+              <strong>{originBook.title}</strong>
+            </Alert>
 
             <Modal.Footer>
               <Button
@@ -470,7 +504,7 @@ const FormEdit: React.FC<EditBookProps> = ({
         }}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Deleting: {book.title}</Modal.Title>
+          <Modal.Title>Deleting: {originBook.title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <p>Are you sure you want to delete this book?</p>

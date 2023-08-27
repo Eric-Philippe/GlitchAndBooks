@@ -161,6 +161,19 @@ const DynamicCards: React.FC<DynamicCardsProps> = ({
     );
   };
 
+  const editBook = (book: Book) => {
+    const bookIndex = initialData.findIndex(
+      (bookToFind) => bookToFind.bookId === book.bookId
+    );
+    initialData[bookIndex] = book;
+    setWholeViewedData(initialData);
+    let newCurrentMinIndex = (currentPage - 1) * MAX_ROWS;
+    setViewedData(
+      initialData.slice(newCurrentMinIndex, wholeViewedData.length)
+    );
+    reset(false);
+  };
+
   /**
    * @Search
    * @function quickSearch - Recherche rapide dans le tableau
@@ -196,7 +209,7 @@ const DynamicCards: React.FC<DynamicCardsProps> = ({
    * @function reset - Réinitialise les filtres, la recherche, les colonnes et les données affichées
    * @description Réinitialise les filtres, la recherche, les colonnes et les données affichées en mettant tout par défaut
    */
-  const reset = () => {
+  const reset = (showToast: boolean = true) => {
     filters.reset();
     setSearchValue("");
     setColumns(initColumns);
@@ -212,9 +225,11 @@ const DynamicCards: React.FC<DynamicCardsProps> = ({
     setCurrentPage(1);
     setFiltersCount(0);
     setResetKey((prevKey) => prevKey + 1);
-    const previousEventToToast = newEventToToast;
-    previousEventToToast.push("Reset done with success !");
-    setNewEventToToast(previousEventToToast);
+    if (showToast) {
+      const previousEventToToast = newEventToToast;
+      previousEventToToast.push("Reset done with success !");
+      setNewEventToToast(previousEventToToast);
+    }
   };
 
   /**
@@ -492,13 +507,14 @@ const DynamicCards: React.FC<DynamicCardsProps> = ({
         MAX_ROWS * (currentPage - 1) + viewedData.length
       } / ${wholeViewedData.length}`}</small>
       <div className="list-group mb-3">
-        {viewedData.map((book) => (
+        {viewedData.map((book, index) => (
           <DynamicCard
             book={book}
             currentColumns={columns}
-            key={book.title}
+            key={index}
             resources={ressources}
             removeBook={removeBook}
+            editBook={editBook}
             setNewEvent={setNewEventToToast}
             newEvents={newEventToToast}
           />

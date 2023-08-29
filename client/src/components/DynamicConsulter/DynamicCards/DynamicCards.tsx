@@ -228,10 +228,11 @@ const DynamicCards: React.FC<DynamicCardsProps> = ({
 
     const dataToSearch =
       reduced || isSearchEmpty ? initialData : wholeViewedData;
-    let newData = dataToSearch;
+
+    let newData: Book[] = [];
 
     if (!isSearchEmpty) {
-      newData = dataToSearch.filter((book) => {
+      newData = filters.filterBooks(dataToSearch).filter((book) => {
         const title = fieldToValue(book, "title").toLowerCase();
         const authors = fieldToValue(book, "authors").toLowerCase();
         return (
@@ -239,6 +240,8 @@ const DynamicCards: React.FC<DynamicCardsProps> = ({
           authors.includes(searchTerm.toLowerCase())
         );
       });
+    } else {
+      newData = filters.filterBooks(dataToSearch);
     }
 
     setWholeViewedData(newData);

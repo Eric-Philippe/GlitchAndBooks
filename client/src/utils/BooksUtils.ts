@@ -116,3 +116,28 @@ export const createBook = (): Book => {
 
   return book;
 };
+
+export const fetchUserData = async (): Promise<Book[]> => {
+  let books: Book[] = [];
+  try {
+    const res = await fetch(
+      "/api/v1/books/get?userid=" + localStorage.getItem("userid"),
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    );
+
+    if (res.status === 200) {
+      books = await res.json();
+      return books;
+    } else {
+      return books;
+    }
+  } catch (e) {
+    return books;
+  }
+};

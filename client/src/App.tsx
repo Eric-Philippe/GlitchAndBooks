@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import Ajouter from "./pages/Ajouter";
 import Consulter from "./pages/Consulter";
+import Stats from "./pages/Stats";
 
 const App: React.FC = () => {
   return (
@@ -12,6 +13,7 @@ const App: React.FC = () => {
         <Route path="/" Component={Home} />
         <Route path="/ajouter" Component={Ajouter} />
         <Route path="/consulter" Component={Consulter} />
+        <Route path="/stats" Component={Stats} />
         <Route path="*" Component={NotFound} />
       </Routes>
     </Router>

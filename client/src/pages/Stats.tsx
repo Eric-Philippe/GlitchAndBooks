@@ -1,21 +1,18 @@
 import { Component } from "react";
 
-import DynamicTable from "../components/DynamicConsulter/DynamicTable/DynamicTable";
 import Loading from "../components/Loading";
 import Header from "../components/Header";
 import Login from "./Login";
 
-import {
-  Columns,
-  defaultColumns,
-} from "../components/DynamicConsulter/utils/DefaultColumns";
 import { isConnected } from "../middlewares/auth";
 import Resources from "../middlewares/Resources";
 
 import { Book } from "../models/Book";
-import DynamicCards from "../components/DynamicConsulter/DynamicCards/DynamicCards";
-import { bookFieldToText } from "../components/DynamicConsulter/utils/utils";
 import { fetchUserData } from "../utils/BooksUtils";
+import BookStackAnimation from "../components/Statistics/BookStackAnimation";
+import { Col, Container, Row } from "react-bootstrap";
+import BookWeight from "../components/Statistics/BookWeight";
+import BookPages from "../components/Statistics/BookPages";
 
 interface ConsulterState {
   isUserConnected: boolean | null;
@@ -23,7 +20,7 @@ interface ConsulterState {
   isUserDataFetched: boolean | null;
 }
 
-class Consulter extends Component<{}, ConsulterState> {
+class Stats extends Component<{}, ConsulterState> {
   private ressources: Resources = Resources.getInstance();
   private userBooks: Book[] = [];
 
@@ -51,7 +48,11 @@ class Consulter extends Component<{}, ConsulterState> {
   }
 
   render() {
-    let userOnSmallerScreen = window.innerWidth < 1024;
+    const totalHeight = this.userBooks.reduce(
+        (acc, book) => acc + (book.height ? book.height : 0),
+        0
+      ),
+      totalHeightInMeters = totalHeight / 100;
 
     return (
       <>
@@ -63,34 +64,21 @@ class Consulter extends Component<{}, ConsulterState> {
         ) : this.state.isUserConnected ? (
           <div>
             <Header />
-            <div id="center-consulter">
-              <div className="container text-center mt-5 mb-4">
-                <h6 className="display-6">Consulter vos livres ✨</h6>
-              </div>
-              <div className="">
-                {userOnSmallerScreen ? (
-                  <div>
-                    <DynamicCards
-                      allColumns={Columns}
-                      data={this.userBooks}
-                      initColumns={defaultColumns}
-                      fieldToValue={bookFieldToText}
-                      ressources={this.ressources}
-                    />
-                  </div>
-                ) : (
-                  <div>
-                    <DynamicTable
-                      allColumns={Columns}
-                      data={this.userBooks}
-                      initColumns={defaultColumns}
-                      fieldToValue={bookFieldToText}
-                      ressources={this.ressources}
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
+            <Container style={{ marginTop: "2rem" }}>
+              <Row className="justify-content-md-center">
+                <Col md="auto">
+                  <BookStackAnimation
+                    bookPileHeightMeters={totalHeightInMeters}
+                  />
+                  <br />
+                </Col>
+                <Col>
+                  <BookWeight books={this.userBooks} />
+                  <br />
+                  <BookPages books={this.userBooks} />
+                </Col>
+              </Row>
+            </Container>
           </div>
         ) : (
           <Login />
@@ -100,4 +88,4 @@ class Consulter extends Component<{}, ConsulterState> {
   }
 }
 
-export default Consulter;
+export default Stats;

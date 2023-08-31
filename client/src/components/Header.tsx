@@ -16,6 +16,8 @@ const Header: React.FC = () => {
       case "/ajouter":
         setWichMenu("Ajouter");
         break;
+      case "/stats":
+        setWichMenu("Statistiques");
     }
   }, []);
 

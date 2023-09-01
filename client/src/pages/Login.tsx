@@ -76,7 +76,7 @@ const Login: React.FC = () => {
             ></input>
           </div>
           <button type="submit" className="btn btn-primary">
-            Submit
+            Login
           </button>
         </form>
       </div>

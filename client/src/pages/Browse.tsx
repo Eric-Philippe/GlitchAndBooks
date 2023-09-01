@@ -23,7 +23,7 @@ interface ConsulterState {
   isUserDataFetched: boolean | null;
 }
 
-class Consulter extends Component<{}, ConsulterState> {
+class Browse extends Component<{}, ConsulterState> {
   private ressources: Resources = Resources.getInstance();
   private userBooks: Book[] = [];
 
@@ -100,4 +100,4 @@ class Consulter extends Component<{}, ConsulterState> {
   }
 }
 
-export default Consulter;
+export default Browse;

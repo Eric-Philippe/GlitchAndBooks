@@ -32,13 +32,13 @@ export interface Column {
 
 const Columns: Column[] = [
   {
-    title: "Titre",
+    title: "Title",
     field: "title",
     type: "string",
     phoneCardPlacement: "title",
   },
   {
-    title: "Auteur",
+    title: "Authors",
     field: "authors",
     type: "string[][]",
     phoneCardPlacement: "paragraph",

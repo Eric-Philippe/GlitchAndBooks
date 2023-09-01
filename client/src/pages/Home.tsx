@@ -61,13 +61,13 @@ class Home extends Component<{}, HomeState> {
                       alt="Bookshelf"
                     ></img>
                     <div className="card-body">
-                      <h5 className="card-title">Consulter mes livres</h5>
+                      <h5 className="card-title">Browse bookshelf</h5>
                       <p className="card-text">
-                        Consultez votre biliothèque avec tous vos livres,
-                        filtrez là, retirez des livres !
+                        Browse the contents of your bookshelf, filter, sort,
+                        edit, and delete books
                       </p>
                       <a href="/consulter" className="btn btn-info btn-l ">
-                        Consulter ma biliothèque
+                        Browse my bookshelf
                       </a>
                     </div>
                   </div>
@@ -81,13 +81,13 @@ class Home extends Component<{}, HomeState> {
                       alt="Bookshop"
                     ></img>
                     <div className="card-body">
-                      <h5 className="card-title">Ajouter des livres</h5>
+                      <h5 className="card-title">Add Book</h5>
                       <p className="card-text">
-                        Ajouter des livres à votre biliothèque avec toutes les
-                        informations que vous souhaitez
+                        Add books to your bookshelf with all the information you
+                        want and need
                       </p>
-                      <a href="/ajouter" className="btn btn-info btn-l">
-                        Remplir ma biliothèque
+                      <a href="/add" className="btn btn-info btn-l">
+                        Add a book
                       </a>
                     </div>
                   </div>

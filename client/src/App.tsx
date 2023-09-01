@@ -2,8 +2,8 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import Ajouter from "./pages/Ajouter";
-import Consulter from "./pages/Consulter";
+import AddBook from "./pages/AddBook";
+import Browse from "./pages/Browse";
 import Stats from "./pages/Stats";
 
 const App: React.FC = () => {
@@ -11,8 +11,8 @@ const App: React.FC = () => {
     <Router>
       <Routes>
         <Route path="/" Component={Home} />
-        <Route path="/ajouter" Component={Ajouter} />
-        <Route path="/consulter" Component={Consulter} />
+        <Route path="/add" Component={AddBook} />
+        <Route path="/browse" Component={Browse} />
         <Route path="/stats" Component={Stats} />
         <Route path="*" Component={NotFound} />
       </Routes>

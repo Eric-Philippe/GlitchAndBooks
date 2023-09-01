@@ -50,7 +50,7 @@ const validate = () => {
   }
 };
 
-class Ajouter extends Component<{}, HomeState> {
+class AddBook extends Component<{}, HomeState> {
   public authorCount: number = 1;
   private ressources: Resources = Resources.getInstance();
 
@@ -256,7 +256,7 @@ class Ajouter extends Component<{}, HomeState> {
           <div>
             <Header />
             <div className="container text-center mt-4">
-              <h6 className="display-6">Ajouter des livres ✨</h6>
+              <h6 className="display-6">Add Book ✨</h6>
             </div>
 
             <div
@@ -325,7 +325,7 @@ class Ajouter extends Component<{}, HomeState> {
                 <div className="col-md-12">
                   <div className="input-group mb-1">
                     <span className="input-group-text" id="basic-addon1">
-                      🌐 Langue
+                      🌐 Language
                     </span>
                     <select className="form-select" id="lang-select" required>
                       <option selected disabled value="">
@@ -570,4 +570,4 @@ class Ajouter extends Component<{}, HomeState> {
   }
 }
 
-export default Ajouter;
+export default AddBook;

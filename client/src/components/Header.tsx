@@ -8,16 +8,16 @@ const Header: React.FC = () => {
     const currentMenu = window.location.pathname;
     switch (currentMenu) {
       case "/":
-        setWichMenu("Accueil");
+        setWichMenu("Home");
         break;
-      case "/consulter":
-        setWichMenu("Consulter");
+      case "/browse":
+        setWichMenu("Browse");
         break;
-      case "/ajouter":
-        setWichMenu("Ajouter");
+      case "/add":
+        setWichMenu("Add");
         break;
       case "/stats":
-        setWichMenu("Statistiques");
+        setWichMenu("Statistics");
     }
   }, []);
 
@@ -50,41 +50,37 @@ const Header: React.FC = () => {
               <a
                 aria-current="page"
                 href="/"
-                className={
-                  wichMenu === "Accueil" ? "nav-link active" : "nav-link"
-                }
+                className={wichMenu === "Home" ? "nav-link active" : "nav-link"}
               >
-                Accueil
+                Home
               </a>
             </li>
             <li className="nav-item">
               <a
-                href="/consulter"
+                href="/browse"
                 className={
-                  wichMenu === "Consulter" ? "nav-link active" : "nav-link"
+                  wichMenu === "Browse" ? "nav-link active" : "nav-link"
                 }
               >
-                Consulter
+                Browse
               </a>
             </li>
             <li className="nav-item">
               <a
-                href="/ajouter"
-                className={
-                  wichMenu === "Ajouter" ? "nav-link active" : "nav-link"
-                }
+                href="/add"
+                className={wichMenu === "Add" ? "nav-link active" : "nav-link"}
               >
-                Ajouter
+                Add
               </a>
             </li>
             <li className="nav-item">
               <a
                 href="/stats"
                 className={
-                  wichMenu === "Statistiques" ? "nav-link active" : "nav-link"
+                  wichMenu === "Statistics" ? "nav-link active" : "nav-link"
                 }
               >
-                Statistiques
+                Statistics
               </a>
             </li>
             <li className="nav-item">

@@ -48,6 +48,9 @@ And here a limited demo account :
 - Filter your books by title, author, date, genre, ... ✅
 - Secure on an HTTPS server ✅
 
+<img src="./img/browse.png" style="border-radius:2px">
+<img src="./img/browse-phone.png" style="border-radius:2px; width: 50%;">
+
 ## Secondary Features
 
 > These features are not the main goal of the project, but I want to implement them.
@@ -56,12 +59,16 @@ And here a limited demo account :
   (Currently it's a basic User - Id - Password system)
 - Add books to your wishlist 🕒
 - Consult your wishlist 🕒
-- Having a stats page with graphs / funny comparisons (ex: "You have read 3 times more books than the average user !" "If we put all the your books on a shelf, it would be 3 times higher than the Eiffel Tower !") 🕒
+- Having a stats page with graphs / funny comparisons (ex: "You have read 3 times more books than the average user !" "If we put all the your books on a shelf, it would be 3 times higher than the Eiffel Tower !") ✅
 - Having a "random book" button ✅
 - Having a carrousel with suggestion like "You may also like" / "random book" 🕒
 - Having a "Here some book to read" section 🕒
 - Being able to export your library as a PDF / Excel / Json file 🕒
 - Being able to share your library with your friends 🕒
+
+<img src="./img/stat-first.png" style="border-radius:3px">
+
+<img src="./img/stat-second.png" style="border-radius:3px">
 
 ## Technologies
 

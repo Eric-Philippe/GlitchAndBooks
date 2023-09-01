@@ -81,13 +81,13 @@ class Home extends Component<{}, HomeState> {
                       alt="Bookshop"
                     ></img>
                     <div className="card-body">
-                      <h5 className="card-title">Add Book</h5>
+                      <h5 className="card-title">Add Book to bookshelf</h5>
                       <p className="card-text">
                         Add books to your bookshelf with all the information you
                         want and need
                       </p>
                       <a href="/add" className="btn btn-info btn-l">
-                        Add a book
+                        Add a book to my bookshelf
                       </a>
                     </div>
                   </div>

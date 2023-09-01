@@ -40,7 +40,7 @@ const BookWeight: React.FC<BookWeightProps> = ({ books }) => {
     <>
       <Card className="d-inline-block sub-stat">
         <Card.Header>
-          <h4>🐘 Book Weight</h4>
+          <h4>🐘 Weight Stats</h4>
         </Card.Header>
         <Card.Body>
           The total weight of your books is{" "}

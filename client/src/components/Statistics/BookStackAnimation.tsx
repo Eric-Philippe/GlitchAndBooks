@@ -23,12 +23,17 @@ const BookStackAnimation: React.FC<BookStackAnimationProps> = ({
       : (BUILDING_HEIGHT / heightInMeters) * 100;
 
   return (
-    <>
-      <Card className="d-inline-block main-stat">
+    <div>
+      <Card
+        className="d-inline-block main-stat"
+        style={{
+          width: "100%",
+        }}
+      >
         <Card.Header>
           <h4>🏢 Book Stack</h4>
         </Card.Header>
-        <Card.Body>
+        <Card.Body className="d-flex align-items-center justify-content-center">
           <div className="d-flex flex-row">
             <div className="me-2">
               <Image
@@ -61,12 +66,12 @@ const BookStackAnimation: React.FC<BookStackAnimationProps> = ({
         </Card.Body>
 
         <Card.Footer>
-          If we pile up all the books you've read, <br /> it would be as tall as{" "}
+          If we pile up all the books you've read, it would be as tall as{" "}
           <b>{heightInMeters}</b> meters.
         </Card.Footer>
       </Card>
       <br />
-    </>
+    </div>
   );
 };
 

@@ -66,3 +66,5 @@ CREATE TABLE has_genres (
    genresId INT REFERENCES Genres(genresId),
    PRIMARY KEY(bookId, genresId)
 );
+
+-- TODO: Add the values for the resources table

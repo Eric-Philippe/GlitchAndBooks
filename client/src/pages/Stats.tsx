@@ -13,6 +13,12 @@ import BookStackAnimation from "../components/Statistics/BookStackAnimation";
 import { Col, Container, Row } from "react-bootstrap";
 import BookWeight from "../components/Statistics/BookWeight";
 import BookPages from "../components/Statistics/BookPages";
+import BooksPublicYear from "../components/Statistics/BooksPublicationYear";
+import BooksGenres from "../components/Statistics/BooksGenres";
+import BookMisc from "../components/Statistics/BookMisc";
+import BookLanguages from "../components/Statistics/BookLanguage";
+import BookTypes from "../components/Statistics/BookTypes";
+import BookCountryOrigin from "../components/Statistics/BookCountryOrigin";
 
 interface ConsulterState {
   isUserConnected: boolean | null;
@@ -62,24 +68,72 @@ class Stats extends Component<{}, ConsulterState> {
             <Loading />
           </div>
         ) : this.state.isUserConnected ? (
-          <div>
-            <Header />
-            <Container style={{ marginTop: "2rem" }}>
-              <Row className="justify-content-md-center">
-                <Col md="auto">
-                  <BookStackAnimation
-                    bookPileHeightMeters={totalHeightInMeters}
-                  />
-                  <br />
-                </Col>
-                <Col>
-                  <BookWeight books={this.userBooks} />
-                  <br />
-                  <BookPages books={this.userBooks} />
-                </Col>
-              </Row>
-            </Container>
-          </div>
+          this.userBooks.length > 0 ? (
+            <div>
+              <Header />
+              <Container style={{ marginTop: "2rem" }} className="text-center">
+                <Row>
+                  <Col lg={3}>
+                    <BookMisc books={this.userBooks} />
+                    <br />
+                    <BookPages books={this.userBooks} />
+                    <br />
+                    <BookWeight books={this.userBooks} />
+                    <br />
+                  </Col>
+                  <Col>
+                    <BookStackAnimation
+                      bookPileHeightMeters={totalHeightInMeters}
+                    />
+                    <br />
+                    <BookLanguages
+                      books={this.userBooks}
+                      resources={this.ressources}
+                    />
+                    <br />
+                  </Col>
+                  <Col>
+                    <BooksPublicYear books={this.userBooks} />
+                    <br />
+                    <BooksGenres
+                      books={this.userBooks}
+                      resources={this.ressources}
+                    />
+                    <br />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <BookCountryOrigin
+                      books={this.userBooks}
+                      resources={this.ressources}
+                    />
+                  </Col>
+                  <Col lg="auto">
+                    <BookTypes
+                      books={this.userBooks}
+                      resources={this.ressources}
+                    />
+                    <br />
+                  </Col>
+                </Row>
+              </Container>
+            </div>
+          ) : (
+            <div>
+              <Header />
+              <div id="center-consulter">
+                <div className="container text-center mt-5 mb-4">
+                  <h6 className="display-6">Your bookshelf is empty :/</h6>
+                </div>
+                <div className="container text-center mt-5 mb-4">
+                  <h6 className="display-6">
+                    Add books to your bookshelf to see statistics !
+                  </h6>
+                </div>
+              </div>
+            </div>
+          )
         ) : (
           <Login />
         )}

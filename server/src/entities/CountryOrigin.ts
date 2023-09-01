@@ -17,6 +17,9 @@ export class CountryOrigin {
   @Column("character varying", { name: "country", unique: true, length: 50 })
   country: string;
 
+  @Column("character varying", { name: "code", unique: true, length: 50 })
+  code: string;
+
   @OneToMany(() => Books, (books) => books.countryorigin)
   books: Books[];
 }

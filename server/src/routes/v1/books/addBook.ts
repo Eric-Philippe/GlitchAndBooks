@@ -40,7 +40,8 @@ export default async function addBook(req: Request, res: Response) {
     const language = await repoLang.findOneBy({ langue: book.lang });
 
     const publicationYear = book.publicationYear;
-    const publicationDate = new Date(publicationYear, 0, 1);
+    const publicationDate =
+      book.publicationYear !== null ? new Date(publicationYear, 0, 1) : null;
 
     const newBook = new Books();
     newBook.title = book.title;
@@ -66,7 +67,6 @@ export default async function addBook(req: Request, res: Response) {
 
     res.status(200).json({ message: "ok" });
   } catch (err) {
-    console.log("Error");
     res.status(500).json({ message: "error" });
   }
 }

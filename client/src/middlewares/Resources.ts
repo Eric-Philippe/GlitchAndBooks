@@ -3,6 +3,7 @@ export default class Resources {
   private genres: string[] = [];
   private countries: string[] = [];
   private languages: string[] = [];
+  private countriesWithCode: { country: string; code: string }[] = [];
 
   private static instance: Resources;
 
@@ -29,7 +30,8 @@ export default class Resources {
       this.types.length > 0 &&
       this.genres.length > 0 &&
       this.countries.length > 0 &&
-      this.languages.length > 0
+      this.languages.length > 0 &&
+      this.countriesWithCode.length > 0
     );
   }
 
@@ -45,6 +47,10 @@ export default class Resources {
     return this.countries;
   }
 
+  public getCountriesWithCode(): { country: string; code: string }[] {
+    return this.countriesWithCode;
+  }
+
   public getLanguages(): string[] {
     return this.languages;
   }
@@ -53,6 +59,7 @@ export default class Resources {
     await this.fillTypes();
     await this.fillGenres();
     await this.fillCountries();
+    await this.fillCountriesWithCode();
     await this.fillLanguages();
   }
 
@@ -95,6 +102,20 @@ export default class Resources {
     if (res.status === 200) {
       const data = await res.json();
       this.countries = data.countries;
+    }
+  }
+
+  private async fillCountriesWithCode(): Promise<void> {
+    const res = await fetch("/api/v1/countries/withcode", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (res.status === 200) {
+      const data = await res.json();
+      this.countriesWithCode = data.countries;
     }
   }
 

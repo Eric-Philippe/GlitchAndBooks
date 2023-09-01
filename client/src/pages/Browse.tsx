@@ -1,6 +1,6 @@
 import { Component } from "react";
 
-import DynamicTable from "../components/DynamicConsulter/DynamicTable/DynamicTable";
+import DynamicTable from "../components/Browse/DynamicTable/DynamicTable";
 import Loading from "../components/Loading";
 import Header from "../components/Header";
 import Login from "./Login";
@@ -8,13 +8,13 @@ import Login from "./Login";
 import {
   Columns,
   defaultColumns,
-} from "../components/DynamicConsulter/utils/DefaultColumns";
+} from "../components/Browse/utils/DefaultColumns";
 import { isConnected } from "../middlewares/auth";
 import Resources from "../middlewares/Resources";
 
 import { Book } from "../models/Book";
-import DynamicCards from "../components/DynamicConsulter/DynamicCards/DynamicCards";
-import { bookFieldToText } from "../components/DynamicConsulter/utils/utils";
+import DynamicCards from "../components/Browse/DynamicCards/DynamicCards";
+import { bookFieldToText } from "../components/Browse/utils/utils";
 import { fetchUserData } from "../utils/BooksUtils";
 
 interface ConsulterState {
@@ -65,7 +65,7 @@ class Browse extends Component<{}, ConsulterState> {
             <Header />
             <div id="center-consulter">
               <div className="container text-center mt-5 mb-4">
-                <h6 className="display-6">Consulter vos livres ✨</h6>
+                <h6 className="display-6">Browse your books ✨</h6>
               </div>
               <div className="">
                 {userOnSmallerScreen ? (

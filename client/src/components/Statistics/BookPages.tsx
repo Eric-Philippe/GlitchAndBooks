@@ -28,26 +28,30 @@ const BookPages: React.FC<BookPagesProps> = ({ books }) => {
   });
 
   return (
-    <Card className="d-inline-block sub-stat">
-      <Card.Header>
-        <h4>📖 Book Pages</h4>
-      </Card.Header>
-      <Card.Body>
-        You have exactly <b>{hugePagesToReadable(totalPages)}</b> pages in your
-        library !
-        <br />
-        You have <b>{hugePagesToReadable(totalPagesToRead)}</b> pages to read !
-        <br />
-        It means that you've read{" "}
-        <b>{hugePagesToReadable(totalPages - totalPagesToRead)}</b> pages
-      </Card.Body>
+    <>
+      <Card className="d-inline-block sub-stat">
+        <Card.Header>
+          <h4>📖 Pages Stats</h4>
+        </Card.Header>
+        <Card.Body>
+          You have exactly <b>{hugePagesToReadable(totalPages)}</b> pages in
+          your library !
+          <br />
+          You have <b>{hugePagesToReadable(totalPagesToRead)}</b> pages to read
+          !
+          <br />
+          It means that you've read{" "}
+          <b>{hugePagesToReadable(totalPages - totalPagesToRead)}</b> pages
+        </Card.Body>
 
-      <Card.Footer>
-        The book with the most pages in your library is{" "}
-        <b>{bookWithMostPages.title}</b> with{" "}
-        <b>{hugePagesToReadable(bookWithMostPages.pages || 0)}</b> pages
-      </Card.Footer>
-    </Card>
+        <Card.Footer>
+          The book with the most pages in your library is{" "}
+          <b>{bookWithMostPages.title}</b> with{" "}
+          <b>{hugePagesToReadable(bookWithMostPages.pages || 0)}</b> pages
+        </Card.Footer>
+      </Card>
+      <br />
+    </>
   );
 };
 

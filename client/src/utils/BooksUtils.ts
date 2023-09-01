@@ -114,6 +114,8 @@ export const createBook = (): Book => {
     wantRead: wantRead.checked,
   };
 
+  console.log(publicationYear.value);
+
   return book;
 };
 

@@ -14,8 +14,8 @@ const buildData = (
 ): { id: string; label: string; value: number }[] => {
   const data = [];
   for (let i = 0; i < dateScale.length; i++) {
-    let previousYear = 0;
-    let currentYear = dateScale[0];
+    const previousYear = dateScale[i];
+    const currentYear = dateScale[i + 1];
 
     data.push({
       id: `${currentYear}`,
@@ -27,9 +27,6 @@ const buildData = (
           book.publicationYear < currentYear
       ).length,
     });
-
-    previousYear = dateScale[i];
-    currentYear = dateScale[i + 1];
   }
 
   return data;

@@ -66,7 +66,7 @@ class Home extends Component<{}, HomeState> {
                         Browse the contents of your bookshelf, filter, sort,
                         edit, and delete books
                       </p>
-                      <a href="/consulter" className="btn btn-info btn-l ">
+                      <a href="/browse" className="btn btn-info btn-l ">
                         Browse my bookshelf
                       </a>
                     </div>

@@ -12,14 +12,14 @@ const dateScale: number[] = [
 const buildData = (
   books: Book[]
 ): { id: string; label: string; value: number }[] => {
-  let previousYear = 0;
-  let currentYear = dateScale[0];
-
   const data = [];
   for (let i = 0; i < dateScale.length; i++) {
+    let previousYear = 0;
+    let currentYear = dateScale[0];
+
     data.push({
       id: `${currentYear}`,
-      label: `${previousYear} - ${currentYear == 2050 ? "now" : currentYear}`,
+      label: `${previousYear} - ${currentYear === 2050 ? "now" : currentYear}`,
       value: books.filter(
         (book) =>
           book.publicationYear &&

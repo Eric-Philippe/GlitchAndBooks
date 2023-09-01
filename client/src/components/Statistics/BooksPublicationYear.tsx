@@ -13,7 +13,7 @@ const buildData = (
   books: Book[]
 ): { id: string; label: string; value: number }[] => {
   const data = [];
-  for (let i = 0; i < dateScale.length; i++) {
+  for (let i = 0; i < dateScale.length - 1; i++) {
     const previousYear = dateScale[i];
     const currentYear = dateScale[i + 1];
 

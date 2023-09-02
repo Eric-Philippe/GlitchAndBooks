@@ -49,6 +49,7 @@ const BookTypes: React.FC<BookTypesProps> = ({ books, resources }) => {
             cornerRadius={3}
             activeOuterRadiusOffset={8}
             borderWidth={1}
+            colors={{ scheme: "paired" }}
             borderColor={{
               from: "color",
               modifiers: [["darker", 0.2]],

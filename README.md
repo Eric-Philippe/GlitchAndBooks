@@ -65,6 +65,7 @@ And here a limited demo account :
 - Having a "Here some book to read" section 🕒
 - Being able to export your library as a PDF / Excel / Json file 🕒
 - Being able to share your library with your friends 🕒
+- Having a full log system (Saved on database) 🕒
 
 <img src="./img/stat-first.png" style="border-radius:3px">
 

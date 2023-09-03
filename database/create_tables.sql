@@ -28,6 +28,7 @@ CREATE TABLE Types (
 CREATE TABLE Country_origin (
    countryOriginId SERIAL PRIMARY KEY,
    country VARCHAR(50) NOT NULL
+   code VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE Wishlist (
@@ -67,4 +68,48 @@ CREATE TABLE has_genres (
    PRIMARY KEY(bookId, genresId)
 );
 
--- TODO: Add the values for the resources table
+INSERT VALUES INTO Country_origin (country, code) VALUES ('France', 'FR');
+INSERT VALUES INTO Country_origin (country, code) VALUES ('UK', 'UK');
+INSERT VALUES INTO Country_origin (country, code) VALUES ('Russia', 'RUS');
+INSERT VALUES INTO Country_origin (country, code) VALUES ('USA', 'USA');
+INSERT VALUES INTO Country_origin (country, code) VALUES ('China', 'CHN');
+INSERT VALUES INTO Country_origin (country, code) VALUES ('Japan', 'JPN');
+INSERT VALUES INTO Country_origin (country, code) VALUES ('Iceland', 'ISL');
+INSERT VALUES INTO Country_origin (country, code) VALUES ('Italy', 'ITA');
+INSERT VALUES INTO Country_origin (country, code) VALUES ('Canada', 'CAN');
+INSERT VALUES INTO Country_origin (country, code) VALUES ('Portugal', 'PRT');
+INSERT VALUES INTO Country_origin (country, code) VALUES ('Germany', 'GER');
+INSERT VALUES INTO Country_origin (country, code) VALUES ('Other', 'NTM');
+
+INSERT VALUES INTO Types (name) VALUES ('Fiction');
+INSERT VALUES INTO Types (name) VALUES ('Non-fiction');
+INSERT VALUES INTO Types (name) VALUES ('Poetry');
+INSERT VALUES INTO Types (name) VALUES ('Theatre');
+INSERT VALUES INTO Types (name) VALUES ('Illustrated-Book');
+INSERT VALUES INTO Types (name) VALUES ('Comics');
+INSERT VALUES INTO Types (name) VALUES ('Manga');
+INSERT VALUES INTO Types (name) VALUES ('Essay');
+INSERT VALUES INTO Types (name) VALUES ('Magazine');
+
+INSERT VALUES INTO Languages (language) VALUES ('French');
+INSERT VALUES INTO Languages (language) VALUES ('English');
+INSERT VALUES INTO Languages (language) VALUES ('Japanese');
+INSERT VALUES INTO Languages (language) VALUES ('German');
+INSERT VALUES INTO Languages (language) VALUES ('Spanish');
+INSERT VALUES INTO Languages (language) VALUES ('Other');
+
+INSERT VALUES INTO Genres (name) VALUES ('Fantasy');
+INSERT VALUES INTO Genres (name) VALUES ('Science-Fiction');
+INSERT VALUES INTO Genres (name) VALUES ('Young-Adult');
+INSERT VALUES INTO Genres (name) VALUES ('Historical');
+INSERT VALUES INTO Genres (name) VALUES ('Biography');
+INSERT VALUES INTO Genres (name) VALUES ('Romance');
+INSERT VALUES INTO Genres (name) VALUES ('Contemporary');
+INSERT VALUES INTO Genres (name) VALUES ('Crime');
+INSERT VALUES INTO Genres (name) VALUES ('Recipes');
+INSERT VALUES INTO Genres (name) VALUES ('Others');
+INSERT VALUES INTO Genres (name) VALUES ('Classic');
+INSERT VALUES INTO Genres (name) VALUES ('Philosophy');
+INSERT VALUES INTO Genres (name) VALUES ('Humour');
+INSERT VALUES INTO Genres (name) VALUES ('Selft Development');
+INSERT VALUES INTO Genres (name) VALUES ('Literature');

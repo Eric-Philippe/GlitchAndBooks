@@ -34,9 +34,16 @@ import {
   OverlayTrigger,
   ToastContainer,
   Tooltip,
+  Form,
 } from "react-bootstrap";
-import { FunnelFill, Recycle, Table } from "react-bootstrap-icons";
+import {
+  CloudArrowDown,
+  FunnelFill,
+  Recycle,
+  Table,
+} from "react-bootstrap-icons";
 import Toaster from "../Toasts/Toaster";
+import { getDefaultFileTitle } from "../utils/utils";
 
 /** @Filters main receiver for the user filters input */
 const filters = new Filters();
@@ -108,6 +115,13 @@ const DynamicCards: React.FC<DynamicCardsProps> = ({
   }>({});
   /** Stateful React @Column in order to display the Columns Picker Panel */
   const [showModalColumns, setShowModalColumns] = useState<boolean>(false);
+
+  /** Stateful React @Download */
+  const [showModalDownload, setShowModalDownload] = useState<boolean>(false);
+  const [downloadFormat, setdownloadFormat] = useState<string>("");
+  const [downloadFileName, setdownloadFileName] = useState<string>(
+    getDefaultFileTitle()
+  );
 
   /** Stateful React @Search Quick Search */
   const [searchValue, setSearchValue] = useState<string>("");
@@ -213,6 +227,49 @@ const DynamicCards: React.FC<DynamicCardsProps> = ({
 
       setColumns(sortedColumns);
     }
+  };
+
+  /**
+   * @Download
+   * @description Télécharge les données en fonction du format choisi
+   * @returns void
+   */
+  const downloadData = () => {
+    if (downloadFormat === "") return;
+
+    const token = localStorage.getItem("token");
+
+    fetch("/api/v1/data_saver", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      // Send the format to the server
+      body: JSON.stringify({
+        format: downloadFormat,
+        userId: localStorage.getItem("userid"),
+      }),
+    })
+      .then(async (response) => {
+        if (response.status === 200) {
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `${downloadFileName}.${downloadFormat}`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        } else {
+          const errorData = await response.json();
+          console.error("Error downloading data:", errorData.error);
+        }
+      })
+      .catch((error) => {
+        console.error("An error occurred:", error);
+        // Handle the error or show an error message to the user
+      });
   };
 
   /**
@@ -488,6 +545,71 @@ const DynamicCards: React.FC<DynamicCardsProps> = ({
         </Modal.Body>
       </Modal>
 
+      {/** @DOWNLOAD_MODAL */}
+      <Modal
+        show={showModalDownload}
+        onHide={() => {
+          setShowModalDownload(false);
+          setdownloadFileName(getDefaultFileTitle());
+        }}
+        centered
+      >
+        <Modal.Header closeButton>
+          <h1 className="modal-title fs-5" id="columnsModalLabel">
+            Download Data
+          </h1>
+        </Modal.Header>
+        <Modal.Body>
+          <FloatingLabel
+            controlId="floatingSelect"
+            label="Pick a file format to save your data"
+          >
+            <Form.Select onChange={(e) => setdownloadFormat(e.target.value)}>
+              <option value="">Choose format...</option>
+              <option value="json">.json</option>
+              <option value="csv">.csv</option>
+              <option value="xml">.xml</option>
+              <option value="xlsx">.xlsx</option>
+              <option value="pdf">.pdf</option>
+            </Form.Select>
+          </FloatingLabel>
+          <br />
+          <Form.Label htmlFor="filename" hidden={downloadFormat === ""}>
+            Filename
+          </Form.Label>
+          <InputGroup hidden={downloadFormat === ""}>
+            <Form.Control
+              type="text"
+              id="filename"
+              value={downloadFileName}
+              onChange={(e) => setdownloadFileName(e.target.value)}
+            />
+            <InputGroup.Text id="basic-addon2">{`.${downloadFormat}`}</InputGroup.Text>
+          </InputGroup>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => {
+              setShowModalDownload(false);
+              setdownloadFileName(getDefaultFileTitle());
+            }}
+          >
+            Close
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => {
+              downloadData();
+            }}
+            disabled={downloadFormat === "" || downloadFileName === ""}
+          >
+            Download
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       {/** @MAIN_PAGE */}
       <Container className="d-flex justify-content-center">
         <ButtonGroup aria-label="usages-buttons" className="mb-3">
@@ -509,6 +631,12 @@ const DynamicCards: React.FC<DynamicCardsProps> = ({
             onClick={() => setShowModalColumns(true)}
           >
             <Table />​ ​ Columns
+          </Button>
+          <Button
+            variant="outline-info"
+            onClick={() => setShowModalDownload(true)}
+          >
+            <CloudArrowDown />​ ​ Download
           </Button>
           <Button
             variant="outline-danger"

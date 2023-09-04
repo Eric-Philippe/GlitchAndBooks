@@ -9,8 +9,6 @@ import { AppDataSource } from "./data-source";
 import * as dotenv from "dotenv";
 import { PORT } from "./env";
 import { Events } from "./Events";
-import { DataToXlsx } from "./core/datasaver/DataToXlsx";
-import { DataToPdf } from "./core/datasaver/DataToPdf";
 
 dotenv.config();
 
@@ -22,7 +20,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Handle POST requests that come in formatted as JSON
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
 app.use(express.static(path.join(__dirname, "../../client/build")));
 app.use("/api", routes);
 

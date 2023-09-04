@@ -1,19 +1,25 @@
 import { Request, Response } from "express";
-import fs from "fs";
+import path from "path";
+import fs from "fs/promises";
 
 import { saveData } from "../../../core/datasaver/DataSaverFactory";
 
 export const data_saver = async (req: Request, res: Response) => {
-  const { userId, extension } = req.query as {
-    userId: string;
-    extension: Extensions;
-  };
+  try {
+    const userId = req.body.userId;
+    const downloadFormat = req.body.format;
 
-  const filePath = await saveData(userId, extension);
-  const fileName = filePath.split("/").pop();
+    const filePath = await saveData(userId, downloadFormat);
+    const filePathResolved = path.resolve(filePath);
+    const fileName = filePath.split("/").pop();
 
-  res.download(filePath, fileName, (err) => {
-    if (err) console.log(err);
-    else fs.unlinkSync(filePath);
-  });
+    res.setHeader("Content-Disposition", `attachment; filename=${fileName}`);
+    res.sendFile(filePathResolved);
+
+    setTimeout(async () => {
+      await fs.unlink(filePathResolved);
+    }, 5000);
+  } catch (err) {
+    res.status(500).json({ error: "Internal server error" });
+  }
 };

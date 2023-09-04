@@ -31,3 +31,19 @@ export const bookFieldToText = (book: Book, field: string): string => {
 
   return "N/A";
 };
+
+/**
+ * @Download
+ * @description Retourne la date du jour pour le nom du fichier et rajoute un 0 si le mois ou le jour est inférieur à 10
+ * @returns string YYYYMMDD
+ */
+export const getDefaultFileTitle = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month =
+    today.getMonth() + 1 < 10
+      ? `0${today.getMonth() + 1}`
+      : today.getMonth() + 1;
+  const day = today.getDate() < 10 ? `0${today.getDate()}` : today.getDate();
+  return `${year}${month}${day}_day_bookshelf_save`;
+};

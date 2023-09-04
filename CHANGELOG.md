@@ -2,16 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.1] - 2023-09-01
+## [1.1.0] - 2023-09-01
 
 ### Major additions
 
 - Add a `Statistics` page, with graphs and funny comparisons
 - Add a `Random Book` button on the `Browse` page
+- Add a `Download Data` button on the `Browse` page to save your library as a JSON, XML, CSV, XLSX, or PDF file
 
 ### Minor changes
 
-- Few bug fixes, see issues `#1`, `#2`, `#3`
+- Few bug fixes, see issues [#1](https://github.com/Eric-Philippe/GlitchAndBooks/issues/1), [#2](https://github.com/Eric-Philippe/GlitchAndBooks/issues/2), [#3](https://github.com/Eric-Philippe/GlitchAndBooks/issues/3), [#4](https://github.com/Eric-Philippe/GlitchAndBooks/issues/4),
 
 ## [1.0.0] - 2023-08-25
 

@@ -261,6 +261,8 @@ const DynamicCards: React.FC<DynamicCardsProps> = ({
           document.body.appendChild(a);
           a.click();
           a.remove();
+
+          setShowModalDownload(false);
         } else {
           const errorData = await response.json();
           console.error("Error downloading data:", errorData.error);

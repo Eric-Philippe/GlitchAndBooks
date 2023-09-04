@@ -273,6 +273,8 @@ const DynamicTable: React.FC<DynamicTableProps> = ({
           document.body.appendChild(a);
           a.click();
           a.remove();
+
+          setShowModalDownload(false);
         } else {
           const errorData = await response.json();
           console.error("Error downloading data:", errorData.error);

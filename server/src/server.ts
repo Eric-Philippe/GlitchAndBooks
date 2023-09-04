@@ -1,20 +1,20 @@
 import express, { Express } from "express";
-import { routes } from "./routes/routes";
-import cors from "cors";
-//import corsMiddleware from "./middleware/cors.js";
 import bodyParser from "body-parser";
-import * as dotenv from "dotenv";
-import { PORT } from "./env";
+import cors from "cors";
 import path from "path";
 
+import { routes } from "./routes/routes";
 import { AppDataSource } from "./data-source";
-AppDataSource;
+
+import * as dotenv from "dotenv";
+import { PORT } from "./env";
+import { Events } from "./Events";
+import { DataToXlsx } from "./core/datasaver/DataToXlsx";
+import { DataToPdf } from "./core/datasaver/DataToPdf";
 
 dotenv.config();
-const app: Express = express();
 
-// Allow any method from any host and log requests
-//app.use(corsMiddleware);
+const app: Express = express();
 
 app.use(cors());
 
@@ -32,5 +32,34 @@ app.get("/*", function (req, res) {
 
 const port = PORT || 3000;
 app.listen(port, () => {
-  console.log("App running on port " + port);
+  AppDataSource.initialize().then(() => {
+    app.emit(Events.APP_STARTED, port);
+  });
 });
+
+/**
+ * @deprecated
+ * Mainly for debugging purposes, backend process to start when the server is ready
+ */
+const readyHandler = async () => {};
+
+app.on(Events.APP_STARTED, () => {
+  const date = new Date();
+  const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+  console.log(
+    `%c[INFO] %c${time} %c📠  Server listening on port ${port}`,
+    "color: #0077FF;",
+    "color: #66FF66;;",
+    "color: green;"
+  );
+  console.log(
+    `%c[INFO] %c${time} %c💾  Postgres Database Connected`,
+    "color: #0077FF;",
+    "color: #66FF66;;",
+    "color: green;"
+  );
+
+  readyHandler();
+});
+
+export default app;

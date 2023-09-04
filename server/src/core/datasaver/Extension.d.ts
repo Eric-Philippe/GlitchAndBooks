@@ -1,1 +1,1 @@
-type Extensions = "json" | "xlsx" | "pdf";
+type Extensions = "json" | "xlsx" | "pdf" | "csv" | "xml";

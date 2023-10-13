@@ -1,9 +1,27 @@
 require("dotenv").config();
 
-const { DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_NAME, PORT, JWT_SECRET } =
-  process.env;
+const {
+  DB_HOST,
+  DB_PORT,
+  DB_USER,
+  DB_PASS,
+  DB_NAME,
+  MAIL_USER,
+  MAIL_PASSWORD,
+  PORT,
+  JWT_SECRET,
+} = process.env;
 
-if (!DB_HOST || !DB_PORT || !DB_USER || !DB_PASS || !DB_NAME || !JWT_SECRET) {
+if (
+  !DB_HOST ||
+  !DB_PORT ||
+  !DB_USER ||
+  !DB_PASS ||
+  !DB_NAME ||
+  !MAIL_USER ||
+  !MAIL_PASSWORD ||
+  !JWT_SECRET
+) {
   throw new Error("Missing environment variables");
 }
 
@@ -16,6 +34,8 @@ export {
   DB_USER,
   DB_PASS,
   DB_NAME,
+  MAIL_USER,
+  MAIL_PASSWORD,
   PORT,
   JWT_SECRET,
 };

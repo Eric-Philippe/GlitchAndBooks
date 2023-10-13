@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1] - 2023-10-13
+
+### Major additions
+
+- Refactor the `Users` table to add a email and avatar column
+- Hash the password before storing it in the database
+- Created a Mailer service to send emails for future features around the account
+- Created the Token manager for the future forgot password feature (not implemented yet)
+- Created a route for the account creation
+- The Login page now has a link to the account creation page
+
+### Minor changes
+
+- All the previous passwords still work, they're all hashed now in the database
+- Created the email for the project : `glitchandbooks.noreply@gmail.com`
+- Updated the database documentation to reflect the changes (`database/`)
+
 ## [1.1.0] - 2023-09-01
 
 ### Major additions

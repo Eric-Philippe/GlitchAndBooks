@@ -8,11 +8,13 @@ import { typesRouter } from "./types/typesRouter";
 import { languagesRouter } from "./languages/languagesRouter";
 import { countryRouter } from "./country_origin/countryRouter";
 import { data_saver } from "./data_saver/data_saver";
+import { createAccount } from "./login/createAccount";
 
 export const v1Routes = express.Router();
 
 /** Session Routers */
 v1Routes.post("/login", login);
+v1Routes.post("/createaccount", createAccount);
 v1Routes.get("/session", session);
 
 /** Open API access Routers */

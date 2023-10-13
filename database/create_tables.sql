@@ -1,7 +1,9 @@
 CREATE TABLE Users (
    userId SERIAL PRIMARY KEY,
    username VARCHAR(55) UNIQUE,
-   password VARCHAR(55) NOT NULL
+   password VARCHAR(55) NOT NULL,
+   email VARCHAR(55) UNIQUE NOT NULL,
+   avatar BYTEA,
 );
 
 CREATE TABLE Authors (

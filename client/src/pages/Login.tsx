@@ -45,8 +45,10 @@ const Login: React.FC = () => {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log(username, password, mail);
-
+    if (username === "" || password === "" || mail === "") {
+      setMessage("Please fill all the fields");
+      return;
+    }
     const data = { username, password, mail };
 
     try {

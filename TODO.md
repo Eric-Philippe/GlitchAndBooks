@@ -35,9 +35,9 @@
 
 ## Forgot password
 
-- [ ] Add a forgot password feature
-- [ ] Send an email to the user with a link to reset the password
-- [ ] Add a token to the link to reset the password
+- [x] Add a forgot password feature
+- [x] Send an email to the user with a link to reset the password
+- [x] Add a token to the link to reset the password
 
 ## Change email
 

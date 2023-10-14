@@ -2,7 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.1.1] - 2023-10-13
+## [Beta 1.2.1] - 2023-10-14
+
+### Major additions
+
+- The `Forgot Password` feature is now fully implemented !!
+  - The server now uses the `Token Manager` made in the previous Beta to generate a token and send it to the user's email
+  - The user can now reset his password by clicking on the link in the email
+
+### Minor changes
+
+- The routes/v1 get refactored to restructured a `v1/account/` route that host the `password` routes
+
+  - The `password` routes are now in a separate file and includes all the rest password routes
+
+- Fully updated the `.env/example` file to reflect the changes (SERVER_ADRESS and all the new MAILER variables)
+- Some minor improvements on the `Create Account` page
+- Minor code rearrangements in the `Mailer` code to make it more logic with the private and public methods
+
+## [Beta 1.2.0] - 2023-10-13
 
 ### Major additions
 

@@ -20,17 +20,19 @@ export class Mailer {
     return Mailer.instance;
   }
 
-  public sendMail(mailOptions: MailOptions): void {
-    const fullMailOptions = {
-      from: '"Glitch & Books" <glitchandbooks.noreply@gmail.com>',
-      ...mailOptions,
-    };
-    this.transporter.sendMail(fullMailOptions, (error, info) => {
-      if (error) {
-        console.log("Error sending email: " + error);
-      } else {
-        console.log("Email sent: " + info.response);
-      }
+  public async sendMail(mailOptions: MailOptions): Promise<number> {
+    return new Promise((resolve, reject) => {
+      const fullMailOptions = {
+        from: '"Glitch & Books" <glitchandbooks.noreply@gmail.com>',
+        ...mailOptions,
+      };
+      this.transporter.sendMail(fullMailOptions, (error, info) => {
+        if (error) {
+          reject(500);
+        } else {
+          resolve(200);
+        }
+      });
     });
   }
 }

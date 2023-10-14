@@ -48,7 +48,7 @@ export default class TokenResetPass {
    * Generates a unique token
    * @returns A unique token
    */
-  public generateUniqueToken(): string {
+  private generateUniqueToken(): string {
     let token = this.generateToken();
     while (this.has(token)) {
       token = this.generateToken();
@@ -62,12 +62,19 @@ export default class TokenResetPass {
    * @param email email of the user
    * @param token token to add
    */
-  public add(email: string, token: string) {
+  private add(email: string, token: string) {
     this.tokens.add({ email, token });
     setTimeout(() => {
       if (this.tokens.has({ email, token }))
         this.tokens.delete({ email, token });
     }, TIME_BEFORE_EXPIRATION);
+  }
+
+  public generate(email: string): string {
+    const token = this.generateUniqueToken();
+    this.add(email, token);
+
+    return token;
   }
 
   /**

@@ -5,6 +5,7 @@ import NotFound from "./pages/NotFound";
 import AddBook from "./pages/AddBook";
 import Browse from "./pages/Browse";
 import Stats from "./pages/Stats";
+import ResetPassword from "./pages/ResetPassword";
 
 const App: React.FC = () => {
   return (
@@ -14,6 +15,7 @@ const App: React.FC = () => {
         <Route path="/add" Component={AddBook} />
         <Route path="/browse" Component={Browse} />
         <Route path="/stats" Component={Stats} />
+        <Route path="/resetpassword" Component={ResetPassword} />
         <Route path="*" Component={NotFound} />
       </Routes>
     </Router>

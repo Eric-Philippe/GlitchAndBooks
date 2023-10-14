@@ -5,7 +5,7 @@ import { sign } from "jsonwebtoken";
 import { JWT_SECRET } from "../../../env";
 import { crypter } from "../../../middlewares/crypter";
 
-export const login = async (req: Request, res: Response) => {
+export default async function login(req: Request, res: Response) {
   // Get the username and password from the request body
   let { username, password } = req.body;
 
@@ -25,7 +25,6 @@ export const login = async (req: Request, res: Response) => {
 
     if (loginByUsername.length > 0 || loginByEmail.length > 0) {
       const login = loginByUsername.length > 0 ? loginByUsername : loginByEmail;
-      console.log(login);
 
       const goodPassword = await crypter.compare(password, login[0].password);
 
@@ -57,4 +56,4 @@ export const login = async (req: Request, res: Response) => {
       message: "An error occurred",
     });
   }
-};
+}

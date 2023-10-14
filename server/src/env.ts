@@ -8,6 +8,7 @@ const {
   DB_NAME,
   MAIL_USER,
   MAIL_PASSWORD,
+  SERVER_ADDRESS,
   PORT,
   JWT_SECRET,
 } = process.env;
@@ -20,6 +21,8 @@ if (
   !DB_NAME ||
   !MAIL_USER ||
   !MAIL_PASSWORD ||
+  !SERVER_ADDRESS ||
+  !PORT ||
   !JWT_SECRET
 ) {
   throw new Error("Missing environment variables");
@@ -36,6 +39,7 @@ export {
   DB_NAME,
   MAIL_USER,
   MAIL_PASSWORD,
+  SERVER_ADDRESS,
   PORT,
   JWT_SECRET,
 };

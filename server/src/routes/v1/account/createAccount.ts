@@ -5,13 +5,13 @@ import { sign } from "jsonwebtoken";
 import { JWT_SECRET } from "../../../env";
 import { crypter } from "../../../middlewares/crypter";
 
-export const createAccount = async (req: Request, res: Response) => {
+export default async function create(req: Request, res: Response) {
   // Get the username and password from the request body
   let { username, password, mail } = req.body;
 
   if (!username) username = "";
   if (!password) password = "";
-  if (!mail) mail = "MERDE";
+  if (!mail) mail = "";
 
   try {
     // Validate the username and password against your data source (for example, a database)
@@ -62,4 +62,4 @@ export const createAccount = async (req: Request, res: Response) => {
       message: "An error occurred",
     });
   }
-};
+}

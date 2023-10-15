@@ -1,0 +1,40 @@
+/* Header.css */
+
+/* Styles for the account menu */
+.account-menu {
+  width: 300px;
+  padding: 10px;
+}
+
+.small {
+  font-size: 12px;
+  text-align: center;
+}
+
+.clickable-text {
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.clickable-text:hover {
+  color: darkblue;
+}
+
+#about-link {
+  color: white;
+}
+
+#help-link {
+  color: white;
+}
+
+button[class*="account-btn"] {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.divider {
+  border-top: 1px solid rgb(255, 255, 255); /* Adjust the color and style as needed */
+  margin: 10px 0; /* Adjust the margin as needed */
+}

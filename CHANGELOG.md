@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Beta 1.2.2] - 2023-10-15
+
+### Major additions
+
+- The `Account` page is now almost fully implemented !!
+  - The user can now access the `Account` page by clicking on the `Account` button in the header
+  - The user can now see his information on the `Account` page
+  - The user can now change his password on the `Account` page
+  - The user can now logout on the `Account` page
+  - The user will soon be able to delete his account on the `Account` page (not implemented yet)
+
+### Minor changes
+
+- The `Account` page is now fully responsive
+- A new `v1/account/password/change` route is now available to change the password and send an email to the user
+- The change password route uses the jwt token to identify the user in order to keep safe the password change
+
 ## [Beta 1.2.1] - 2023-10-14
 
 ### Major additions

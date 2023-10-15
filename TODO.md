@@ -18,10 +18,11 @@
 
 ## Create an 'Account' Page
 
-- [ ] Create a page to display the user's information
-- [ ] Display the user's information
-- [ ] Add a button to change the user's information
-- [ ] Add a button to change the user's password
+- [x] Replace the header `Logout` button by a `Account` button that display a dropdown modal with the logout button and the user's information
+- [ ] Create an Account page that display the user's information
+  - [x] [Logout button](#logout-button)
+  - [x] [See the Change Password feature](#change-password)
+  - [ ] [See the Delete Account feature](#delete-account)
 
 ## Create a form to create an account
 
@@ -30,8 +31,8 @@
 
 ## Change password
 
-- [ ] Add a password change feature
-- [ ] Create a complete form to change the password
+- [x] Add a password change feature
+- [x] Create a complete form to change the password
 
 ## Forgot password
 
@@ -39,9 +40,9 @@
 - [x] Send an email to the user with a link to reset the password
 - [x] Add a token to the link to reset the password
 
-## Change email
+## Delete account
 
-- [ ] Add a change email feature
+- [ ] Add a delete account feature
 
 ## Code page and legal
 

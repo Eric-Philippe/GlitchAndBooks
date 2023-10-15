@@ -1,9 +1,13 @@
 import React from "react";
-
 import "bootstrap";
+import { Button, Dropdown } from "react-bootstrap";
+import { PersonCircle } from "react-bootstrap-icons";
+import "./Header.css"; // Import du fichier CSS externe
 
 const Header: React.FC = () => {
   const [wichMenu, setWichMenu] = React.useState<string>("");
+  const isLargeScreen = window.innerWidth > 768;
+
   React.useEffect(() => {
     const currentMenu = window.location.pathname;
     switch (currentMenu) {
@@ -21,8 +25,7 @@ const Header: React.FC = () => {
     }
   }, []);
 
-  const handeLogout = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handeLogout = () => {
     localStorage.clear();
     window.location.href = "/";
   };
@@ -94,11 +97,57 @@ const Header: React.FC = () => {
               </a>
             </li>
           </ul>
-          <form className="d-flex" onSubmit={handeLogout}>
-            <button className="btn btn-outline-danger" type="submit">
-              Logout
-            </button>
-          </form>
+
+          {/** Account menu */}
+          <Dropdown>
+            <Dropdown.Toggle
+              variant="outline-primary"
+              id="dropdown-basic"
+              className="btn btn-outline-primary"
+            >
+              <PersonCircle /> Account ({localStorage.getItem("username")})
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu className="account-menu">
+              <div className="d-flex flex-column align-items-center">
+                <p className="small">{localStorage.getItem("mail")}</p>
+                <Button
+                  variant="outline-light"
+                  className="mb-2 account-btn"
+                  type="submit"
+                  onClick={() => {
+                    window.location.href = "/account";
+                  }}
+                >
+                  Account settings
+                </Button>
+                <Button
+                  variant="outline-danger"
+                  className="mb-2 account-btn"
+                  type="submit"
+                  onClick={handeLogout}
+                >
+                  Logout
+                </Button>
+                <hr className="w-100" />
+                <div className="d-flex justify-content-between">
+                  <span
+                    className="px-1 text-decoration-none clickable-text"
+                    id="about-link"
+                  >
+                    About
+                  </span>
+                  <span className=""> • </span>
+                  <span
+                    className="px-1 text-decoration-none clickable-text"
+                    id="help-link"
+                  >
+                    Help
+                  </span>
+                </div>{" "}
+              </div>
+            </Dropdown.Menu>
+          </Dropdown>
         </div>
       </div>
     </nav>

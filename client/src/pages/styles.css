@@ -13,6 +13,14 @@
   vertical-align: middle;
 }
 
+.account-long-red-button {
+  width: 45%;
+}
+
+.account-form {
+  width: 50%;
+}
+
 @media (max-width: 768px) {
   #center-container {
     padding-left: 1em;
@@ -24,6 +32,14 @@
   #center-consulter {
     padding-left: 1em;
     padding-right: 1em;
+  }
+
+  #account-long-red-button {
+    width: 75%;
+  }
+
+  .account-form {
+    width: 97%;
   }
 }
 

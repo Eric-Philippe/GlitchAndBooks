@@ -6,7 +6,6 @@ import "./Header.css"; // Import du fichier CSS externe
 
 const Header: React.FC = () => {
   const [wichMenu, setWichMenu] = React.useState<string>("");
-  const isLargeScreen = window.innerWidth > 768;
 
   React.useEffect(() => {
     const currentMenu = window.location.pathname;

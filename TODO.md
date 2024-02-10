@@ -52,3 +52,21 @@
 ## Update the ChangeLog
 
 - [ ] Update the ChangeLog with all the changes
+
+# TODO List for the wishlist feature
+
+## Consult the wishlist
+
+- [ ] Create a page to consult the wishlist
+- [ ] Add a button to the header to access the wishlist page
+
+## Add a book to the wishlist
+
+- [ ] Add a button to the book page to add the book to the wishlist
+- [ ] Force the user to entrer n authors in a specific format (firstname_1 | lastname_1, firstname_2 | lastname_2, ...)
+
+## Remove a book from the wishlist
+
+- [ ] Add a button to the wishlist page to remove the book from the wishlist
+- [ ] Add a button to the wishlist page to transfer the book to the library
+- - [ ] Setup a url to put parameters to the add book url in order to pre-fill the form

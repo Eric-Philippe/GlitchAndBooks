@@ -8,6 +8,7 @@ import { languagesRouter } from "./languages/languagesRouter";
 import { countryRouter } from "./country_origin/countryRouter";
 import { data_saver } from "./data_saver/data_saver";
 import { accountRouter } from "./account/acountRouter";
+import { wishesRouter } from "./wishlist/wishesRouter";
 
 export const v1Routes = express.Router();
 
@@ -24,3 +25,4 @@ v1Routes.post("/data_saver", jwtTokenVerification, data_saver);
 
 /** Restricted API Access Routers */
 v1Routes.use("/books", jwtTokenVerification, booksRouter);
+v1Routes.use("/wishes", jwtTokenVerification, wishesRouter);

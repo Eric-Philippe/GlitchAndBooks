@@ -20,11 +20,17 @@ export class Wishlist {
   @Column("character varying", { name: "author", length: 155 })
   author: string;
 
+  @Column("date", { name: "date" })
+  date: Date;
+
   @Column("integer", { name: "price", nullable: true })
   price: number | null;
 
-  @Column("character varying", { name: "image", length: 255, nullable: true })
+  @Column("character varying", { name: "editor", length: 255, nullable: true })
   editor: string | null;
+
+  @Column("text", { name: "details", nullable: true })
+  details: string | null;
 
   @ManyToOne(() => Users, (users) => users.wishlists)
   @JoinColumn([{ name: "userid", referencedColumnName: "userid" }])

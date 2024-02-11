@@ -51,6 +51,10 @@ const validate = () => {
 };
 
 class AddBook extends Component<{}, HomeState> {
+  public paramTitle: string = "";
+  public paramAuthors: string[] = [];
+  public wishOriginId: number | null = null;
+
   public authorCount: number = 1;
   private ressources: Resources = Resources.getInstance();
 
@@ -60,6 +64,12 @@ class AddBook extends Component<{}, HomeState> {
       isUserConnected: null,
       areResourcesLoaded: null,
     };
+    const url = new URL(window.location.href);
+    // url?title=The%20Hobbit&author=J.R.R.%20Tolkien
+    this.paramTitle = url.searchParams.get("title") || "";
+    // url?title=The%20Hobbit&author=J.R.R.%20Tolkien&author=J.R.R.%20Tolkien
+    this.paramAuthors = url.searchParams.getAll("author");
+    this.wishOriginId = parseInt(url.searchParams.get("id") || "0");
   }
 
   public addAuthor = (e: React.FormEvent | MouseEvent) => {
@@ -235,12 +245,40 @@ class AddBook extends Component<{}, HomeState> {
 
     if (res.status === 200) {
       // refresh page
-      window.location.reload();
-      const toastLiveExample = document.getElementById(
-        "liveToast"
-      ) as HTMLElement;
-      const toastBootstrap = Toast.getOrCreateInstance(toastLiveExample);
-      toastBootstrap.show();
+      if (this && this.wishOriginId) {
+        fetch("/api/v1/wishes/delete", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+          body: JSON.stringify({ wishId: this.wishOriginId }),
+        })
+          .then((res) => {
+            if (res.status === 200) {
+              console.log("Wish deleted");
+              window.location.reload();
+              const toastLiveExample = document.getElementById(
+                "liveToast"
+              ) as HTMLElement;
+              const toastBootstrap =
+                Toast.getOrCreateInstance(toastLiveExample);
+              toastBootstrap.show();
+            } else {
+              console.error("Error while deleting wish:", res);
+            }
+          })
+          .catch((error) => {
+            console.error("Error while deleting wish:", error);
+          });
+      } else {
+        window.location.reload();
+        const toastLiveExample = document.getElementById(
+          "liveToast"
+        ) as HTMLElement;
+        const toastBootstrap = Toast.getOrCreateInstance(toastLiveExample);
+        toastBootstrap.show();
+      }
     } else {
       console.error("Error while adding book:", res);
     }
@@ -278,6 +316,7 @@ class AddBook extends Component<{}, HomeState> {
                       className="form-control"
                       id="title"
                       placeholder="Title"
+                      defaultValue={this.paramTitle ? this.paramTitle : ""}
                       aria-label="Title"
                       required
                     ></input>
@@ -296,6 +335,7 @@ class AddBook extends Component<{}, HomeState> {
                         aria-label="First name"
                         className="form-control"
                         placeholder="First name"
+                        value={this.paramAuthors[0] || ""}
                         id="firstname_0"
                       ></input>
                       <input
@@ -303,6 +343,7 @@ class AddBook extends Component<{}, HomeState> {
                         aria-label="Last name"
                         className="form-control"
                         placeholder="Last name"
+                        value={this.paramAuthors[1] || ""}
                         id="lastname_0"
                         required
                       ></input>

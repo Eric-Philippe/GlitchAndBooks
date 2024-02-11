@@ -3,7 +3,12 @@ import { AppDataSource } from "../../../data-source";
 import { Wishlist } from "../../../entities/Wishlist";
 
 export default async function deleteWish(req: Request, res: Response) {
-  const { wishId } = req.query as { wishId: string };
+  const { wishId } = req.body as { wishId: string };
+
+  if (!wishId) {
+    res.status(400).json({ message: "Wish id is required" });
+    return;
+  }
 
   try {
     const repoWish = AppDataSource.getRepository(Wishlist);

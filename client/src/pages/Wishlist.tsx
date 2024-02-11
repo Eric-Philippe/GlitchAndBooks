@@ -30,7 +30,6 @@ class WishList extends Component<{}, ConsulterState> {
     try {
       const connected = (await isConnected()) as boolean;
       this.userWishes = await fetchUserData();
-      console.log(this.userWishes);
 
       this.setState({ isUserDataFetched: true });
       this.setState({ areResourcesLoaded: true });
@@ -58,27 +57,15 @@ class WishList extends Component<{}, ConsulterState> {
                 <h6 className="display-6">Browse your wishlist ✨</h6>
               </div>
               <div>
-                {this.userWishes.length > 0 ? (
+                <div>
                   <div>
-                    <div>
-                      {userOnSmallerScreen ? (
-                        <CardView data={this.userWishes} />
-                      ) : (
-                        <TableView data={this.userWishes} />
-                      )}
-                    </div>
+                    {userOnSmallerScreen ? (
+                      <CardView data={this.userWishes} />
+                    ) : (
+                      <TableView data={this.userWishes} />
+                    )}
                   </div>
-                ) : (
-                  <div>
-                    <div className="container text-center mt-5 mb-4">
-                      <p className="lead">
-                        You don't have any books in your wishlist yet. <br />
-                        Click on the "Add" button to add a book to your
-                        wishlist.
-                      </p>
-                    </div>
-                  </div>
-                )}
+                </div>
               </div>
             </div>
           </div>

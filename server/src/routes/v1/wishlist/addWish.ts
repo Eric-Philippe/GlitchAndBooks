@@ -33,12 +33,16 @@ export default async function addWish(req: Request, res: Response) {
     newWish.author = wish.author;
     newWish.price = wish.price;
     newWish.editor = wish.editor;
+    newWish.details = wish.details;
+    newWish.date = new Date();
     newWish.user = user;
 
     await repoWish.save(newWish);
 
     res.status(201).send("Wish added");
   } catch (error) {
+    console.log("Error while adding wish", error);
+
     res.status(500).send("Error while adding wish");
   }
 }

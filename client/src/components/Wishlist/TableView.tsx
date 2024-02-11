@@ -16,6 +16,8 @@ interface TableViewProps {
 
 const TableView: React.FC<TableViewProps> = ({ data }) => {
   const [userWishes, setUserWishes] = useState<Wish[]>(data);
+  const [sortColumn, setSortColumn] = useState<string | null>(null);
+  const [sortDirection, setSortDirection] = useState<string | null>(null);
 
   const [showModal, setShowModal] = useState(false);
   const [createResultNum, setCreateResultNum] = useState<number | null>(null);
@@ -25,6 +27,28 @@ const TableView: React.FC<TableViewProps> = ({ data }) => {
     if (!details) return "N/A";
     if (details.length > 50) return details.slice(0, 50) + "...";
     return details;
+  };
+
+  const sortWishes = (column: keyof Wish) => {
+    const newDirection =
+      sortColumn === column && sortDirection === "asc" ? "desc" : "asc";
+    const sortedWishes = [...userWishes].sort((a, b) => {
+      if (a[column] != null && b[column] != null) {
+        //@ts-ignore
+        if (a[column] < b[column]) {
+          return newDirection === "asc" ? -1 : 1;
+        }
+        //@ts-ignore
+        if (a[column] > b[column]) {
+          return newDirection === "asc" ? 1 : -1;
+        }
+      }
+      return 0;
+    });
+
+    setUserWishes(sortedWishes);
+    setSortColumn(column);
+    setSortDirection(newDirection);
   };
 
   const deleteWish = (wishId: number) => {
@@ -126,12 +150,36 @@ const TableView: React.FC<TableViewProps> = ({ data }) => {
 
             <thead>
               <tr>
-                <th scope="col">Creation</th>
-                <th scope="col">Title</th>
-                <th scope="col">Author</th>
-                <th scope="col">Price</th>
-                <th scope="col">Editor</th>
-                <th scope="col">Details</th>
+                <th scope="col" onClick={() => sortWishes("date")}>
+                  Creation{" "}
+                  {sortColumn === "date" &&
+                    (sortDirection === "asc" ? "↑" : "↓")}
+                </th>
+                <th scope="col" onClick={() => sortWishes("title")}>
+                  Title{" "}
+                  {sortColumn === "title" &&
+                    (sortDirection === "asc" ? "↑" : "↓")}
+                </th>
+                <th scope="col" onClick={() => sortWishes("author")}>
+                  Author{" "}
+                  {sortColumn === "author" &&
+                    (sortDirection === "asc" ? "↑" : "↓")}
+                </th>
+                <th scope="col" onClick={() => sortWishes("price")}>
+                  Price{" "}
+                  {sortColumn === "price" &&
+                    (sortDirection === "asc" ? "↑" : "↓")}
+                </th>
+                <th scope="col" onClick={() => sortWishes("editor")}>
+                  Editor{" "}
+                  {sortColumn === "editor" &&
+                    (sortDirection === "asc" ? "↑" : "↓")}
+                </th>
+                <th scope="col" onClick={() => sortWishes("details")}>
+                  Details{" "}
+                  {sortColumn === "details" &&
+                    (sortDirection === "asc" ? "↑" : "↓")}
+                </th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>

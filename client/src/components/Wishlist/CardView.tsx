@@ -7,6 +7,7 @@ import {
   Card,
   Row,
   Col,
+  Form,
 } from "react-bootstrap";
 import CreateWish from "./CreateWish";
 import { getAuthors } from "../../utils/WishUtils";
@@ -17,6 +18,8 @@ interface CardViewProps {
 
 const CardView: React.FC<CardViewProps> = ({ data }) => {
   const [userWishes, setUserWishes] = useState<Wish[]>(data);
+  const [sortColumn, setSortColumn] = useState<string | null>(null);
+  const [sortDirection, setSortDirection] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [createResultNum, setCreateResultNum] = useState<number | null>(null);
   const [deleteResultNum, setDeleteResultNum] = useState<number | null>(null);
@@ -25,6 +28,33 @@ const CardView: React.FC<CardViewProps> = ({ data }) => {
     if (!details) return "N/A";
     if (details.length > 50) return details.slice(0, 50) + "...";
     return details;
+  };
+
+  const sortWishes = (column: keyof Wish) => {
+    const newDirection =
+      sortColumn === column && sortDirection === "asc" ? "desc" : "asc";
+    const sortedWishes = [...userWishes].sort((a, b) => {
+      if (a[column] != null && b[column] != null) {
+        //@ts-ignore
+        if (a[column] < b[column]) {
+          return newDirection === "asc" ? -1 : 1;
+        }
+        //@ts-ignore
+        if (a[column] > b[column]) {
+          return newDirection === "asc" ? 1 : -1;
+        }
+      }
+      return 0;
+    });
+
+    setUserWishes(sortedWishes);
+    setSortColumn(column);
+    setSortDirection(newDirection);
+  };
+
+  const handleSortChange = (event: React.ChangeEvent<unknown>) => {
+    const selectElement = event.target as HTMLSelectElement;
+    sortWishes(selectElement.value as keyof Wish);
   };
 
   const deleteWish = (wishId: number) => {
@@ -131,6 +161,20 @@ const CardView: React.FC<CardViewProps> = ({ data }) => {
               ></button>
             </div>
           ) : null}
+
+          <Form>
+            <Form.Group controlId="sortSelect">
+              <Form.Label>Sort by:</Form.Label>
+              <Form.Control as="select" onChange={handleSortChange}>
+                <option value="date">Date</option>
+                <option value="title">Title</option>
+                <option value="author">Author</option>
+                <option value="price">Price</option>
+                <option value="editor">Editor</option>
+                <option value="details">Details</option>
+              </Form.Control>
+            </Form.Group>
+          </Form>
           <Row>
             {userWishes.map((wish) => (
               <Col sm={12} md={6} lg={4} key={wish.title}>

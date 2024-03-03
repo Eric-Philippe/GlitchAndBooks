@@ -335,7 +335,7 @@ class AddBook extends Component<{}, HomeState> {
                         aria-label="First name"
                         className="form-control"
                         placeholder="First name"
-                        value={this.paramAuthors[0] || ""}
+                        defaultValue={this.paramAuthors[0] || ""}
                         id="firstname_0"
                       ></input>
                       <input
@@ -343,7 +343,7 @@ class AddBook extends Component<{}, HomeState> {
                         aria-label="Last name"
                         className="form-control"
                         placeholder="Last name"
-                        value={this.paramAuthors[1] || ""}
+                        defaultValue={this.paramAuthors[1] || ""}
                         id="lastname_0"
                         required
                       ></input>

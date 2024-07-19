@@ -26,19 +26,25 @@ services:
       - "traefik.http.routers.glitchandbooks.tls.certresolver=myresolver"
       - "traefik.docker.network=traefik"
 
-    db-glitchandbooks:
-      image: postgres:13
-      container_name: db-glitchandbooks
-      restart: always
-      env_file:
-        - .env
-      environment:
-        POSTGRES_USER: $DB_USER
-        POSTGRES_PASSWORD: $DB_PASS
-        POSTGRES_DB: $DB_NAME
-      ports:
-        - "5432:5432"
-      networks:
-        - glitchandbooks
-      volumes:
-        - pgdata-glitchandbooks:/var/lib/postgresql/data
+  db-glitchandbooks:
+    image: postgres:13
+    container_name: db-glitchandbooks
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: $DB_USER
+      POSTGRES_PASSWORD: $DB_PASS
+      POSTGRES_DB: $DB_NAME
+    ports:
+      - "5432:5432"
+    networks:
+      - glitchandbooks
+    volumes:
+      - pgdata-glitchandbooks:/var/lib/postgresql/data
+
+networks:
+  traefik:
+    external: true
+  glitchandbooks:
+    driver: bridge

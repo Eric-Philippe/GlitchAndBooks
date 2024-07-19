@@ -1,0 +1,10 @@
+node_modules
+dist
+build
+img
+database
+.github
+.vscode
+.dockerignore
+Dockerfile
+*.md

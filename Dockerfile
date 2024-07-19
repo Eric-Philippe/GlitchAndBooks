@@ -5,11 +5,11 @@ FROM node:14
 
 # Copy package.json and package-lock.json for client and install dependencies
 COPY client/package*.json ./client/
-RUN cd client && npm install
+RUN cd client && npm install --silent
 
 # Copy package.json and package-lock.json for server and install dependencies
 COPY server/package*.json ./server/
-RUN cd server && npm install
+RUN cd server && npm install --silent
 
 # Copy the rest of the client and server files
 COPY client/ ./client/

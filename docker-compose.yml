@@ -13,7 +13,7 @@ services:
     env_file:
       - .env
     depends_on:
-      - db
+      - db-glitchandbooks
     networks:
       - traefik
       - glitchandbooks
@@ -33,9 +33,9 @@ services:
     env_file:
       - .env
     environment:
-      POSTGRES_USER: $DB_USER
-      POSTGRES_PASSWORD: $DB_PASS
-      POSTGRES_DB: $DB_NAME
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
     ports:
       - "5432:5432"
     networks:

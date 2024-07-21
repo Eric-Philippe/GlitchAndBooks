@@ -31,3 +31,4 @@ jobs:
         with:
           push: true
           tags: ghcr.io/ericphil/glitchandbooks:latest
+# Path: .github/workflows/build-publish-docker.yml

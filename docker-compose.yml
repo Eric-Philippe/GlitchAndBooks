@@ -2,49 +2,44 @@ version: "3.8"
 
 services:
   glitchandbooks:
-    image: glitchandbooks
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "5000:5000"
-    volumes:
-      - .:/app
+    build: .
+    container_name: glitchandbooks
     env_file:
       - .env
     depends_on:
       - db-glitchandbooks
     networks:
       - traefik
-      - glitchandbooks
+    restart: always
+    ports:
+      - "5000:5000"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.glitchandbooks.rule=Host(`test.homeserver-ericp.fr`)"
+      - "traefik.http.routers.glitchandbooks.rule=Host(`glitchandbooks.fr`)"
       - "traefik.http.routers.glitchandbooks.entrypoints=websecure"
       - "traefik.http.routers.glitchandbooks.tls=true"
-      - "traefik.http.services.glitchandbooks.loadbalancer.server.port=80"
+      - "traefik.http.services.glitchandbooks.loadbalancer.server.port=5000"
       - "traefik.http.routers.glitchandbooks.tls.certresolver=myresolver"
       - "traefik.docker.network=traefik"
 
   db-glitchandbooks:
     image: postgres:13
     container_name: db-glitchandbooks
-    restart: always
-    env_file:
-      - .env
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASS}
       POSTGRES_DB: ${DB_NAME}
-    ports:
-      - "5432:5432"
-    networks:
-      - glitchandbooks
     volumes:
       - pgdata-glitchandbooks:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - traefik
+    restart: always
+
+volumes:
+  pgdata-glitchandbooks:
 
 networks:
   traefik:
     external: true
-  glitchandbooks:
-    driver: bridge

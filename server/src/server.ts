@@ -7,7 +7,7 @@ import { routes } from "./routes/routes";
 import { AppDataSource } from "./data-source";
 
 import * as dotenv from "dotenv";
-import { PORT } from "./env";
+import { DB_HOST, DB_PORT, PORT } from "./env";
 import { Events } from "./Events";
 
 dotenv.config();
@@ -29,6 +29,11 @@ app.get("/*", function (req, res) {
 });
 
 const port = PORT || 3000;
+
+console.log(`[INFO] 🚀  Starting server on port ${port}`);
+console.log(
+  `[INFO] 📡  Connecting to Postgres Database on ${DB_HOST}:${DB_PORT}`
+);
 app.listen(port, () => {
   AppDataSource.initialize().then(() => {
     app.emit(Events.APP_STARTED, port);

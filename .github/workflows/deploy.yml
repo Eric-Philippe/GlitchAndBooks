@@ -2,7 +2,7 @@ name: Deploy Discord Cril Bot
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:

@@ -1,30 +1,20 @@
 version: "3.8"
 
 services:
-  glitchandbooks:
+  server-glitchandbooks:
     build: .
-    container_name: glitchandbooks
+    container_name: server-glitchandbooks
     env_file:
       - .env
     depends_on:
-      - db-glitchandbooks
-    networks:
-      - traefik
-    restart: always
+      - server-db-glitchandbooks
+    restart: unless-stopped
     ports:
-      - "5000:5000"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.glitchandbooks.rule=Host(`glitchandbooks.fr`)"
-      - "traefik.http.routers.glitchandbooks.entrypoints=websecure"
-      - "traefik.http.routers.glitchandbooks.tls=true"
-      - "traefik.http.services.glitchandbooks.loadbalancer.server.port=5000"
-      - "traefik.http.routers.glitchandbooks.tls.certresolver=myresolver"
-      - "traefik.docker.network=traefik"
+      - "8000:5000"
 
-  db-glitchandbooks:
+  server-db-glitchandbooks:
     image: postgres:13
-    container_name: db-glitchandbooks
+    container_name: server-db-glitchandbooks
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASS}
@@ -33,13 +23,7 @@ services:
       - pgdata-glitchandbooks:/var/lib/postgresql/data
     ports:
       - "5433:5432"
-    networks:
-      - traefik
-    restart: always
+    restart: unless-stopped
 
 volumes:
   pgdata-glitchandbooks:
-
-networks:
-  traefik:
-    external: true

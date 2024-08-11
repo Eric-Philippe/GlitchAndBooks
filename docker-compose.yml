@@ -10,7 +10,7 @@ services:
       - server-db-glitchandbooks
     restart: unless-stopped
     ports:
-      - "8000:80"
+      - ${PORT}:80
 
   server-db-glitchandbooks:
     image: postgres:13

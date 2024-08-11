@@ -20,7 +20,7 @@ RUN cd client && npm run build
 RUN cd server && npm run build
 
 # Expose the desired port
-EXPOSE 3000
+EXPOSE 80
 
 # Start the server
 CMD ["node", "server/dist/server.js"]

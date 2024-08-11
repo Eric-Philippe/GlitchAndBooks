@@ -10,7 +10,7 @@ services:
       - server-db-glitchandbooks
     restart: unless-stopped
     ports:
-      - "8000:5000"
+      - "8000:80"
 
   server-db-glitchandbooks:
     image: postgres:13
@@ -22,7 +22,7 @@ services:
     volumes:
       - pgdata-glitchandbooks:/var/lib/postgresql/data
     ports:
-      - "5433:5432"
+      - ${DB_PORT}:5432
     restart: unless-stopped
 
 volumes:

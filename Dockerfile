@@ -21,8 +21,11 @@ COPY client/ ./client/
 COPY server/ ./server/
 
 # Build applications
-RUN cd client && npm run build
-RUN cd server && npm run build
+WORKDIR /app/client
+RUN npm run build
+
+WORKDIR /app/server
+RUN npm run build
 
 # Production stage
 FROM node:20-alpine AS production

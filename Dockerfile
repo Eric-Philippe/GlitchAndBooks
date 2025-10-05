@@ -1,26 +1,54 @@
-# Use an official Node.js runtime as the base image
-FROM node:14
+# Build stage
+FROM node:20-alpine AS builder
 
-# Set the working directory within the container
+# Set the working directory
+WORKDIR /app
 
-# Copy package.json and package-lock.json for client and install dependencies
+# Copy package files and install dependencies
 COPY client/package*.json ./client/
-RUN cd client && npm install --silent
-
-# Copy package.json and package-lock.json for server and install dependencies
 COPY server/package*.json ./server/
-RUN cd server && npm install --silent
 
-# Copy the rest of the client and server files
+# Install dependencies (including devDependencies for build)
+WORKDIR /app/client
+RUN npm ci --silent
+
+WORKDIR /app/server
+RUN npm ci --silent
+
+# Copy source code
+WORKDIR /app
 COPY client/ ./client/
 COPY server/ ./server/
 
-# Build the client and server
+# Build applications
 RUN cd client && npm run build
 RUN cd server && npm run build
 
-# Expose the desired port
+# Production stage
+FROM node:20-alpine AS production
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs && adduser -S nodejs -u 1001
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files for production dependencies only
+COPY server/package*.json ./
+RUN npm ci --only=production --silent && npm cache clean --force
+
+# Copy built applications from builder stage
+COPY --from=builder /app/server/dist ./dist
+COPY --from=builder /app/client/build ./public
+
+# Change ownership to nodejs user
+RUN chown -R nodejs:nodejs /app
+
+# Switch to non-root user
+USER nodejs
+
+# Expose port
 EXPOSE 80
 
 # Start the server
-CMD ["node", "server/dist/server.js"]
+CMD ["node", "dist/server.js"]
